@@ -1,0 +1,440 @@
+
+jQuery(document).ready(function($) {
+	
+	/* Open first submenu item when parent tab is clicked */
+	$(function(){
+		$('.dilaz-panel-menu > ul > li:first-of-type > .trigger').trigger('click');
+	});
+	
+	/* Panel tabbed menu */
+	$('.dilaz-panel-menu').on('click', '.trigger', function(e) {
+		
+		e.preventDefault();
+		
+		var $this        = $(this),
+			$parent      = $this.parent(),
+			$tabsNav     = $this.closest('.dilaz-panel-menu'),
+			$tabTarget   = $this.attr('href'),
+			$tabsContent = $tabsNav.siblings('.dilaz-panel-fields');
+			
+		/* toggle submenu */
+		if ($parent.hasClass('has_children')) {
+			
+			var $subMenu        = $parent.find('.submenu'),
+				$subMenuFirst   = $subMenu.children('li:first'),
+				$subMenuTrigger = $subMenuFirst.find('.trigger'),
+				$tabTarget      = $subMenuTrigger.attr('href');
+				
+			$subMenu.slideToggle();
+			$subMenuFirst.addClass('active');
+			$subMenuFirst.siblings().removeClass('active');
+		}
+		
+		/* highlight active triggers */
+		$parent.addClass('active');
+		$parent.siblings().removeClass('active');
+		
+		/* show only current fields */
+		$tabsContent.find($tabTarget).show().siblings().hide();
+		
+		/* hide all opened submenus */
+		$parent.siblings().find('.submenu').slideUp();
+		
+	});
+	
+	/* File upload */
+	$('.dilaz-panel-file-upload-button').each(function() {
+		
+		var imageFrame;
+		
+		$(this).on('click', function(event) {
+			
+			event.preventDefault();
+			
+			var options, attachment;
+			
+			$self              = $(event.target);
+			$fileUpload        = $self.closest('.dilaz-panel-file-upload');
+			$fileWrapper       = $fileUpload.find('.dilaz-panel-file-wrapper');
+			$fileWrapperParent = $fileUpload.parent();
+			$fileId            = $fileWrapper.data('file-id') || '';
+			$fileLibrary       = $self.data('file-library') || '';
+			$fileFormat        = $self.data('file-format') || '';
+			$fileMime          = $self.data('file-mime') || '';
+			$fileSpecific      = $self.data('file-specific') || false;
+			$fileMultiple      = $self.data('file-multiple') || false;
+			$fileType          = $self.data('file-type') || '';
+			$mediaPreview      = $fileWrapperParent.find('.dilaz-panel-media-file');
+			
+			/* open the frame if it exists */
+			if ( imageFrame ) {
+				imageFrame.open();
+				return;
+			}
+			
+			/* frame settings */
+			imageFrame = wp.media({
+				title    : 'Choose Image',
+				multiple : $fileMultiple,
+				library  : {	
+					type : $fileType
+				},
+				button : {
+					text : 'Use This Image'
+				}
+			});
+			
+			/* frame select handler */
+			imageFrame.on( 'select', function() {
+				selection = imageFrame.state().get('selection');
+				
+				if (!selection)
+					return;
+				
+				/* loop through the selected files */
+				selection.each( function(attachment) {
+					
+					var type = attachment.attributes.type;
+					
+					if (type == 'image') {
+						
+						/* if uploaded image is smaller than default thumbnail(250 by 250)
+						then get the full image url */
+						if (attachment.attributes.sizes.thumbnail !== undefined) {
+							var image_src = attachment.attributes.sizes.thumbnail.url;
+						} else {
+							var image_src = attachment.attributes.url;
+						}
+					}
+					
+					/* attachment data */
+					var src     = attachment.attributes.url,
+						id      = attachment.id,
+						title   = attachment.attributes.title,
+						caption = attachment.attributes.caption,
+						type    = attachment.attributes.type;
+						
+					var $fileOutput = '';
+					
+					$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +'  '+ (id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
+					$fileOutput += '<input type="hidden" name="'+ $fileId +'[]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ id +'">';
+					$fileOutput += '<div class="filename '+ $fileType +'">'+ title +'</div>';
+					$fileOutput += '<span class="sort ui-sortable-handle"></span>';
+					$fileOutput += '<a href="#" class="remove" title="Remove"><i class="fa fa-close"></i></a>';
+					
+					switch ( type ) {
+						case 'image':
+							$fileOutput += '<img src="'+ image_src +'" class="dilaz-panel-file-preview file-image" alt="">';
+							break;
+							
+						case 'audio':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="">';
+							break;
+							
+						case 'video':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/video.png" class="dilaz-panel-file-preview file-video" alt="">';
+							break;
+							
+						case 'document':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/document.png" class="dilaz-panel-file-preview file-document" alt="">';
+							break;
+							
+						case 'spreadsheet':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="">';
+							break;
+							
+						case 'interactive':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="">';
+							break;
+							
+						case 'text':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/text.png" class="dilaz-panel-file-preview file-text" alt="">';
+							break;
+							
+						case 'archive':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="">';
+							break;
+							
+						case 'code':
+							$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/code.png" class="dilaz-panel-file-preview file-code" alt="">';
+							break;
+							
+					}
+					
+					$fileOutput += '</div>';
+					
+					if ($fileMultiple == true) {
+						$fileWrapper.append($fileOutput);
+					} else {
+						$fileWrapper.html($fileOutput);
+					}
+					
+				});
+			});
+			
+			/* open frame */
+			imageFrame.open();
+		});
+	});
+	
+	/* Remove file */
+	$(document).on('click', '.remove', function(e) { 
+		e.preventDefault();
+		var $this = $(this);
+		$this.siblings('input').attr('value', '');
+		$this.closest('.dilaz-panel-media-file').slideUp(200);
+		setTimeout(function() {
+			$this.closest('.dilaz-panel-media-file').remove();
+		}, 1000);
+		return false;
+	});
+	
+	/* File sorting, drag-and-drop */
+	$('.dilaz-panel-file-wrapper').each(function() {
+		
+		var $this = $(this);
+			$media = $this.find('.dilaz-panel-media-file');
+			
+		if ($media.length > 1) {
+			$this.sortable({
+				opacity : 0.6,
+				revert : true,
+				handle : '.sort',
+				cursor : 'move',
+				// axis: 'y',
+				placeholder: 'ui-sortable-placeholder'
+			});
+			$('.dilaz-panel-file-wrapper').disableSelection();
+		}
+	});
+	
+	/* UI slider setting */
+	$('.dilaz-panel-slider').each(function() {
+		
+		var $this = $(this),
+			$min  = parseInt($this.data('min')),
+			$max  = parseInt($this.data('max')),
+			$step = parseInt($this.data('step')),
+			$val  = parseInt($this.data('val'));
+			
+		$this.slider({
+			animate : true,
+			range   : 'min',
+			value   : $val,
+			min     : $min,
+			max     : $max,
+			step    : $step,
+			slide   : function( event, ui ) {
+				$this.next($val).find('span').text(ui.value);
+				$this.siblings('input').val(ui.value);
+			},
+			change  : function(event, ui) {
+				$this.next($val).find('span').text(ui.value);
+				$this.siblings('input').val( ui.value);
+			}
+		});
+	});
+	
+	/* UI range setting */
+	$('.dilaz-panel-range').each(function() {
+		
+		var $this      = $(this),
+			$minVal    = parseInt($this.data('min-val')),
+			$maxVal    = parseInt($this.data('max-val')),
+			$min       = parseInt($this.data('min')),
+			$max       = parseInt($this.data('max')),
+			$step      = parseInt($this.data('step')),
+			$range     = $this.find('.dilaz-panel-slider-range'),
+			$optMin    = $this.find('#option-min'),
+			$optMinVal = $optMin.val(),
+			$optMax    = $this.find('#option-max'),
+			$optMaxVal = $optMax.val();
+			
+		$range.slider({
+			range  : true,
+			min    : $min,
+			max    : $max,
+			step   : $step,
+			values : [ $minVal, $maxVal ],
+			slide  : function( event, ui ) {
+				$optMin.val(ui.values[0]);
+				$optMin.next('.dilaz-panel-min-val').find('.val').text(ui.values[0]);
+				$optMax.val(ui.values[1]);
+				$optMax.next('.dilaz-panel-max-val').find('.val').text(ui.values[1]);
+			}
+		});
+	});
+	
+	/* Select2 */
+	$(".dilaz-panel-select.select2single, .dilaz-panel-select.select2multiple").select2();
+	
+	/* Ajax DB query select for posts, terms and users */
+	$('.dilaz-panel-query-select').each(function() {
+		
+		var $this = $(this);
+		
+		$this.select2({
+			placeholder : $this.data('placeholder'),
+			multiple : $this.data('multiple'),
+			width : $this.data('width'),
+			allowClear : true,
+			minimumInputLength : $this.data('min-input'), // minimum number of characters
+			maximumInputLength : $this.data('max-input'), // maximum number of characters
+			delay : 250, // milliseconds before triggering the request
+			// debug : true,
+			maximumSelectionLength: $this.data('max-options'), // maximum number of options selected
+			ajax : {
+				type     : 'POST',
+				url      : ajaxurl,
+				dataType : 'json',
+				data     : function (params) {
+					return {
+						q          : params.term,
+						action     : 'dilaz_panel_query_select',
+						selected   : $this.val(),
+						query_type : $this.data('query-type'),
+						query_args : $this.data('query-args'),
+					};
+				},
+				processResults : function(data) {
+					
+					var items   = [],
+						newItem = null;
+
+					for (var thisId in data) {
+						
+						newItem = {
+							'id'   : data[thisId]['id'],
+							'text' : data[thisId]['name']
+						};
+
+						items.push(newItem);
+					}
+
+					return { results : items };
+				} 
+			}
+		});
+	});
+	
+	/* Radio image selection */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-radio-image-img', function() {
+		
+		var $this = $(this);
+		
+		$this.parent().siblings().find('.dilaz-panel-radio-image-img').removeClass('selected');
+		$this.addClass('selected');
+	});
+	
+	/* Switch and Buttonset */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-switch, .dilaz-panel-button-set', function() {
+		
+		var $this = $(this);
+		
+		$this.parent().addClass('selected');
+		$this.parent().siblings().removeClass('selected');
+	});
+	
+	/* Checkbox */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-checkbox', function() {
+		$(this).toggleClass('focus');
+	});
+	
+	/* Radio */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-radio', function() {
+		
+		var $this = $(this);
+		
+		$this.addClass('focus');
+		$this.parent().siblings().find('.dilaz-panel-radio').removeClass('focus');
+	});
+	
+	/* Color picker */
+  	$('.dilaz-panel-color').wpColorPicker();
+	
+	/* Ajax - export options */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-export', function() {
+		
+		var $this  = $(this),
+			$nonce = $this.parent().data('export-nonce');
+			
+		$.ajax({
+			type     : 'POST',
+			url      : ajaxurl,
+			dataType : 'json',
+			cache	 : false,
+			data     : {
+				action             : 'dilaz_panel_export_options',
+				dilaz_export_nonce : $nonce
+			},
+			beforeSend : function() {
+				$this.siblings('.spinner').show().addClass('is-active');
+				$this.siblings('.progress').show();
+			},
+			success : function(response) {
+				if (response.success == 1) {
+					window.location = response.exp;
+					$this.siblings('.finished').css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
+				}
+			},
+			complete : function() {
+				$this.siblings('.spinner').delay(1900).hide(290);
+				$this.siblings('.progress').delay(1900).hide(290);
+			}
+		});
+	});	
+	
+	/* Select import file */
+	$('.dilaz-panel-fields').on('change', '.dilaz-import-file', function() {
+		
+		var $this = $(this);
+		
+		$this.parent().find('span').text($($this)[0].files[0]['name']);
+	});
+	
+	/* Ajax - import options */
+	$('.dilaz-panel-fields').on('click', '.dilaz-panel-import', function() {
+		
+		var $this       = $(this),
+			$importWrap = $this.closest('#dilaz-panel-import'),
+			$nonce      = $importWrap.data('import-nonce'),
+			$filesData  = $importWrap.find('.dilaz-import-file'),
+			$fileName   = $filesData.attr('name'),
+			$formData   = new FormData();
+		
+		if ($filesData.val() == '') {
+			$this.parent().siblings('.upload-response').removeClass('hidden').html('<div class="notification error"><p>Please select a file</p></div>');
+			return;
+		}
+		
+		$formData.append($fileName, $($filesData)[0].files[0]);
+		$formData.append('action', 'dilaz_panel_import_options');
+		$formData.append('dilaz_import_nonce', $nonce);
+		$formData.append('dilaz_import_file', $fileName);
+		
+		$.ajax({
+			type        : 'POST',
+			url         : ajaxurl,
+			dataType    : 'json',
+			cache	    : false,
+			data        : $formData,
+			contentType : false,
+			processData : false,
+			beforeSend  : function() {
+				$this.siblings('.spinner').addClass('is-active').show();
+				$this.siblings('.progress').show();
+			},
+			success : function(response) {
+				if (response.success == 1) {
+					$this.siblings('.finished').css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
+					window.location = response.redirect;
+				}
+			},
+			complete : function() {
+				$this.siblings('.spinner').delay(1900).fadeOut(290);
+				$this.siblings('.progress').delay(1900).fadeOut(290);
+			}
+		});
+	});
+
+});
