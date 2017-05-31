@@ -255,7 +255,7 @@
 }
 .dilaz-panel-field .dilaz-panel-section {
 	margin: 0;
-	border-bottom: 1px solid #e9e9e9;
+	border-bottom: 1px solid #ebebeb;
 	padding: 25px 25px;
 }
 .dilaz-panel-field .dilaz-panel-section.half {
@@ -343,9 +343,16 @@
 	   -moz-box-shadow: none;
 			box-shadow: none;
 }
+.dilaz-panel-section-radio .option label,
 .dilaz-panel-section-multicheck .option label {
 	float: left;
-	width: 30%
+	width: auto
+}
+.dilaz-panel-section-radio .option label.inline,
+.dilaz-panel-section-multicheck .option label.inline {
+	float: none;
+	display: inline-block;
+	margin-bottom: 14px;
 }
 .dilaz-panel-section-checkbox .option label span,
 .dilaz-panel-section-multicheck .option label span,
@@ -353,6 +360,7 @@
 	padding: 0 8px;
 	vertical-align: middle
 }
+
 
 /*--------------------------------------------------------------*/
 /* Radio & Checkbox
@@ -393,6 +401,7 @@ input.dilaz-panel-radio-image {
 	width: inherit;
 	height: inherit;
 	opacity: 0;
+	margin: 0
 }
 .checkbox,
 .radio {
@@ -426,9 +435,9 @@ input:checked + .radio:before {
 	display: block
 }
 .checkbox:before {
-	position: absolute;
-	top: 7px;
-	left: 5px;
+	position: relative;
+    top: 4px;
+    left: -5px;
 	width: 7px;
 	height: 3px;
 	border: solid #aaa;
@@ -447,9 +456,9 @@ input.focus + .checkbox:before {
 	border-radius: 100%
 }
 .radio:before {
-	position: absolute;
-	top: 7px;
-	left: 6px;
+	position: relative;
+    top: 4px;
+    left: -4px;
 	width: 8px;
 	height: 8px;
 	background: #aaa;
@@ -995,9 +1004,9 @@ input.dilaz-panel-switch {
     pointer-events: none;
     position: absolute;
     top: -8px;
-    left: 8px;
-    width: 15px;
-    height: 15px;
+    left: 10px;
+    width: 12px;
+    height: 12px;
     border: solid #ddd;
     background: #f5f5f5;
     border-width: 0 0 1px 1px;
@@ -1037,7 +1046,9 @@ input.dilaz-panel-switch {
 /* Fonts
 /*--------------------------------------------------------------*/
 .dilaz-panel-font {
-	display: inline-block
+	display: inline-block;
+	margin-bottom: 10px;
+	margin-right: 10px;
 }
 .dilaz-panel-font .face,
 .dilaz-panel-font .size,
@@ -1063,12 +1074,44 @@ input.dilaz-panel-switch {
 .dilaz-panel-section-font .wp-color-result {
 	vertical-align: baseline
 }
+.dilaz-panel-font [id*="-size"],
+.dilaz-panel-font [id*="-height"] {
+	margin-top: 3px;
+	vertical-align: middle;
+	background: #e5e5e5;
+}
+.dilaz-panel-font [id*="-size"] input,
+.dilaz-panel-font [id*="-height"] input {
+	border: 0;
+	vertical-align: middle
+}
+.dilaz-panel-font [id*="-size"] .unit,
+.dilaz-panel-font [id*="-height"] .unit {
+	display: inline-block;
+	color: #656565;
+	padding: 0 7px 3px;
+}
+.dilaz-panel-font .select2-container {
+	margin-top: 3px;
+}
+.dilaz-panel-font.font-preview {
+	display: block;
+}
+.dilaz-panel-font.font-preview .content {
+	margin-top: 10px;
+	background: #fbfbfb;
+	max-width: 100%;
+	padding: 7px 10px;
+	border: 1px solid #e0e0e0;
+}
 
 /*--------------------------------------------------------------*/
 /* Background
 /*--------------------------------------------------------------*/
 .dilaz-panel-background {
-	display: inline-block
+	display: inline-block;
+	margin-bottom: 5px;
+	margin-right: 10px;
 }
 .dilaz-panel-background .repeat,
 .dilaz-panel-background .size,
@@ -1085,6 +1128,17 @@ input.dilaz-panel-switch {
 }
 .dilaz-panel-section-background .wp-color-result {
 	vertical-align: baseline
+}
+.dilaz-panel-background.background-preview {
+	display: block;
+}
+.dilaz-panel-background.background-preview .content {
+	margin-top: 10px;
+	background: #fbfbfb;
+	max-width: 100%;
+	height: 100px;
+	padding: 7px 10px;
+	border: 1px solid #e0e0e0;
 }
 
 /*--------------------------------------------------------------*/

@@ -7,7 +7,7 @@
  * @since 1.0
  *
  * @param string $_POST['q']          search string
- * @param array  $_POST['selected']   'selected'
+ * @param array  $_POST['selected']   selected items
  * @param string $_POST['query_type'] 'post', 'user', 'term'
  * @param array  $_POST['query_args'] query arguments
  *
@@ -21,14 +21,14 @@ if (!function_exists('dilaz_panel_query_select')) {
 		
 		$search     = isset($_POST['q']) ? $wpdb->esc_like($_POST['q']) : '';
 		$selected   = isset($_POST['selected']) ? (array)$_POST['selected'] : '';
-		$query_type = isset($_POST['query_type']) ? $_POST['query_type'] : '';
+		$query_type = isset($_POST['query_type']) ? sanitize_text_field($_POST['query_type']) : '';
 		$query_args = isset($_POST['query_args']) ? $_POST['query_args'] : '';
 		
 		$data = array();
 		
 		if ($query_type == 'post') {
 		
-			// The callback is a closure that needs to use the $search from the current scope
+			# The callback is a closure that needs to use the $search from the current scope
 			add_filter('posts_where', function ($where) use ($search) {
 				$where .= (' AND post_title LIKE "%'. $search .'%"');
 				return $where;
@@ -44,7 +44,7 @@ if (!function_exists('dilaz_panel_query_select')) {
 			
 			foreach ($posts as $post) {
 				$data[] = array(
-					'id'    => $post->ID,
+					'id'   => $post->ID,
 					'name' => $post->post_title,
 				);
 			}
@@ -96,7 +96,7 @@ if (!function_exists('dilaz_panel_query_select')) {
  *
  * @since 1.0
  *
- * @param array  $_POST['selected']   'selected'
+ * @param array  $_POST['selected']   selected items
  *
  * @return json.data
  */
@@ -106,9 +106,9 @@ if (!function_exists('dilaz_panel_get_post_titles')) {
 		
 		$result = array();
 		
-		$selected = isset($_POST['selected']) ? $_POST['selected'] : '';
+		$selected = isset($_POST['selected']) ? (array)$_POST['selected'] : '';
 
-		if (is_array($selected) && ! empty($selected)) {
+		if (is_array($selected) && !empty($selected)) {
 			$posts = get_posts(array(
 				'posts_per_page' => -1,
 				'post_status'    => array('publish', 'draft', 'pending', 'future', 'private'),
@@ -148,7 +148,7 @@ function dilaz_panel_import_export( array $options ) {
 		# MAIN TAB - Export / Import
 		# =============================================================================================
 		$options[] = array(
-			'name' => __('Export / Import', 'dilaz-options'),
+			'name' => __('Export / Import', 'dilaz-panel'),
 			'type' => 'heading',
 			'icon' => 'fa-cloud'
 		);
@@ -156,7 +156,7 @@ function dilaz_panel_import_export( array $options ) {
 			# SUB TAB - Export
 			# *****************************************************************************************
 			$options[] = array(
-				'name' => __('Export', 'dilaz-options'),
+				'name' => __('Export', 'dilaz-panel'),
 				'type' => 'subheading',
 			);
 				
@@ -164,8 +164,8 @@ function dilaz_panel_import_export( array $options ) {
 				# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 				$options[] = array(
 					'id'    => 'export',
-					'name'  => __('Export', 'dilaz-options'),
-					'desc'  => __('Export', 'dilaz-options'),
+					'name'  => __('Export', 'dilaz-panel'),
+					'desc'  => __('Export', 'dilaz-panel'),
 					'type'  => 'export',
 					'std'   => '',
 					'class' => ''
@@ -174,7 +174,7 @@ function dilaz_panel_import_export( array $options ) {
 			# SUB TAB - Import
 			# *****************************************************************************************
 			$options[] = array(
-				'name' => __('Import', 'dilaz-options'),
+				'name' => __('Import', 'dilaz-panel'),
 				'type' => 'subheading',
 			);
 				
@@ -182,8 +182,8 @@ function dilaz_panel_import_export( array $options ) {
 				# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 				$options[] = array(
 					'id'    => 'import',
-					'name'  => __('Import', 'dilaz-options'),
-					'desc'  => __('Import', 'dilaz-options'),
+					'name'  => __('Import', 'dilaz-panel'),
+					'desc'  => __('Import', 'dilaz-panel'),
 					'type'  => 'import',
 					'std'   => '',
 					'class' => 'last'

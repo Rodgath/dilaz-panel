@@ -6,18 +6,18 @@ if ( isset($_GET['dilaz-panel-export']) ) {
 	$path_to_file  = explode('wp-content', $absolute_path);
 	$path_to_wp    = $path_to_file[0];
 
-	require_once $path_to_wp .'/wp-load.php';
+	require_once $path_to_wp .'wp-load.php';
 	include_once ABSPATH .'wp-admin/includes/plugin.php';
 	
 	$option_name = $_GET['dilaz-panel-export'];
-	$options = get_option($option_name);
+	$options     = get_option($option_name);
 	
 	if ( !empty($options) ) {
 		
 		$options['dilaz_panel_backup_time'] = date('Y-m-d h:i:s');
 		
-		$export_content = json_encode((array)$options );
-		$filename = $option_name .'_backup_'. date('Ymd_His') .'.json';
+		$export_content = json_encode((array)$options);
+		$filename       = $option_name .'_backup_'. date('Y.m.d_H.i.s') .'.json';
 		
 		$handle = fopen($filename, 'w');
 		fwrite($handle, $export_content);

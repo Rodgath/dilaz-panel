@@ -1,6 +1,9 @@
 
 jQuery(document).ready(function($) {
 	
+	/* DoWhen start	 */
+	$(document).doWhen();
+	
 	/* Open first submenu item when parent tab is clicked */
 	$(function(){
 		$('.dilaz-panel-menu > ul > li:first-of-type > .trigger').trigger('click');
@@ -39,7 +42,6 @@ jQuery(document).ready(function($) {
 		
 		/* hide all opened submenus */
 		$parent.siblings().find('.submenu').slideUp();
-		
 	});
 	
 	/* File upload */
@@ -64,6 +66,9 @@ jQuery(document).ready(function($) {
 			$fileSpecific      = $self.data('file-specific') || false;
 			$fileMultiple      = $self.data('file-multiple') || false;
 			$fileType          = $self.data('file-type') || '';
+			$fieldType         = $self.data('field-type') || '';
+			$frameTitle        = $self.data('frame-title') || '';
+			$frameButtonText   = $self.data('frame-button-text') || '';
 			$mediaPreview      = $fileWrapperParent.find('.dilaz-panel-media-file');
 			
 			/* open the frame if it exists */
@@ -74,18 +79,19 @@ jQuery(document).ready(function($) {
 			
 			/* frame settings */
 			imageFrame = wp.media({
-				title    : 'Choose Image',
+				title    : $frameTitle,
 				multiple : $fileMultiple,
 				library  : {	
 					type : $fileType
 				},
 				button : {
-					text : 'Use This Image'
+					text : $frameButtonText
 				}
 			});
 			
 			/* frame select handler */
 			imageFrame.on( 'select', function() {
+				
 				selection = imageFrame.state().get('selection');
 				
 				if (!selection)
@@ -94,37 +100,41 @@ jQuery(document).ready(function($) {
 				/* loop through the selected files */
 				selection.each( function(attachment) {
 					
-					var type = attachment.attributes.type;
+					var $type = attachment.attributes.type;
 					
-					if (type == 'image') {
+					if ($type == 'image') {
 						
 						/* if uploaded image is smaller than default thumbnail(250 by 250)
 						then get the full image url */
 						if (attachment.attributes.sizes.thumbnail !== undefined) {
-							var image_src = attachment.attributes.sizes.thumbnail.url;
+							var $imageSrc = attachment.attributes.sizes.thumbnail.url;
 						} else {
-							var image_src = attachment.attributes.url;
+							var $imageSrc = attachment.attributes.url;
 						}
 					}
 					
 					/* attachment data */
-					var src     = attachment.attributes.url,
-						id      = attachment.id,
-						title   = attachment.attributes.title,
-						caption = attachment.attributes.caption,
-						type    = attachment.attributes.type;
+					var $src     = attachment.attributes.url,
+						$id      = attachment.id,
+						$title   = attachment.attributes.title,
+						$caption = attachment.attributes.caption;
 						
 					var $fileOutput = '';
 					
-					$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +'  '+ (id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
-					$fileOutput += '<input type="hidden" name="'+ $fileId +'[]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ id +'">';
-					$fileOutput += '<div class="filename '+ $fileType +'">'+ title +'</div>';
+					$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +'  '+ ($id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
+					if ($fieldType == 'background') {
+						$fileOutput += '<input type="hidden" name="'+ $fileId +'[image]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
+						$fileWrapperParent.find('.background-preview').find('.content').css({'background-image':'url('+ $imageSrc +')'});
+					} else {
+						$fileOutput += '<input type="hidden" name="'+ $fileId +'[]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
+					}
+					$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
 					$fileOutput += '<span class="sort ui-sortable-handle"></span>';
 					$fileOutput += '<a href="#" class="remove" title="Remove"><i class="fa fa-close"></i></a>';
 					
-					switch ( type ) {
+					switch ( $type ) {
 						case 'image':
-							$fileOutput += '<img src="'+ image_src +'" class="dilaz-panel-file-preview file-image" alt="">';
+							$fileOutput += '<img src="'+ $imageSrc +'" class="dilaz-panel-file-preview file-image" alt="">';
 							break;
 							
 						case 'audio':
@@ -178,21 +188,25 @@ jQuery(document).ready(function($) {
 	});
 	
 	/* Remove file */
-	$(document).on('click', '.remove', function(e) { 
+	$(document).on('click', '.remove', function(e) {
+		
 		e.preventDefault();
+		
 		var $this = $(this);
+		
 		$this.siblings('input').attr('value', '');
 		$this.closest('.dilaz-panel-media-file').slideUp(200);
 		setTimeout(function() {
 			$this.closest('.dilaz-panel-media-file').remove();
 		}, 1000);
+		
 		return false;
 	});
 	
 	/* File sorting, drag-and-drop */
 	$('.dilaz-panel-file-wrapper').each(function() {
 		
-		var $this = $(this);
+		var $this  = $(this),
 			$media = $this.find('.dilaz-panel-media-file');
 			
 		if ($media.length > 1) {
@@ -266,7 +280,16 @@ jQuery(document).ready(function($) {
 	});
 	
 	/* Select2 */
-	$(".dilaz-panel-select.select2single, .dilaz-panel-select.select2multiple").select2();
+	$('.select2single, .select2multiple').each(function() {
+		
+		var $this = $(this);
+		
+		$this.select2({
+			placeholder : '',
+			width : $this.data('width'),
+			allowClear : true,
+		});
+	});
 	
 	/* Ajax DB query select for posts, terms and users */
 	$('.dilaz-panel-query-select').each(function() {
@@ -274,15 +297,15 @@ jQuery(document).ready(function($) {
 		var $this = $(this);
 		
 		$this.select2({
-			placeholder : $this.data('placeholder'),
-			multiple : $this.data('multiple'),
-			width : $this.data('width'),
-			allowClear : true,
-			minimumInputLength : $this.data('min-input'), // minimum number of characters
-			maximumInputLength : $this.data('max-input'), // maximum number of characters
-			delay : 250, // milliseconds before triggering the request
-			// debug : true,
-			maximumSelectionLength: $this.data('max-options'), // maximum number of options selected
+			placeholder            : $this.data('placeholder'),
+			multiple               : $this.data('multiple'),
+			width                  : $this.data('width'),
+			allowClear             : true,
+			minimumInputLength     : $this.data('min-input'), // minimum number of characters
+			maximumInputLength     : $this.data('max-input'), // maximum number of characters
+			delay                  : 250, // milliseconds before triggering the request
+			// debug               : true,
+			maximumSelectionLength : $this.data('max-options'), // maximum number of options selected
 			ajax : {
 				type     : 'POST',
 				url      : ajaxurl,
@@ -350,7 +373,7 @@ jQuery(document).ready(function($) {
 	});
 	
 	/* Color picker */
-  	$('.dilaz-panel-color').wpColorPicker();
+	$('.dilaz-panel-color').wpColorPicker();
 	
 	/* Ajax - export options */
 	$('.dilaz-panel-fields').on('click', '.dilaz-panel-export', function() {
@@ -433,6 +456,146 @@ jQuery(document).ready(function($) {
 			complete : function() {
 				$this.siblings('.spinner').delay(1900).fadeOut(290);
 				$this.siblings('.progress').delay(1900).fadeOut(290);
+			}
+		});
+	});
+	
+	/* Font preview */
+	$('.dilaz-panel-section-font').each(function(){
+		
+		var $this        = $(this),
+			$fFamily     = $this.find('.family'),
+			$fSubset     = $this.find('.subset'),
+			$fWeight     = $this.find('.weight'),
+			$fStyle      = $this.find('.style'),
+			$fCase       = $this.find('.case'),
+			$fSize       = $this.find('.font-size'),
+			$fHeight     = $this.find('.font-height'),
+			$panelColor  = $this.find('.dilaz-panel-color'),
+			$resultColor = $this.find('.wp-color-result'),
+			$fPreview    = $this.find('.font-preview'),
+			$fContent    = $fPreview.find('.content');
+			
+		/* show preview */
+		$fPreview.show();
+		
+		/* render already set values */
+		$fContent.css({
+			'font-family'    : $fFamily.val(),
+			'font-weight'    : $fWeight.val(),
+			'font-style'     : $fStyle.val(),
+			'text-transform' : $fCase.val(),
+			'font-size'      : $fSize.val() +'px',
+			'line-height'    : $fHeight.val() +'px',
+			'color'          : $resultColor.css('background-color'),
+		});
+		
+		$fFamily.on('change', function(){
+			$fContent.css({'font-family':$fFamily.val()});
+		});
+		
+		$fSubset.on('change', function(){
+			// $fContent.css({'font-family':$fSubset.val()});
+		});
+		
+		$fWeight.on('change', function(){
+			$fContent.css({'font-weight':$fWeight.val()});
+		});
+		
+		$fStyle.on('change', function(){
+			$fContent.css({'font-style':$fStyle.val()});
+		});
+		
+		$fCase.on('change', function(){
+			$fContent.css({'text-transform':$fCase.val()});
+		});
+		
+		$fSize.on('keyup', function(){
+			$fContent.css({'font-size':$fSize.val() +'px'});
+		});
+		
+		$fHeight.on('keyup', function(){
+			$fContent.css({'line-height':$fHeight.val() +'px'});
+		});
+		
+		$panelColor.wpColorPicker({
+			change:function( event, ui ) {
+				$fContent.css({'color':ui.color.toString()});
+			}
+		});
+	});
+	
+	/* Background preview */
+	$('.dilaz-panel-section-background').each(function(){
+		
+		var $this         = $(this),
+			$bgRepeat     = $this.find('.repeat'),
+			$bgSize       = $this.find('.size'),
+			$bgPosition   = $this.find('.position'),
+			$bgPositionX  = $this.find('.position-x'),
+			$bgPositionY  = $this.find('.position-y'),
+			$bgAttachment = $this.find('.attachment'),
+			$bgOrigin     = $this.find('.origin'),
+			$bgClip       = $this.find('.clip'),
+			$bgColor      = $this.find('.color'),
+			$panelColor   = $this.find('.dilaz-panel-color'),
+			$resultColor  = $this.find('.wp-color-result'),
+			$bgImgPreview = $this.find('.dilaz-panel-file-preview'),
+			$bgPreview    = $this.find('.background-preview'),
+			$bgContent    = $bgPreview.find('.content');
+			
+		/* show preview */
+		$bgPreview.show();
+		
+		/* render already set values */
+		$bgContent.css({
+			'background-image'      : 'url('+$bgImgPreview.attr('src')+')',
+			'background-repeat'     : $bgRepeat.val(),
+			'background-size'       : $bgSize.val(),
+			'background-position'   : $bgPosition.val(),
+			'background-position-x' : $bgPositionX.val(),
+			'background-position-y' : $bgPositionY.val(),
+			'background-origin'     : $bgOrigin.val(),
+			'background-clip'       : $bgClip.val(),
+			'background-attachment' : $bgAttachment.val(),
+			'background-color'      : $resultColor.css('background-color'),
+		});
+		
+		$bgRepeat.on('change', function(){
+			$bgContent.css({'background-repeat':$bgRepeat.val()});
+		});
+		
+		$bgSize.on('change', function(){
+			$bgContent.css({'background-size':$bgSize.val()});
+		});
+		
+		$bgPosition.on('change', function(){
+			$bgContent.css({'background-position':$bgPosition.val()});
+		});
+		
+		$bgPositionX.on('change', function(){
+			$bgContent.css({'background-position-x':$bgPositionX.val()});
+		});
+		
+		$bgPositionY.on('change', function(){
+			$bgContent.css({'background-position-y':$bgPositionY.val()});
+		});
+		
+		$bgOrigin.on('change', function(){
+			$bgContent.css({'background-origin':$bgOrigin.val()});
+		});
+		
+		$bgClip.on('change', function(){
+			$bgContent.css({'background-clip':$bgClip.val()});
+		});
+		
+		$bgAttachment.on('change', function(){
+			$bgContent.css({'background-attachment':$bgAttachment.val()});
+		});
+		
+		$panelColor.wpColorPicker({
+			change:function( event, ui ) {
+				$bgContent.css({'background-color':ui.color.toString()});
 			}
 		});
 	});

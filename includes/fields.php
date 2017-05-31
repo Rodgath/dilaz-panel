@@ -21,7 +21,6 @@ if (!function_exists('dilaz_panel_field_heading')) {
 	}
 }
 
-
 # Subheading
 if (!function_exists('dilaz_panel_field_subheading')) {
 	function dilaz_panel_field_subheading($field) {
@@ -40,7 +39,6 @@ if (!function_exists('dilaz_panel_field_subheading')) {
 	}
 }
 
-
 # Info
 if (!function_exists('dilaz_panel_field_info')) {
 	function dilaz_panel_field_info($field) {
@@ -58,7 +56,6 @@ if (!function_exists('dilaz_panel_field_info')) {
 	}
 }
 
-
 # Text
 if (!function_exists('dilaz_panel_field_text')) {
 	function dilaz_panel_field_text($field) {
@@ -69,7 +66,6 @@ if (!function_exists('dilaz_panel_field_text')) {
 		
 	}
 }
-
 
 # Email
 if (!function_exists('dilaz_panel_field_email')) {
@@ -105,7 +101,9 @@ if (!function_exists('dilaz_panel_field_select')) {
 		$output = '';
 		
 		$select2_class = isset($args['select2']) ? $args['select2'] : '';
-		$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" name="'. esc_attr($id) .'">';
+		$select2_width = isset($args['select2width']) ? 'data-width="'. sanitize_text_field($args['select2width']) .'"' : 'data-width="100px"';
+		
+		$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" name="'. esc_attr($id) .'" '. $select2_width .'>';
 			foreach ($options as $key => $option) {
 				$selected = (($value != '') && ($value == $key)) ? 'selected="selected"' : '';
 				$output .= '<option '. $selected .' value="'. esc_attr($key) .'">'. esc_html($option) .'</option>';
@@ -125,7 +123,9 @@ if (!function_exists('dilaz_panel_field_multiselect')) {
 		$output = '';
 		
 		$select2_class = isset($args['select2']) ? $args['select2'] : '';
-		$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" multiple="multiple" name="'. esc_attr($id) .'[]">';
+		$select2_width = isset($args['select2width']) ? 'data-width="'. sanitize_text_field($args['select2width']) .'"' : 'data-width="100px"';
+		
+		$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" multiple="multiple" name="'. esc_attr($id) .'[]" '. $select2_width .'>';
 			$selected_data = is_array($option_data[$id]) ? $option_data[$id] : array();
 			foreach ($options as $key => $option) {
 				$selected = (in_array($key, $selected_data)) ? 'selected="selected"' : '';
@@ -137,7 +137,6 @@ if (!function_exists('dilaz_panel_field_multiselect')) {
 	}
 }
 
-
 # Query select - 'post', 'term', 'user'
 if (!function_exists('dilaz_panel_field_queryselect')) {
 	function dilaz_panel_field_queryselect($field) {
@@ -148,12 +147,12 @@ if (!function_exists('dilaz_panel_field_queryselect')) {
 		
 		$query_type    = isset($args['query_type']) ? sanitize_text_field($args['query_type']) : '';
 		$query_args    = isset($args['query_args']) ? (array)$args['query_args'] : array();
-		$placeholder   = isset($args['placeholder']) ? sanitize_text_field($args['placeholder']) : __('Select a post', 'dilaz-metabox');
-		$width         = isset($args['width']) ? sanitize_text_field($args['width']) : '100%';
+		$placeholder   = isset($args['placeholder']) ? sanitize_text_field($args['placeholder']) : __('Select a post', 'dilaz-panel');
 		$min_input     = isset($args['min_input']) ? intval($args['min_input']) : 3;
 		$max_input     = isset($args['max_input']) ? intval($args['max_input']) : 0;
 		$max_options   = isset($args['max_options']) ? intval($args['max_options']) : 0;
-		$select2       = isset($args['select2']) ? $args['select2'] : '';
+		$select2_width = isset($args['select2width']) ? sanitize_text_field($args['select2width']) : '100px';
+		$select2       = isset($args['select2']) ? sanitize_html_class($args['select2']) : '';
 		$multiple_attr = $select2 == 'select2multiple' ? 'multiple="multiple"' : '';
 		$multiple_bool = $select2 == 'select2multiple' ? 'true' : 'false';
 		
@@ -171,7 +170,7 @@ if (!function_exists('dilaz_panel_field_queryselect')) {
 		data-query-args="'. esc_attr(base64_encode(serialize($query_args))) .'" 
 		data-query-type="'. esc_attr($query_type) .'" 
 		data-multiple="'. esc_attr($multiple_bool) .'" 
-		data-width="'. esc_attr($width) .'">';
+		data-width="'. esc_attr($select2_width) .'">';
 		
 		$selected_data = is_array($option_data[$id]) ? $option_data[$id] : array();
 		
@@ -181,15 +180,15 @@ if (!function_exists('dilaz_panel_field_queryselect')) {
 				$name = get_post_field('post_title', $item_id);
 			} else if ($query_type == 'user') {
 				$user_data = get_userdata($item_id);
-				$name = $user_data->nickname;
+				$name = ($user_data && !is_wp_error($user_data)) ? $user_data->nickname : '';
 			} else if ($query_type == 'term') {
 				$term_data = get_term($item_id);
-				$name = $term_data->name;
+				$name = ($term_data && !is_wp_error($term_data)) ? $term_data->name : '';
 			} else {
 				$name = 'Add query type';
 			}
 			
-			$output .= '<option selected="selected" value="'. esc_attr($item_id) .'">'. $name .'</option>';
+			$output .= '<option selected="selected" value="'. esc_attr($item_id) .'">'. esc_html($name) .'</option>';
 		}
 			
 		$output .= '</select>';
@@ -204,17 +203,25 @@ if (!function_exists('dilaz_panel_field_radio')) {
 		
 		extract($field);
 		
+		$class  = isset($args['class']) ? sanitize_html_class($args['class']) : '';
+		$inline = isset($args['inline']) && $args['inline'] == true ? 'inline' : '';
+		
+		if ($inline == '') {
+			$cols = 'width:100%;display:block;'; # set width to 100% if fields are not inline
+		} else {
+			$cols = isset($args['cols']) ? 'width:'. ceil(100/intval($args['cols'])) .'%;' : 'width:30%;';
+		}
+		
 		$output = '';
 		
 		foreach ($options as $key => $option) {
 			$state = checked($value, $key, false) ? 'focus' : '';
-			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-option"><input type="radio" class="dilaz-panel-input dilaz-panel-radio '. $state .'" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. checked($value, $key, false) .' /><span class="radio"></span><span>'. esc_html($option) .'</span></label>';
+			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-option '. esc_attr($inline) .'"  style="'. esc_attr($cols) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-radio '. esc_attr($state) .'" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. checked($value, $key, false) .' /><span class="radio"></span><span>'. esc_html($option) .'</span></label>';
 		}
 		
 		return $output;
 	}
 }
-
 
 # Radio Image
 if (!function_exists('dilaz_panel_field_radioimage')) {
@@ -226,19 +233,18 @@ if (!function_exists('dilaz_panel_field_radioimage')) {
 		
 		$value = isset($value) ? $value : '';
 		foreach ($options as $key => $option) {
-			$checked = '';
+			$checked  = '';
 			$selected = '';
 			if (null != checked($value, $key, false)) {
 				$checked  = checked($value, $key, false);
 				$selected = 'selected';  
 			}
-			$output .= '<label for="'. esc_attr($id .'-'. $key) .'"><input type="radio" id="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-input dilaz-panel-radio-image" name="'. esc_attr($id) .'" value="'. esc_attr($key) .'" '. $checked .' /><img src="'. $option .'" alt="" class="dilaz-panel-radio-image-img '. $selected .'" /></label>';
+			$output .= '<label for="'. esc_attr($id .'-'. $key) .'"><input type="radio" id="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-input dilaz-panel-radio-image" name="'. esc_attr($id) .'" value="'. esc_attr($key) .'" '. $checked .' /><img src="'. $option .'" alt="" class="dilaz-panel-radio-image-img '. esc_attr($selected) .'" /></label>';
 		}
 		
 		return $output;
 	}
 }
-
 
 # Buttonset
 if (!function_exists('dilaz_panel_field_buttonset')) {
@@ -250,13 +256,13 @@ if (!function_exists('dilaz_panel_field_buttonset')) {
 		
 		$value = isset($value) ? $value : '';
 		foreach ($options as $key => $option) {
-			$checked = '';
+			$checked  = '';
 			$selected = '';
 			if (null != checked($value, $key, false)) {
 				$checked  = checked($value, $key, false);
 				$selected = 'selected';  
 			}
-			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-button-set-button '. $selected .'"><input type="radio" class="dilaz-panel-input dilaz-panel-button-set" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
+			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-button-set-button '. esc_attr($selected) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-button-set" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
 		}
 		
 		return $output;
@@ -282,7 +288,7 @@ if (!function_exists('dilaz_panel_field_switch')) {
 				$selected = 'selected';  
 			}
 			$state = ($i == 1) ? 'switch-on' : 'switch-off';
-			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-switch-button '. $selected .' '. $state .'"><input type="radio" class="dilaz-panel-input dilaz-panel-switch" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
+			$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-switch-button '. esc_attr($selected) .' '. esc_attr($state) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-switch" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
 		}
 		
 		return $output;
@@ -300,7 +306,7 @@ if (!function_exists('dilaz_panel_field_checkbox')) {
 		$output = '';
 		
 		$state = checked($value, true, false) ? 'focus' : '';
-		$output .= '<label for="'. esc_attr($id) .'" class="dilaz-option"><input id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-checkbox '. $state .'" type="checkbox" name="'. esc_attr($id) .'" '. checked($value, true, false) .' /><span class="checkbox"></span><span>'. wp_kses($desc, $allowedtags) .'</span></label><div class="clear"></div>';
+		$output .= '<label for="'. esc_attr($id) .'" class="dilaz-option"><input id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .'" type="checkbox" name="'. esc_attr($id) .'" '. checked($value, true, false) .' /><span class="checkbox"></span><span>'. wp_kses($desc, $allowedtags) .'</span></label><div class="clear"></div>';
 		
 		return $output;
 	}
@@ -312,13 +318,26 @@ if (!function_exists('dilaz_panel_field_multicheck')) {
 		
 		extract($field);
 		
+		$class  = isset($args['class']) ? sanitize_html_class($args['class']) : '';
+		$std    = isset($std) && is_array($std) ? array_map('sanitize_text_field', $std) : array();
+		$inline = isset($args['inline']) && $args['inline'] == true ? 'inline' : '';
+		
+		if ($inline == '') {
+			$cols = 'width:100%;display:block;'; # set width to 100% if fields are not inline
+		} else {
+			$cols = isset($args['cols']) ? 'width:'. ceil(100/intval($args['cols'])) .'%;' : 'width:30%;';
+		}
+		
 		$output = '';
 		
 		foreach ($options as $key => $option) {
+			
 			$key = sanitize_key($key);
+			
 			$checked = isset($value[$key]) ? checked($value[$key], true, false) : '';
+			
 			$state = $checked ? 'focus' : '';
-			$output .= '<label for="'. esc_attr($id.'-'.$key) .'" class="dilaz-option"><input type="checkbox" id="'. esc_attr($id.'-'.$key) .'" class="dilaz-panel-input dilaz-panel-checkbox '. $state .'" name="'. esc_attr($id .'['. $key .']') .'" '. $checked .' /><span class="checkbox"></span><span>'. esc_html($option) .'</span></label><br />';
+			$output .= '<label for="'. esc_attr($id.'-'.$key) .'" class="dilaz-option '. esc_attr($inline) .'" style="'. esc_attr($cols) .'"><input type="checkbox" id="'. esc_attr($id.'-'.$key) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .' '. $class .'" name="'. esc_attr($id .'['. $key .']') .'" '. $checked .' /><span class="checkbox"></span><span>'. esc_html($option) .'</span></label>';
 		}
 		
 		return $output;
@@ -333,13 +352,13 @@ if (!function_exists('dilaz_panel_field_slider')) {
 		
 		$output = '';
 		
-		$value  = $value != '' ? (int) $value : '0';
-		$min    = isset($args['min']) ? $args['min'] : '';
-		$max    = isset($args['max']) ? $args['max'] : '';
-		$step   = isset($args['step']) ? $args['step'] : '';
-		$suffix = isset($args['suffix']) ? $args['suffix'] : '';
+		$value  = $value != '' ? (int)$value : '0';
+		$min    = isset($args['min']) ? (int)$args['min'] : '';
+		$max    = isset($args['max']) ? (int)$args['max'] : '';
+		$step   = isset($args['step']) ? (int)$args['step'] : '';
+		$suffix = isset($args['suffix']) ? sanitize_text_field($args['suffix']) : '';
 		$output .= '<input type="hidden" id="'. esc_attr($id) .'" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
-		$output .= '<div class="dilaz-panel-slider" data-val="'.$value.'" data-min="'.$min.'" data-max="'.$max.'" data-step="'.$step.'"></div>';
+		$output .= '<div class="dilaz-panel-slider" data-val="'. esc_attr($value) .'" data-min="'. esc_attr($min) .'" data-max="'. esc_attr($max) .'" data-step="'. esc_attr($step) .'"></div>';
 		$output .= '<div class="dilaz-panel-slider-val"><span>'. esc_attr($value) .'</span>'. $suffix .'</div>';
 		
 		return $output;
@@ -364,8 +383,8 @@ if (!function_exists('dilaz_panel_field_range')) {
 		$minName = isset($args['min'][1]) ? (string)$args['min'][1] : '';
 		$maxName = isset($args['max'][1]) ? (string)$args['max'][1] : '';
 		$step    = isset($args['step']) ? (int)$args['step'] : '';
-		$prefix  = isset($args['prefix']) && $args['prefix'] != '' ? $args['prefix'] : '';
-		$suffix  = isset($args['suffix']) && $args['suffix'] != '' ? $args['suffix'] : '';
+		$prefix  = isset($args['prefix']) && $args['prefix'] != '' ? sanitize_text_field($args['prefix']) : '';
+		$suffix  = isset($args['suffix']) && $args['suffix'] != '' ? sanitize_text_field($args['suffix']) : '';
 		
 		$output .= '<div class="dilaz-panel-range" data-min-val="'. esc_attr($min_val) .'" data-max-val="'. esc_attr($max_val) .'" data-min="'. esc_attr($min) .'" data-max="'. esc_attr($max) .'" data-step="'. esc_attr($step) .'">';
 			$output .= '<div class="dilaz-panel-slider-range"></div>';
@@ -387,8 +406,8 @@ if (!function_exists('dilaz_panel_field_color')) {
 		
 		$output = '';
 		
-		$default_color = isset($std) ?  $std : '';
-		$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'. $value .'" data-default-color="'. $default_color .'" />';
+		$default_color = isset($std) ? $std : '';
+		$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'. $value .'" data-default-color="'. esc_attr($default_color) .'" />';
 		
 		return $output;
 	}
@@ -433,88 +452,118 @@ if (!function_exists('dilaz_panel_field_font')) {
 		$output = '';
 		
 		$font_defaults = dilaz_panel_font_defaults();
-		$saved_fonts = wp_parse_args($value, $font_defaults);
+		$saved_fonts   = wp_parse_args($value, $font_defaults);
 		
-		// Font face
-		if (isset($options['face'])) {
+		$fontUnit = isset($args['unit']) ? (string)$args['unit'] : 'px';
+		
+		# Font family
+		if (isset($options['family'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Font Family', 'dilaz-options') .'</strong><br />';
-			$output .= '<select id="'. esc_attr($id) .'-face" name="'. esc_attr($id) .'[face]" class="face">';
-			$font_faces = is_array($options['face']) ? $options['face'] : dilaz_panel_font_faces();						
-			foreach ($font_faces as $key => $font_face) {
-				$output .= '<option value="'. $key .'" '. selected($saved_fonts['face'], $key, false) .'>'. $font_face .'</option>';
-			}
-			$output .= '</select>';
+				$output .= '<strong>'. __('Font Family', 'dilaz-panel') .'</strong><br />';
+				$output .= '<select id="'. esc_attr($id) .'-family" name="'. esc_attr($id) .'[family]" class="family select2single" data-width="230px">';
+				$font_family = is_array($options['family']) ? $options['family'] : dilaz_panel_font_family();						
+				foreach ($font_family as $key => $font_family) {
+					$selected_family = isset($saved_fonts['family']) ? selected($saved_fonts['family'], $key, false) : '';
+					$output .= '<option value="'. $key .'" '. $selected_family .'>'. $font_family .'</option>';
+				}
+				$output .= '</select>';
 			$output .= '</div>';
 		}
 		
-		// Font size
-		if (isset($options['size'])) {
+		# Font subset
+		if (isset($options['subset'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Size', 'dilaz-options') .'</strong><br />';
-			$output .= '<select id="'. esc_attr($id) .'-size" name="'. esc_attr($id) .'[size]" class="size">';						
-			$font_sizes = is_array($options['size']) ? $options['size'] : dilaz_panel_font_sizes();						
-			foreach ($font_sizes as $key => $font_size) {
-				$size = $font_size.'px';
-				$output .= '<option value="'. $font_size .'px" '. selected($saved_fonts['size'], $size, false) .'>'. $font_size .'px</option>';
-			}
-			$output .= '</select>';
+				$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
+				$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset]" class="subset select2single" data-width="200px">';
+				$font_subset = is_array($options['subset']) ? $options['subset'] : dilaz_panel_font_subset();						
+				foreach ($font_subset as $key => $font_subset) {
+					$selected_subset = isset($saved_fonts['subset']) ? selected($saved_fonts['subset'], $key, false) : '';
+					$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
+				}
+				$output .= '</select>';
 			$output .= '</div>';
 		}
 		
-		// line height
-		if (isset($options['height'])) {
+		# font weight
+		if (isset($options['weight'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Height', 'dilaz-options') .'</strong><br />';
-			$output .= '<select id="'. esc_attr($id) .'-height" name="'. esc_attr($id) .'[height]" class="height">';
-			$font_heights = is_array($options['height']) ? $options['height'] : dilaz_panel_font_heights();
-			foreach ($font_heights as $key => $font_height) {
-				$height = $font_height.'px';
-				$output .= '<option value="'. $font_height .'px" '. selected($saved_fonts['height'], $height, false) .'>'. $font_height .'px</option>';
-			}
-			$output .= '</select>';
+				$output .= '<strong>'. __('Font Weight', 'dilaz-panel') .'</strong><br />';
+				$output .= '<select id="'. esc_attr($id) .'-weight" name="'. esc_attr($id) .'[weight]" class="weight select2single" data-width="160px">';
+				$font_weights = is_array($options['weight']) ? $options['weight'] : dilaz_panel_font_weights();
+				foreach ($font_weights as $key => $font_weight) {
+					$selected_weight = isset($saved_fonts['weight']) ? selected($saved_fonts['weight'], $key, false) : '';
+					$output .= '<option value="'. $key .'" '. $selected_weight .'>'. $font_weight .'</option>';
+				}
+				$output .= '</select>';
 			$output .= '</div>';
 		}
 		
-		// font style
+		# font style
 		if (isset($options['style'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Style', 'dilaz-options') .'</strong><br />';
-			$output .= '<select id="'. esc_attr($id) .'-style" name="'. esc_attr($id) .'[style]" class="style">';
-			$font_styles = is_array($options['style']) ? $options['style'] : dilaz_panel_font_styles();
-			foreach ($font_styles as $key => $font_style) {
-				$output .= '<option value="'. $key .'" '. selected($saved_fonts['style'], $key, false) .'>'. $font_style .'</option>';
-			}
-			$output .= '</select>';
+				$output .= '<strong>'. __('Font Style', 'dilaz-panel') .'</strong><br />';
+				$output .= '<select id="'. esc_attr($id) .'-style" name="'. esc_attr($id) .'[style]" class="style select2single" data-width="160px">';
+				$font_styles = is_array($options['style']) ? $options['style'] : dilaz_panel_font_styles();
+				foreach ($font_styles as $key => $font_style) {
+					$selected_style = isset($saved_fonts['style']) ? selected($saved_fonts['style'], $key, false) : '';
+					$output .= '<option value="'. $key .'" '. $selected_style .'>'. $font_style .'</option>';
+				}
+				$output .= '</select>';
 			$output .= '</div>';
 		}
 		
-		// Font case - text transform
+		# Font case - text transform
 		if (isset($options['case'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Case', 'dilaz-options') .'</strong><br />';
-			$output .= '<select id="'. esc_attr($id) .'-case" name="'. esc_attr($id) .'[case]" class="case">';
-			$font_cases = is_array($options['case']) ? $options['case'] : dilaz_panel_font_cases();
-			foreach ($font_cases as $key => $font_case) {
-				$output .= '<option value="'. $key .'" ' . selected($saved_fonts['case'], $key, false) . '>'. $font_case .'</option>';
-			}
-			$output .= '</select>';
+				$output .= '<strong>'. __('Font Case', 'dilaz-panel') .'</strong><br />';
+				$output .= '<select id="'. esc_attr($id) .'-case" name="'. esc_attr($id) .'[case]" class="case select2single" data-width="130px">';
+				$font_cases = is_array($options['case']) ? $options['case'] : dilaz_panel_font_cases();
+				foreach ($font_cases as $key => $font_case) {
+					$selected_case = isset($saved_fonts['case']) ? selected($saved_fonts['case'], $key, false) : '';
+					$output .= '<option value="'. $key .'" '. $selected_case .'>'. $font_case .'</option>';
+				}
+				$output .= '</select>';
 			$output .= '</div>';
 		}
 		
-		// Font color
-		if (isset($options['color'])) {
+		# Font size
+		if (isset($options['size'])) {
 			$output .= '<div class="dilaz-panel-font">';
-			$output .= '<strong>'. __('Color', 'dilaz-options') .'</strong><br />';
-			$default_color = isset($std['color']) ? $std['color'] : '';
-			$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color color" type="text" value="'. $saved_fonts['color'] .'" data-default-color="'. $default_color .'" />';
+				$output .= '<strong>'. __('Font Size', 'dilaz-panel') .'</strong><br />';
+				$output .= '<div id="'. esc_attr($id) .'-size">';
+					$output .= '<input type="text" class="'. esc_attr($id) .'-size" name="'. esc_attr($id) .'[size]" value="'. $saved_fonts['size'] .'" size="3" />';
+					$output .= '<span class="unit">'. $fontUnit .'</span>';
+				$output .= '</div>';
 			$output .= '</div>';
 		}
+		
+		# line height
+		if (isset($options['height'])) {
+			$output .= '<div class="dilaz-panel-font">';
+				$output .= '<strong>'. __('Line Height', 'dilaz-panel') .'</strong><br />';
+				$output .= '<div id="'. esc_attr($id) .'-height">';
+					$output .= '<input type="text" class="'. esc_attr($id) .'-height" name="'. esc_attr($id) .'[height]" value="'. $saved_fonts['height'] .'" size="3" />';
+					$output .= '<span class="unit">'. $fontUnit .'</span>';
+				$output .= '</div>';
+			$output .= '</div>';
+		}
+		
+		# Font color
+		if (isset($options['color'])) {
+			$output .= '<div class="dilaz-panel-font">';
+				$output .= '<strong>'. __('Color', 'dilaz-panel') .'</strong><br />';
+				$default_color = isset($std['color']) ? $std['color'] : '';
+				$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color color" type="text" value="'. $saved_fonts['color'] .'" data-default-color="'. $default_color .'" />';
+			$output .= '</div>';
+		}
+		
+		$output .= '<div class="dilaz-panel-font font-preview" style="display:none">';
+			$output .= '<div class="content">1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z</div>';
+		$output .= '</div>';
 		
 		return $output;
 	}
 }
-
 
 # File Upload
 if (!function_exists('dilaz_panel_field_upload')) {
@@ -530,25 +579,70 @@ if (!function_exists('dilaz_panel_field_upload')) {
 		$file_type          = (isset($args['file_type']) && $args['file_type'] != '') ? strtolower($args['file_type']) : 'image';
 		$data_file_type     = $file_type != '' ? 'data-file-type="'. $file_type .'"' : 'data-file-type="image"';
 		$data_file_specific = (isset($args['file_specific']) && $args['file_specific'] == true) ? 'data-file-specific="true"' : '';
+		$frame_title        = (isset($args['frame_title']) && $args['frame_title'] != '') ? sanitize_text_field($args['frame_title']) : '';
+		$frame_button_text  = (isset($args['frame_button_text']) && $args['frame_button_text'] != '') ? sanitize_text_field($args['frame_button_text']) : '';
+		
+		switch ($file_type) {
+			
+			case ('image') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Image', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Image', 'dilaz-panel') .'"';
+				break;
+			
+			case ('audio') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Audio', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Audio', 'dilaz-panel') .'"';
+				break;
+			
+			case ('video') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Video', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Video', 'dilaz-panel') .'"';
+				break;
+			
+			case ('document') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Document', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Document', 'dilaz-panel') .'"';
+				break;
+			
+			case ('spreadsheet') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Spreadsheet', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Spreadsheet', 'dilaz-panel') .'"';
+				break;
+			
+			case ('interactive') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Interactive File', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Interactive File', 'dilaz-panel') .'"';
+				break;
+			
+			case ('text') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Text File', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Text File', 'dilaz-panel') .'"';
+				break;
+			
+			case ('archive') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Archive File', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Archive File', 'dilaz-panel') .'"';
+				break;
+			
+			case ('code') :
+				$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Code File', 'dilaz-panel') .'"';
+				$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Code File', 'dilaz-panel') .'"';
+				break;
+		}
 		
 		$output .= '<div class="dilaz-panel-file-upload">';
 		
-			$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. sprintf(__('Upload %s', 'dilaz-metabox'), $file_type) .'" '. $data_file_type.' '. $data_file_specific .' '. $data_file_multiple .' />';
+			$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. sprintf(__('Upload %s', 'dilaz-panel'), $file_type) .'" '. $data_file_type.' '. $data_file_specific .' '. $data_file_multiple .' '. $data_frame_title .' '. $data_frame_b_txt .' />';
 		
 			$output .= '<div class="dilaz-panel-file-wrapper" data-file-id="'. esc_attr($id) .'">';
 			
 			if ($value != '') {
 				foreach ($value as $key => $attachment_id) {
 					
-					if ($attachment_id) {
+					if ($attachment_id != '' && false !== get_post_status($attachment_id)) {
+						
 						$file = wp_get_attachment_image_src($attachment_id, 'thumbnail'); $file = $file[0];
 						$file_full = wp_get_attachment_image_src($attachment_id, 'full'); $file_full = $file_full[0];
-					} else {
-						$file = '';
-						$file_full = '';
-					}
-					
-					if ($attachment_id != '' && false !== get_post_status($attachment_id)) {
 						
 						$output .= '<div class="dilaz-panel-media-file '. $file_type .' '. ($attachment_id != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
 			
@@ -568,7 +662,7 @@ if (!function_exists('dilaz_panel_field_upload')) {
 						
 						$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
 						
-						$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-metabox') .'"><i class="fa fa-close"></i></a>';					
+						$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><i class="fa fa-close"></i></a>';					
 						
 						switch ($file_type) {
 							
@@ -609,13 +703,13 @@ if (!function_exists('dilaz_panel_field_upload')) {
 								break;	
 								
 						}
-						$output .= '</div>'; // .dilaz-panel-media-file
+						$output .= '</div><!-- .dilaz-panel-media-file -->'; // .dilaz-panel-media-file
 					}
 				}
 			}
-			$output .= '</div>'; // end .dilaz-panel-file-wrapper
+			$output .= '</div><!-- .dilaz-panel-file-wrapper -->'; // end .dilaz-panel-file-wrapper
 			$output .= '<div class="clear"></div>';
-		$output .= '</div>'; // end .dilaz-panel-file-upload
+		$output .= '</div><!-- .dilaz-panel-file-upload -->'; // end .dilaz-panel-file-upload
 		
 		return $output;
 	}
@@ -639,68 +733,71 @@ if (!function_exists('dilaz_panel_field_background')) {
 		$saved_bg_attachment = isset($saved_bg['attachment']) ? $saved_bg['attachment'] : '';
 		$saved_bg_origin     = isset($saved_bg['origin']) ? $saved_bg['origin'] : '';
 		$saved_bg_color      = isset($saved_bg['color']) ? $saved_bg['color'] : '';
+		$frame_title         = (isset($args['frame_title']) && $args['frame_title'] != '') ? sanitize_text_field($args['frame_title']) : '';
+		$frame_button_text   = (isset($args['frame_button_text']) && $args['frame_button_text'] != '') ? sanitize_text_field($args['frame_button_text']) : '';
 		
-		// print_r($value);
-		// print_r($std['repeat']);
-		// BG image
+		$data_frame_title = ($frame_title != '') ? 'data-frame-title="'. $frame_title .'"' : 'data-frame-title="'. __('Choose Image', 'dilaz-panel') .'"';
+		$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Image', 'dilaz-panel') .'"';
+		
+		# BG image
 		if (isset($options['image'])) {
-			if ($saved_bg_image) {
-				$file = wp_get_attachment_image_src($saved_bg_image, 'thumbnail');	$file = $file[0];
-				$file_full = wp_get_attachment_image_src($saved_bg_image, 'full');	$file_full = $file_full[0];
-			} else {
-				$file = '';
-				$file_full = '';
-			}
+			$output .= '<div class="dilaz-panel-file-upload">';
 			
-			$output .= '<div class="file-wrapper">';
+				$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. __('Upload image', 'dilaz-panel') .'" data-file-type="image" data-field-type="background" '. $data_frame_title .' '. $data_frame_b_txt .'/>';
 			
-				$output .= '<input type="hidden" id="'. esc_attr($id) .'-image" name="'. esc_attr($id) .'[image]" class="dilaz-panel-file-id upload" value="'. $saved_bg_image .'" size="30" rel""/>';
+				$output .= '<div class="dilaz-panel-file-wrapper" data-file-id="'. esc_attr($id) .'">';
 				
-				$output .= '<input type="text" name="" id="" class="dilaz-panel-file-val upload" value="'. $file_full .'" size="30" rel""/>';
-				
-				$output .= '<input type="button" id="upload-'. esc_attr($id) .'" '. $file_library .' class="dilaz-panel-file-upload-button button" value="'. __('Upload', 'dilaz-options') .'" rel="" />';
-				
-				$output .= '<div class="att-media-prev '. ($saved_bg_image != '' ? '' : 'empty').' file_screenshot" id="'. esc_attr($id) .'_media">';
-				
-				if ($saved_bg_image != '') {
-					
-					# get file extension
-					$file_ext = pathinfo($file, PATHINFO_EXTENSION);
-					
-					# get file type
-					$file_type = wp_ext2type($file_ext);
-					
-					switch ($file_type) {
+					if ($saved_bg_image != '' && false !== get_post_status($saved_bg_image)) {
 						
-						case ('image') :
-							$image_remove = '<a href="#" class="remove" title="'. __('Delete this image', 'dilaz-options') .'">'. __('Delete', 'dilaz-options') .'</a>';
-							$image_output = ($file) ? '<img src="'. $file .'" class="dilaz-panel-file-image mlu-image" alt="" />'. $image_remove : '';
-							$output .= $image_output;
-							break;
+						$file = wp_get_attachment_image_src($saved_bg_image, 'thumbnail'); $file = $file[0];
+						$file_full = wp_get_attachment_image_src($saved_bg_image, 'full'); $file_full = $file_full[0];
 						
-						case ('audio') :
-							$audio_remove = '<a href="#" class="remove media" title="'. __('Remove this audio', 'dilaz-options') .'">'. __('Remove', 'dilaz-options') .'</a>';
-							$audio_output = ($file) ?  $audio_remove : '';
-							$output .= $audio_output;
-							break;
+						$output .= '<div class="dilaz-panel-media-file image '. ($saved_bg_image != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
+			
+						$output .= '<input type="hidden" name="'. esc_attr($id) .'[image]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. 
+						$saved_bg_image .'" size="30" rel"" />';
+
+						$output .= is_array($saved_bg_image) && sizeof($saved_bg_image) > 1 ? '<span class="sort"></span>' : '';
 						
-						case ('video') :
-							$video_remove = '<a href="#" class="remove media" title="'. __('Delete this video', 'dilaz-options') .'">'. __('Remove', 'dilaz-options') .'</a>';
-							$video_output = ( $file ) ?  $video_remove : '';
-							$output .= $video_output;
-							break;
+						# get attachment data
+						$attachment = get_post($saved_bg_image);
+						
+						# get file extension
+						$file_ext = pathinfo($attachment->guid, PATHINFO_EXTENSION);	
+						
+						# get file type
+						$file_type = wp_ext2type($file_ext);
+						
+						$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
+						
+						$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><i class="fa fa-close"></i></a>';					
+						
+						switch ($file_type) {
 							
+							case ('image') :
+								$output .= ($file_ext) ? '<img src="'. $file .'" class="dilaz-panel-file-preview file-image" alt="" />'. $media_remove : '';
+								break;
+							
+							case ('audio') :
+								$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="" />'. $media_remove : '';
+								break;
+							
+							case ('video') :
+								$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/video.png" class="dilaz-panel-file-preview file-video" alt="" />'. $media_remove : '';
+								break;
+						}
+						$output .= '</div><!-- .dilaz-panel-media-file -->'; // .dilaz-panel-media-file
 					}
-				}
-				$output .= '</div>';
+					
+				$output .= '</div><!-- .dilaz-panel-file-wrapper -->'; // end .dilaz-panel-file-wrapper
 				$output .= '<div class="clear"></div>';
-			$output .= '</div>'; // end .file-wrapper
+			$output .= '</div><!-- .dilaz-panel-file-upload -->'; // end .dilaz-panel-file-upload
 		}
 		
-		// BG repeat
+		# BG repeat
 		if (isset($options['repeat'])) {
 			$output .= '<div class="dilaz-panel-background">';
-			$output .= '<strong>'. __('Repeat', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Repeat', 'dilaz-panel') .'</strong><br />';
 			$output .= '<select id="'. esc_attr($id) .'-repeat" name="'. esc_attr($id) .'[repeat]" class="repeat">';
 			$bg_repeats = is_array($options['repeat']) ? $options['repeat'] : $bg_defaults['repeat'];
 			foreach ($bg_repeats as $key => $bg_repeat) {
@@ -710,10 +807,10 @@ if (!function_exists('dilaz_panel_field_background')) {
 			$output .= '</div>';
 		}
 		
-		// BG size
+		# BG size
 		if (isset($options['size'])) {
 			$output .= '<div class="dilaz-panel-background">';
-			$output .= '<strong>'. __('Size', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Size', 'dilaz-panel') .'</strong><br />';
 			$output .= '<select id="'. esc_attr($id) .'-size" name="'. esc_attr($id) .'[size]" class="size">';
 			$bg_sizes = is_array($options['size']) ? $options['size'] : $bg_defaults['size'];
 			foreach ($bg_sizes as $key => $bg_size) {
@@ -723,10 +820,10 @@ if (!function_exists('dilaz_panel_field_background')) {
 			$output .= '</div>';
 		}
 		
-		// BG position
+		# BG position
 		if (isset($options['position'])) {
 			$output .= '<div class="dilaz-panel-background">';
-			$output .= '<strong>'. __('Position', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Position', 'dilaz-panel') .'</strong><br />';
 			$output .= '<select id="'. esc_attr($id) .'-position" name="'. esc_attr($id) .'[position]" class="position">';
 			$bg_positions = is_array($options['position']) ? $options['position'] : $bg_defaults['position'];
 			foreach ($bg_positions as $key => $bg_position) {
@@ -736,10 +833,10 @@ if (!function_exists('dilaz_panel_field_background')) {
 			$output .= '</div>';
 		}
 		
-		// BG attachment
+		# BG attachment
 		if (isset($options['attachment'])) {
 			$output .= '<div class="dilaz-panel-background">';
-			$output .= '<strong>'. __('Attachment', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Attachment', 'dilaz-panel') .'</strong><br />';
 			$output .= '<select id="'. esc_attr($id) .'-attachment" name="'. esc_attr($id) .'[attachment]" class="attach">';
 			$bg_attachments = is_array($options['attachment']) ? $options['attachment'] : $bg_defaults['attachment'];
 			foreach ($bg_attachments as $key => $bg_attachment) {
@@ -749,10 +846,10 @@ if (!function_exists('dilaz_panel_field_background')) {
 			$output .= '</div>';
 		}
 		
-		// BG origin
+		# BG origin
 		if (isset($options['origin'])) {
 			$output .= '<div class="dilaz-panel-background">';
-			$output .= '<strong>'. __('Origin', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Origin', 'dilaz-panel') .'</strong><br />';
 			$output .= '<select id="'. esc_attr($id) .'-origin" name="'. esc_attr($id) .'[origin]" class="origin">';
 			$bg_origins = is_array($options['origin']) ? $options['origin'] : $bg_defaults['origin'];
 			foreach ($bg_origins as $key => $bg_origin) {
@@ -762,14 +859,18 @@ if (!function_exists('dilaz_panel_field_background')) {
 			$output .= '</div>';
 		}
 		
-		// BG color
+		# BG color
 		if (isset($options['color'])) {
 			$output .= '<div class="dilaz-panel-background color">';
-			$output .= '<strong>'. __('Color', 'dilaz-options') .'</strong><br />';
+			$output .= '<strong>'. __('Color', 'dilaz-panel') .'</strong><br />';
 			$default_color = isset($std['color']) ? $std['color'] : '';
 			$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color" type="text" value="'. $saved_bg_color .'" data-default-color="'. $default_color .'" />';
 			$output .= '</div>';
 		}
+		
+		$output .= '<div class="dilaz-panel-background background-preview" style="display:none">';
+			$output .= '<div class="content"></div>';
+		$output .= '</div>';
 		
 		return $output;
 	}
@@ -787,7 +888,7 @@ if (!function_exists('dilaz_panel_field_editor')) {
 		$default_editor_settings = array(
 			'textarea_name' => $textarea_name,
 			'media_buttons' => false,
-			'tinymce' => array( 'plugins' => 'wordpress' )
+			'tinymce'       => array('plugins' => 'wordpress')
 		);
 		$editor_settings = array();
 		if (isset($settings)) {
@@ -811,10 +912,10 @@ if (!function_exists('dilaz_panel_field_export')) {
 		$output = '';
 		
 		$output .= '<div id="dilaz-panel-export" data-export-nonce="'. wp_create_nonce(basename(__FILE__)) .'">
-			<span class="dilaz-panel-export button button-primary button-hero">'. __('Export Settings', 'dilaz-options') .'</span>
+			<span class="dilaz-panel-export button button-primary button-hero">'. __('Export Settings', 'dilaz-panel') .'</span>
 			<span class="spinner"></span>
-			<span class="progress">'. __('Exporting options... Please wait.', 'dilaz-options') .'</span>
-			<span class="finished">'. __('Export finished successfully.', 'dilaz-options') .'</span>
+			<span class="progress">'. __('Exporting options... Please wait.', 'dilaz-panel') .'</span>
+			<span class="finished">'. __('Export finished successfully.', 'dilaz-panel') .'</span>
 		</div>';
 		
 		return $output;
@@ -835,11 +936,11 @@ if (!function_exists('dilaz_panel_field_import')) {
 				<i class="fa fa-upload"></i>&nbsp;&nbsp;<span>Select file&hellip;</span>
 			</label>
 			</span>
-			<span class="dilaz-panel-import button button-primary">'. __('Import Settings', 'dilaz-options') .'</span>
+			<span class="dilaz-panel-import button button-primary">'. __('Import Settings', 'dilaz-panel') .'</span>
 			<div class="clear"></div>
 			<span class="spinner"></span>
-			<span class="progress">'. __('Importing options... Please wait.', 'dilaz-options') .'</span>
-			<span class="finished">'. __('Import finished successfully.', 'dilaz-options') .'</span>
+			<span class="progress">'. __('Importing options... Please wait.', 'dilaz-panel') .'</span>
+			<span class="finished">'. __('Import finished successfully.', 'dilaz-panel') .'</span>
 		</div>';
 		
 		return $output;

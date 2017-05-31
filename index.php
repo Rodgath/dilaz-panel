@@ -1,33 +1,69 @@
-<?php 
+<?php
 
-// var_dump(get_option('dilaz_options')); exit;
-
-if (!function_exists('dilaz_panel_get_url')) {
+/**
+ * Options parameters
+ *
+ * @since 1.0
+ *
+ * @return array
+ */
+if (!function_exists('dilaz_options_parameters')) {
 	function dilaz_options_parameters() {
 		
-		$theme_object  = wp_get_theme();
-		$theme_name    = is_child_theme() ? $theme_object['Template'] : $theme_object['Name'];
-		$theme_version = $theme_object['Version'];
-		
-		$panel_parameters = array(
-			'prefix'        => 'dilaz_panel', # should be unique. Not used to save settingsplugin
+		$panel_default_parameters = array(
+			'prefix'        => 'dilaz_panel', # should be unique. Not used to save settings
 			'option_name'   => 'dilaz_options', # must be unique. Any time its changed, saved settings are no longer used. New settings will be saved. Set this once.
-			'usecase'       => 'theme', # 'theme' if used within a theme or 'plugin' if used within a 
-			'theme_name'    => $theme_name,
-			'theme_version' => $theme_version,
+			'use_type'      => 'theme', # 'theme' if used within a theme OR 'plugin' if used within a plugin
 			'page_slug'     => 'dilaz_panel', # should be unique
-			'page_title'    => __('Dilaz Panel', 'dilaz-options'),
-			'menu_title'    => __('Dilaz Panel', 'dilaz-options'),
+			'page_title'    => __('Dilaz Panel', 'dilaz-panel'),
+			'menu_title'    => __('Dilaz Panel', 'dilaz-panel'),
 			'options_cap'   => 'manage_options', # The capability required for this menu to be displayed to the user.
 			'menu_icon'     => '', # dashicon menu icon
 			'import_export' => true, # 'true' to enable import/export field
-			'log_title'     => __('Changelog', 'dilaz-options'),
+			'log_title'     => __('Changelog', 'dilaz-panel'),
 			'log_url'       => '#', # leave empty to disable
-			'doc_title'     => __('Documentation', 'dilaz-options'),
+			'doc_title'     => __('Documentation', 'dilaz-panel'),
 			'doc_url'       => '#', # leave empty to disable
-			'support_title' => __('Support', 'dilaz-options'),
+			'support_title' => __('Support', 'dilaz-panel'),
 			'support_url'   => '#', # leave empty to disable
 		);
+		
+		if (isset($panel_default_parameters['use_type']) && $panel_default_parameters['use_type'] == 'theme') {
+			$theme_object  = wp_get_theme();
+			$theme_name    = is_child_theme() ? $theme_object['Template'] : $theme_object['Name'];
+			$theme_version = $theme_object['Version'];
+			
+			$use_type_parameters = array(
+				'item_name'    => $theme_name,
+				'item_version' => $theme_version,
+			);
+		} else if (isset($panel_default_parameters['use_type']) && $panel_default_parameters['use_type'] == 'plugin') {
+			
+			if (!function_exists('get_plugin_data')) {
+				require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+			}
+			
+			$plugin_object = [];
+			
+			$plugins_dir     = ABSPATH . 'wp-content/plugins/'; 
+			$plugin_basename = plugin_basename( __FILE__ );
+			$plugin_folder   = strtok($plugin_basename, '/');
+			
+			# use global to check plugin data from all PHP files within plugin main folder
+			foreach (glob(trailingslashit($plugins_dir . $plugin_folder) . '*.php') as $file) {
+				$plugin_object = get_plugin_data($file);
+			}
+			
+			$plugin_name    = $plugin_object['Name'];
+			$plugin_version = $plugin_object['Version'];
+			
+			$use_type_parameters = array(
+				'item_name'    => $plugin_name,
+				'item_version' => $plugin_version,
+			);
+		}
+		
+		$panel_parameters = wp_parse_args($use_type_parameters, $panel_default_parameters);
 		
 		return apply_filters('dilaz_panel_params', $panel_parameters);
 	}
@@ -50,7 +86,7 @@ if (!function_exists('dilaz_panel_get_url')) {
 		
 		$parentTheme = wp_normalize_path(trailingslashit(get_template_directory()));
 		$childTheme  = wp_normalize_path(trailingslashit(get_stylesheet_directory()));
-		$file        = wp_normalize_path(trailingslashit(dirname($file)));
+		$file        = (isset($GLOBALS['dilaz_panel_params']['use_type']) && $GLOBALS['dilaz_panel_params']['use_type'] == 'plugin') ? wp_normalize_path(trailingslashit($file)) : wp_normalize_path(trailingslashit(dirname($file)));
 		
 		# if in a parent theme
 		if (false !== stripos($file, $parentTheme)) {
@@ -67,7 +103,7 @@ if (!function_exists('dilaz_panel_get_url')) {
 		}
 		
 		# if in plugin
-		return plugin_dir_url('', $file);
+		return plugin_dir_url($file);
 	}
 }
 
@@ -75,12 +111,11 @@ if (!function_exists('dilaz_panel_get_url')) {
 /**
  * Definitions
  */
-@define('DILAZ_PANEL_URL', dilaz_panel_get_url(__FILE__) );
+@define('DILAZ_PANEL_URL', dilaz_panel_get_url(__FILE__));
 @define('DILAZ_PANEL_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 @define('DILAZ_OPTIONS_NAME', $GLOBALS['dilaz_panel_params']['option_name']);
 @define('DILAZ_PANEL_IMAGES', DILAZ_PANEL_URL .'assets/images/' );
 @define('DILAZ_PANEL_PREFIX', (isset($GLOBALS['dilaz_panel_params']['prefix']) && $GLOBALS['dilaz_panel_params']['prefix'] != '') ? $GLOBALS['dilaz_panel_params']['prefix'] .'_' : 'dilaz_panel_');
-
 
 /**
  * Initialize Admin Panel
@@ -89,18 +124,18 @@ add_action('admin_init', 'dilaz_panel_admin_init');
 if (!function_exists('dilaz_panel_admin_init')) {
 	function dilaz_panel_admin_init() {
 		
-		# Load options config 
+		# load options config 
 		require_once DILAZ_PANEL_DIR .'options/options.php';
 		
-		# Include required function file 
+		# include required function file 
 		require_once DILAZ_PANEL_DIR .'includes/functions.php';
 		require_once DILAZ_PANEL_DIR .'includes/fields.php';
 		
-		
+		# otpion name
 		$option_name = $GLOBALS['dilaz_panel_params']['option_name'];
 		$option_name = (isset($option_name) && !empty($option_name)) ? $option_name : 'dilaz_options';
 		
-		# Set default options if not saved yet
+		# set default options if not saved yet
 		if (!get_option($option_name)) {
 			dilaz_panel_set_defaults($option_name);
 		}
@@ -180,6 +215,7 @@ if (!function_exists('dilaz_panel_enqueue_scripts')) {
 		
 		wp_enqueue_script('wp-color-picker');
 		wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2.min.js', false, '4.0.3', true);
+		wp_enqueue_script('dilaz-dowhen-script', DILAZ_PANEL_URL .'assets/js/jquery.dowhen.js');
 		wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), '1.0', true);
 
 		# Localization
@@ -189,11 +225,11 @@ if (!function_exists('dilaz_panel_enqueue_scripts')) {
 			array(
 				'dilaz_panel_images' => DILAZ_PANEL_IMAGES,
 				'dilaz_panel_prefix' => DILAZ_PANEL_PREFIX,
-				'upload'         => __('Upload', 'dilaz-options'),
-				'remove'         => __('Remove', 'dilaz-options'),
-				'upload_title'   => __('Select Image', 'dilaz-options'),
-				'upload_alert'   => __('Only image is allowed, please try again!', 'dilaz-options'),
-				'confirm_delete' => __('Are you sure?', 'dilaz-options')
+				'upload'         => __('Upload', 'dilaz-panel'),
+				'remove'         => __('Remove', 'dilaz-panel'),
+				'upload_title'   => __('Select Image', 'dilaz-panel'),
+				'upload_alert'   => __('Only image is allowed, please try again!', 'dilaz-panel'),
+				'confirm_delete' => __('Are you sure?', 'dilaz-panel')
 			)
 		);
 	}
@@ -235,34 +271,27 @@ if (!function_exists('dilaz_panel_options')) {
 if (!function_exists('dilaz_panel_page')) {
 	function dilaz_panel_page() {
 		
+		// var_dump(dilaz_get_option('dilaz_options'));
 		global $dilaz_panel_params;
-		// dilaz_panel_bg_defaults();
-		// var_dump(sanitize_text_field());
-		// var_dump(get_option($GLOBALS['dilaz_panel_params']['option_name']));
-		// var_dump(dilaz_panel_options());
-		// var_dump($_POST['logo']);
-		// var_dump(DILAZ_PANEL_DIR);
-		// var_dump(dilaz_panel_menu());
-		
 		?>
 		
 		<div id="dilaz-panel-wrap" class="wrap">
 			
 			<?php
 			if (isset($_GET['updated'])) {
-				if ($_GET['updated']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['theme_name']) .' '. esc_html__('settings updated.', 'dilaz-options') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-options') .'</span></button></div>';
+				if ($_GET['updated']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings updated.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
 			}
 			
 			if (isset($_GET['reset'])) {
-				if ($_GET['reset']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['theme_name']) .' '. esc_html__('settings reset.', 'dilaz-options') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-options') .'</span></button></div>';
+				if ($_GET['reset']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings reset.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
 			}
 			?>
 			<div id="dilaz-panel">
 			
 				<div id="dilaz-panel-header" class="clearfix">
 					<div class="dilaz-panel-item-details">
-						<span class="name"><?php echo $dilaz_panel_params['theme_name']; ?></span>
-						<span class="version">Version: <?php echo $dilaz_panel_params['theme_version']; ?></span>
+						<span class="name"><?php echo $dilaz_panel_params['item_name']; ?></span>
+						<span class="version">Version: <?php echo $dilaz_panel_params['item_version']; ?></span>
 					</div>
 				</div>
 				
@@ -283,7 +312,7 @@ if (!function_exists('dilaz_panel_page')) {
 								</ul>
 							</div>
 							<div style="float:right">
-								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-options'); ?>" />
+								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 							</div>
 						</div>
 						<div class="dilaz-panel-menu">
@@ -295,10 +324,10 @@ if (!function_exists('dilaz_panel_page')) {
 						<div class="clear"></div>
 						<div class="dilaz-panel-bottom clearfix">
 							<div style="float:left">
-								<input type="submit" class="button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-options'); ?>" onclick="return confirm('<?php print esc_js(__('Click OK to reset. All settings will be lost and replaced with default settings!', 'dilaz-options')); ?>');" />
+								<input type="submit" class="button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" onclick="return confirm('<?php print esc_js(__('Click OK to reset. All settings will be lost and replaced with default settings!', 'dilaz-panel')); ?>');" />
 							</div>
 							<div style="float:right">
-								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-options'); ?>" />
+								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 							</div>
 						</div>
 					</form>
@@ -352,8 +381,8 @@ if (!function_exists('dilaz_panel_menu')) {
 				
 				foreach ($menu_items as $key => $val) {
 					
-					$class = ( isset($val['children']) && $val['children'] != '' ) ? 'has_children' : '';
-					$target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
+					$class = (isset($val['children']) && $val['children'] != '') ? 'has_children' : '';
+					$target = (isset($val['target']) && $val['target'] != '') ? $val['target'] : '';
 					
 					$menu .= '<li id="'. $target .'" class="top_level '. $class .'">';
 					
@@ -414,9 +443,68 @@ if (!function_exists('dilaz_panel_fields')) {
 				if ( !isset( $field['class'] ) ) $field['class'] = '';
 				if ( !isset( $field['file_format'] ) ) $field['file_format'] = '';
 				if ( !isset( $field['file_mime'] ) ) $field['file_mime'] = '';
+				if ( !isset( $field['req_id'] ) ) $field['req_id'] = '';
+				if ( !isset( $field['req_value'] ) ) $field['req_value'] = '';
+				if ( !isset( $field['req_args'] ) ) $field['req_args'] = '';
+				if ( !isset( $field['req_cond'] ) ) $field['req_cond'] = '';
+				if ( !isset( $field['req_action'] ) ) $field['req_action'] = '';
 				
 				# use standard if value is empty
 				$value = $field['std'];
+				
+				# setup conditional fields
+				$cond_fields = '';
+				if ( !isset( $field['req_args'] ) || $field['req_args'] != '' ) {
+					if ( !isset( $field['req_cond'] ) || $field['req_cond'] == '' ) {
+						
+						$cond_fields .= ' data-do-when=\'{';
+							$do_when_ = '';
+							foreach ( $field['req_args'] as $req_id => $req_value ) {
+								if (is_array($req_value)) {
+									foreach ($req_value as $key => $val) {
+										$do_when_ .= ' "'. $req_id .'" : ["'. $val .'"]';
+									}
+								} else {
+									$do_when_ .= ' "'. $req_id .'" : ["'. $req_value .'"]';
+								}
+							}
+							$cond_fields .= $do_when_;
+						$cond_fields .= ' }\' data-do-action="'. $field['req_action'] .'"';
+						
+					} else if ( $field['req_cond'] == 'AND' ) {
+						
+						$cond_fields .= ' data-do-when=\'{';
+							$do_when_AND = '';
+							foreach ( $field['req_args'] as $req_id => $req_value ) {
+								if (is_array($req_value)) {
+									foreach ($req_value as $key => $val) {
+										$do_when_AND .= ' "'. $req_id .'" : ["'. $val .'"],';
+									}
+								} else {
+									$do_when_AND .= ' "'. $req_id .'" : ["'. $req_value .'"],';
+								}
+							}
+							$cond_fields .= rtrim( $do_when_AND, ',' ); # remove last comma
+						$cond_fields .= ' }\' data-do-action="'. $field['req_action'] .'"';
+						
+					} else if ( $field['req_cond'] == 'OR' ) {
+						
+						$cond_fields .= ' data-do-when=\'';
+							$do_when_OR = '';
+							foreach ( $field['req_args'] as $req_id => $req_value ) {
+								if (is_array($req_value)) {
+									foreach ($req_value as $key => $val) {
+										$do_when_OR .= '{ "'. $req_id .'" : ["'. $val .'"] } || ';
+									}
+								} else {
+									$do_when_OR .= '{ "'. $req_id .'" : ["'. $req_value .'"] } || ';
+								}
+							}
+							$cond_fields .= rtrim( $do_when_OR, '|| ' ); # remove dangling "OR" sign
+						$cond_fields .= ' \' data-do-action="'. $field['req_action'] .'"';
+						
+					}
+				}
 				
 				if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 					if (isset($option_data[($field['id'])])) {
@@ -443,25 +531,27 @@ if (!function_exists('dilaz_panel_fields')) {
 				}
 				
 				# integrate variables into $field array			
-				$field['value']         = $value;
-				$field['counter']       = $counter;
-				$field['option_data']   = $option_data;
-				$field['file_library']  = $file_library;
+				$field['value']        = $value;
+				$field['counter']      = $counter;
+				$field['option_data']  = $option_data;
+				$field['file_library'] = $file_library;
 
 				# Panel content
 				if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
-					$section_id = 'dilaz-panel-section-' . sanitize_key($field['id']);
+					$section_id = 'dilaz-panel-section-'. sanitize_key($field['id']);
 					$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
 
-					$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix">' . "\n";
-					if ($field['name']) 
-					$output .= '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
+					$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
+					
+					if ($field['name']) { 
+						$output .= '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
+					}
 
 					if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc'] != '') {
 						$output .= '<div class="description">'. wp_kses($field['desc'], $allowedtags) .'</div>';
 					}
 					
-					$output .= '<div class="option clearfix">' . "\n";
+					$output .= '<div class="option clearfix">' ."\n";
 
 				}
 				
@@ -494,16 +584,15 @@ if (!function_exists('dilaz_panel_fields')) {
 					case 'export'      : $output .= dilaz_panel_field_export($field); break;
 					case 'import'      : $output .= dilaz_panel_field_import($field); break;
 					
-					# add custom field types via this hook
+					# add custom field types via this hook - 'dilaz_panel_FIELD_TYPE_action'
 					case $field['type'] : do_action('dilaz_panel_'. $field['type'] .'_action', $field); break; 
 		
 				endswitch; 
 				
 				if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
-					$output .= '</div>'; # .option
-					$output .= '</div>'; # .$section_class
+					$output .= '</div><!-- .option -->'; # .option
+					$output .= '</div><!-- section_class -->'; # .$section_class
 				}
-
 			}
 
 			$output .= '</div><!-- tab -->';
@@ -526,7 +615,57 @@ if (!function_exists('dilaz_panel_set_defaults')) {
 			update_option($option_name, $values);
 		}
 		
-		header('Location: admin.php?page='. $GLOBALS['dilaz_panel_params']['page_slug'] .'&reset=true');
+		$is_reset = isset($_POST['reset']) ? '&reset=true' : '';
+		
+		header('Location: admin.php?page='. $GLOBALS['dilaz_panel_params']['page_slug'] . $is_reset .'');
+	}
+}
+
+
+/**
+ * Get default values
+ */
+if (!function_exists('dilaz_panel_dafault_values')) {
+	function dilaz_panel_dafault_values() {
+
+		$output  = [];
+		$options = dilaz_panel_options();
+		
+		foreach ( (array) $options as $option ) {
+			
+			if (!isset($option['id']) || !isset($option['type'])) continue;
+			if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
+			if ($option['type'] == 'export' || $option['type'] == 'import') continue;
+			
+			$id = sanitize_key($option['id']);
+			
+			# Standard option
+			$option_std = isset($option['std']) ? $option['std'] : '';
+			
+			# Set checkbox to standard value
+			if ('checkbox' == $option['type'] && !isset($_POST[$id])) {
+				$option_std = $option_std;
+			}
+
+			# Set all checbox fields to standard value
+			if ('multicheck' == $option['type'] && !isset($_POST[$id])) {
+				
+				# current standard option
+				$standard = $option_std;
+				
+				# create an array
+				$option_std = [];
+				
+				foreach ($option['options'] as $key => $value) {
+					$option_std[$key] = is_array($standard) && in_array($key, $standard) ? true : false;
+				}
+			}
+			
+			$output[$id] = isset($_POST[$id]) ? dilaz_panel_sanitize_option($option['type'], $option_std, $option) : dilaz_panel_sanitize_option($option['type'], $option_std, $option);
+			
+		}
+		
+		return $output;
 	}
 }
 
@@ -544,10 +683,9 @@ if (!function_exists('dilaz_panel_save_options')) {
 		
 		foreach ($options as $option) {
 			
-			if (!isset($option['id'])) continue;
-			if (!isset($option['type'])) continue;
-			if (isset($option['type']) && $option['type'] == 'heading') continue;
-			if (isset($option['type']) && $option['type'] == 'subheading') continue;
+			if (!isset($option['id']) || !isset($option['type'])) continue;
+			if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
+			if ($option['type'] == 'export' || $option['type'] == 'import') continue;
 			
 			$id = sanitize_key($option['id']);
 
@@ -636,11 +774,11 @@ if (!function_exists('dilaz_panel_sanitize_option')) {
 				break;
 		
 			case 'checkbox':
-				return ($input == '') ? false : (bool) $input;
+				return ($input == '') ? false : (bool)$input;
 				break;
 		
 			case 'multicheck':
-				$output = '';
+				$output = array();
 				foreach ((array)$input as $k => $v) {
 					if (isset($option['options'][$k]) && $v == true) {
 						$output[$k] = true;
@@ -668,10 +806,12 @@ if (!function_exists('dilaz_panel_sanitize_option')) {
 			case 'font':
 				$output = array();
 				foreach ((array)$input as $k => $v) {
-					if (isset($option['options'][$k]) && $k == 'color') {
+					if (isset($option['options'][$k]) && ($k == 'size' || $k == 'height')) {
+						$output[$k] = absint($v);
+					} else if (isset($option['options'][$k]) && $k == 'color') {
 						$output[$k] = sanitize_hex_color($v);
 					} else {
-						$output[$k] = $v;
+						$output[$k] = sanitize_text_field($v);
 					} 
 				}
 				return $output;
@@ -685,8 +825,10 @@ if (!function_exists('dilaz_panel_sanitize_option')) {
 					} else if (isset($option['options'][$k]) && $k == 'color') {
 						$output[$k] = sanitize_hex_color($v);
 					} else if (isset($option['options'][$k]) && ($k == 'repeat' || $k == 'size' || $k == 'position' || $k == 'attachment' || $k == 'origin')) {
-						$output[$k] = is_array($v) ? array_map('sanitize_text_field', $v) : sanitize_text_field($v);
-					}
+						$output[$k] = sanitize_text_field($v);
+					} else {
+						$output[$k] = sanitize_text_field($v);
+					} 
 				}
 				return $output;
 				break;
@@ -704,36 +846,12 @@ if (!function_exists('dilaz_panel_sanitize_option')) {
 
 
 /**
- * Get default values
- */
-if (!function_exists('dilaz_panel_dafault_values')) {
-	function dilaz_panel_dafault_values() {
-
-		$output = array();
-		$options = dilaz_panel_options();
-		
-		foreach ( (array) $options as $option ) {
-			
-			if (!isset($option['id']) || !isset($option['std']) || !isset($option['type'])) continue;
-			
-			$id = sanitize_key($option['id']);
-			
-			$output[$id] = isset($_POST[$id]) ? dilaz_panel_sanitize_option($option['type'], $option['std']) : dilaz_panel_sanitize_option($option['type'], '');
-			
-		}
-		
-		return $output;
-	}
-}
-
-
-/**
  * Get option
  */
 if (!function_exists('dilaz_get_option')) {
 	function dilaz_get_option($option_name) {
 		
-		$options = get_option($GLOBALS['dilaz_panel_params'][$option_name]);
+		$options = $GLOBALS['dilaz_panel_params']['option_name'] == $option_name ? get_option($option_name) : '';
 		
 		return isset($options) ? $options : false;
 	}
@@ -754,19 +872,19 @@ if (!function_exists('dilaz_panel_export_options')) {
 			$option_name = $GLOBALS['dilaz_panel_params']['option_name'];
 			$options     = get_option($option_name);
 		
-			if (!empty($options)) {			
+			if (!empty($options)) {		
 				$response['success'] = 1;
-				$response['message'] = esc_html__('Export Successful', 'dilaz-options');
+				$response['message'] = esc_html__('Export Successful', 'dilaz-panel');
 				$response['exp']     = DILAZ_PANEL_URL .'includes/export.php?dilaz-panel-export='. $option_name .'';
 			} else {
 				$response['success'] = 0;
-				$response['message'] = esc_html__('Export failed! Options do not exist.', 'dilaz-options');
+				$response['message'] = esc_html__('Export failed! Options do not exist.', 'dilaz-panel');
 			}
 			
 		} else {
 			
 			$response['success'] = 0;
-			$response['message'] = esc_html__('Export failed.', 'dilaz-options');
+			$response['message'] = esc_html__('Export failed.', 'dilaz-panel');
 			
 		}
 		
@@ -797,7 +915,7 @@ if (!function_exists('dilaz_panel_import_options')) {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				
 				$file = isset($_FILES[$import_file]) ? $_FILES[$import_file]['tmp_name'] : null;
-
+				
 				if ($file != null) {
 					
 					$data = dilaz_panel_initialize_file_system($file);
@@ -809,16 +927,16 @@ if (!function_exists('dilaz_panel_import_options')) {
 						
 						$option_name = $dilaz_panel_params['option_name'];
 						
-						update_option($option_name, $data);	
-					
+						update_option($option_name, $data);
+						
 						$response['success']  = 1;
-						$response['message']  = esc_html__('Import Successful.', 'dilaz-options');
+						$response['message']  = esc_html__('Import Successful.', 'dilaz-panel');
 						$response['redirect'] = admin_url('admin.php?page='. $dilaz_panel_params['page_slug']);
 						
 					} else {
 						
 						$response['success'] = 0;
-						$response['message'] = esc_html__('Wrong import file. Please try again.', 'dilaz-options');
+						$response['message'] = esc_html__('Wrong import file. Please try again.', 'dilaz-panel');
 						
 					}
 				}
@@ -866,159 +984,226 @@ if (!function_exists('dilaz_panel_initialize_file_system')) {
 /**
  * Background defaults
  */
-function dilaz_panel_bg_defaults() {
-	
-	$bg_defaults = array(
-		'image'  => '', 
-		'repeat' => array(
-			''          => '',
-			'no-repeat' => __('No Repeat', 'dilaz-options'),
-			'repeat'    => __('Repeat All', 'dilaz-options'),
-			'repeat-x'  => __('Repeat Horizontally', 'dilaz-options'),
-			'repeat-y'  => __('Repeat Vertically', 'dilaz-options'),
-			'inherit'   => __('Inherit', 'dilaz-options'),
-		), 
-		'size' => array(
-			''        => '',
-			'cover'   => __('Cover', 'dilaz-options'),
-			'contain' => __('Contain', 'dilaz-options'),
-			'inherit' => __('Inherit', 'dilaz-options'),
-		), 
-		'position' => array(
-			''              => '',
-			'top left'      => __('Top Left', 'dilaz-options'),
-			'top center'    => __('Top Center', 'dilaz-options'),
-			'top right'     => __('Top Right', 'dilaz-options'),
-			'center left'   => __('Center Left', 'dilaz-options'),
-			'center center' => __('Center Center', 'dilaz-options'),
-			'center right'  => __('Center Right', 'dilaz-options'),
-			'bottom left'   => __('Bottom Left', 'dilaz-options'),
-			'bottom center' => __('Bottom Center', 'dilaz-options'),
-			'bottom right'  => __('Bottom Right', 'dilaz-options')
-		),
-		'attachment' => array(
-			''        => '',
-			'fixed'   => __('Fixed', 'dilaz-options'),
-			'scroll'  => __('Scroll', 'dilaz-options'),
-			'inherit' => __('Inherit', 'dilaz-options'),
-		), 
-		'origin' => array(
-			''            => '',
-			'content-box' => __('Content Box', 'dilaz-options'),
-			'border-box'  => __('Border Box', 'dilaz-options'),
-			'padding-box' => __('Padding Box', 'dilaz-options'),
-		), 
-		'color'  => '', 
-	);
-	
-	$bg_defaults = apply_filters('dilaz_panel_bg_defaults', $bg_defaults);
-	
-	foreach ($bg_defaults as $k => $v) {
-		$bg_defaults[$k] = is_array($v) ? array_map('sanitize_text_field', $v) : sanitize_text_field($bg_defaults[$k]);
+if (!function_exists('dilaz_panel_bg_defaults')) {
+	function dilaz_panel_bg_defaults() {
+		
+		$bg_defaults = array(
+			'image'  => '', 
+			'repeat' => array(
+				''          => '',
+				'no-repeat' => __('No Repeat', 'dilaz-panel'),
+				'repeat'    => __('Repeat All', 'dilaz-panel'),
+				'repeat-x'  => __('Repeat Horizontally', 'dilaz-panel'),
+				'repeat-y'  => __('Repeat Vertically', 'dilaz-panel'),
+				'inherit'   => __('Inherit', 'dilaz-panel'),
+			), 
+			'size' => array(
+				''        => '',
+				'cover'   => __('Cover', 'dilaz-panel'),
+				'contain' => __('Contain', 'dilaz-panel'),
+				'inherit' => __('Inherit', 'dilaz-panel'),
+			), 
+			'position' => array(
+				''              => '',
+				'top left'      => __('Top Left', 'dilaz-panel'),
+				'top center'    => __('Top Center', 'dilaz-panel'),
+				'top right'     => __('Top Right', 'dilaz-panel'),
+				'center left'   => __('Center Left', 'dilaz-panel'),
+				'center center' => __('Center Center', 'dilaz-panel'),
+				'center right'  => __('Center Right', 'dilaz-panel'),
+				'bottom left'   => __('Bottom Left', 'dilaz-panel'),
+				'bottom center' => __('Bottom Center', 'dilaz-panel'),
+				'bottom right'  => __('Bottom Right', 'dilaz-panel')
+			),
+			'attachment' => array(
+				''        => '',
+				'fixed'   => __('Fixed', 'dilaz-panel'),
+				'scroll'  => __('Scroll', 'dilaz-panel'),
+				'inherit' => __('Inherit', 'dilaz-panel'),
+			), 
+			'origin' => array(
+				''            => '',
+				'content-box' => __('Content Box', 'dilaz-panel'),
+				'border-box'  => __('Border Box', 'dilaz-panel'),
+				'padding-box' => __('Padding Box', 'dilaz-panel'),
+			), 
+			'color'  => '', 
+		);
+		
+		$bg_defaults = apply_filters('dilaz_panel_bg_defaults', $bg_defaults);
+		
+		foreach ($bg_defaults as $k => $v) {
+			$bg_defaults[$k] = is_array($v) ? array_map('sanitize_text_field', $v) : sanitize_text_field($bg_defaults[$k]);
+		}
+		
+		return $bg_defaults;
 	}
-	
-	return $bg_defaults;
 }
 
 
 /**
  * Multicolor defaults
  */
-function dilaz_panel_multicolor_defaults() {
-	$multicolor_defaults = array();
-	$multicolor_defaults = apply_filters('dilaz_panel_multicolor_defaults', $multicolor_defaults);
-	$multicolor_defaults = array_map('sanitize_hex_color', $multicolor_defaults);
-	return $multicolor_defaults;
+if (!function_exists('dilaz_panel_multicolor_defaults')) {
+	function dilaz_panel_multicolor_defaults() {
+		$multicolor_defaults = array();
+		$multicolor_defaults = apply_filters('dilaz_panel_multicolor_defaults', $multicolor_defaults);
+		$multicolor_defaults = array_map('sanitize_hex_color', $multicolor_defaults);
+		return $multicolor_defaults;
+	}
 }
 
 
 /**
  * Font defaults
  */
-function dilaz_panel_font_defaults() {
-	$font_defaults = array(
-		'face'   => '', 
-		'size'   => '', 
-		'height' => '', 
-		'style'  => '', 
-		'case'   => '', 
-		'color'  => ''
-	);
-	$font_defaults = apply_filters('dilaz_panel_font_defaults', $font_defaults);
-	$font_defaults = array_map('sanitize_text_field', $font_defaults);
-	return $font_defaults;
+if (!function_exists('dilaz_panel_font_defaults')) {
+	function dilaz_panel_font_defaults() {
+		$font_defaults = array(
+			'family' => 'verdana', 
+			'subset' => '', 
+			'size'   => '14', 
+			'height' => '16', 
+			'style'  => '', 
+			'case'   => '', 
+			'color'  => '#555'
+		);
+		$font_defaults = apply_filters('dilaz_panel_font_defaults', $font_defaults);
+		$font_defaults = array_map('sanitize_text_field', $font_defaults);
+		return $font_defaults;
+	}
 }
 
 
 /**
- * Font face defaults
+ * Font family defaults
  */
-function dilaz_panel_font_faces() {
-	$font_faces = array(
-		'arial'     => 'Arial',
-		'verdana'   => 'Verdana, Geneva',
-		'trebuchet' => 'Trebuchet',
-		'georgia'   => 'Georgia',
-		'times'     => 'Times New Roman',
-		'tahoma'    => 'Tahoma, Geneva',
-		'palatino'  => 'Palatino',
-		'helvetica' => 'Helvetica',
-	);
-	$font_faces = apply_filters('dilaz_panel_font_faces', $font_faces);
-	$font_faces = array_map('sanitize_text_field', $font_faces);
-	return $font_faces;
+if (!function_exists('dilaz_panel_font_family')) {
+	function dilaz_panel_font_family() {
+		$font_family = array(
+			''          => '',
+			'arial'     => 'Arial',
+			'verdana'   => 'Verdana, Geneva',
+			'trebuchet' => 'Trebuchet',
+			'georgia'   => 'Georgia',
+			'times'     => 'Times New Roman',
+			'tahoma'    => 'Tahoma, Geneva',
+			'palatino'  => 'Palatino',
+			'helvetica' => 'Helvetica',
+		);
+		$font_family = apply_filters('dilaz_panel_font_family', $font_family);
+		$font_family = array_map('sanitize_text_field', $font_family);
+		return $font_family;
+	}
+}
+
+
+/**
+ * Font subset defaults
+ */
+if (!function_exists('dilaz_panel_font_subset')) {
+	function dilaz_panel_font_subset() {
+		$font_subset = array(
+			''      => '',
+			'latin' => 'Latin',
+		);
+		$font_subset = apply_filters('dilaz_panel_font_subset', $font_subset);
+		$font_subset = array_map('sanitize_text_field', $font_subset);
+		return $font_subset;
+	}
 }
 
 
 /**
  * Font size defaults
  */
-function dilaz_panel_font_sizes() {
-	$font_sizes = range(6, 100);
-	$font_sizes = apply_filters('dilaz_panel_font_sizes', $font_sizes);
-	$font_sizes = array_map('absint', $font_sizes);
-	return $font_sizes;
+if (!function_exists('dilaz_panel_font_sizes')) {
+	function dilaz_panel_font_sizes() {
+		$font_sizes = range(6, 100);
+		$font_sizes = apply_filters('dilaz_panel_font_sizes', $font_sizes);
+		$font_sizes = array_map('absint', $font_sizes);
+		return $font_sizes;
+	}
 }
 
 
 /**
  * Font height defaults
  */
-function dilaz_panel_font_heights() {
-	$font_heights = range(10, 70);
-	$font_heights = apply_filters('dilaz_panel_font_heights', $font_heights);
-	$font_heights = array_map('absint', $font_heights);
-	return $font_heights;
+if (!function_exists('dilaz_panel_font_heights')) {
+	function dilaz_panel_font_heights() {
+		$font_heights = range(10, 70);
+		$font_heights = apply_filters('dilaz_panel_font_heights', $font_heights);
+		$font_heights = array_map('absint', $font_heights);
+		return $font_heights;
+	}
+}
+
+
+/**
+ * Font weight defaults
+ */
+if (!function_exists('dilaz_panel_font_weights')) {
+	function dilaz_panel_font_weights() {
+		$font_weights = array(
+			''        => '',
+			'100'     => '100',
+			'200'     => '200',
+			'300'     => '300',
+			'400'     => '400',
+			'500'     => '500',
+			'600'     => '600',
+			'700'     => '700',
+			'800'     => '800',
+			'900'     => '900',
+			'normal'  => 'Normal',
+			'lighter' => 'Lighter',
+			'bold'    => 'Bold',
+			'bolder'  => 'Bolder',
+			'inherit' => 'Inherit',
+			'initial' => 'Initial'
+		);
+		$font_weights = apply_filters('dilaz_panel_font_weights', $font_weights);
+		$font_weights = array_map('sanitize_text_field', $font_weights);
+		return $font_weights;
+	}
 }
 
 
 /**
  * Font style defaults
  */
-function dilaz_panel_font_styles() {
-	$font_styles = array(
-		'normal'      => 'Normal',
-		'italic'      => 'Italic',
-		'bold'        => 'Bold',
-		'bold italic' => 'Bold Italic'
-	);
-	$font_styles = apply_filters('dilaz_panel_font_styles', $font_styles);
-	$font_styles = array_map('sanitize_text_field', $font_styles);
-	return $font_styles;
+if (!function_exists('dilaz_panel_font_styles')) {
+	function dilaz_panel_font_styles() {
+		$font_styles = array(
+			''        => '',
+			'normal'  => 'Normal',
+			'italic'  => 'Italic',
+			'oblique' => 'Oblique',
+			'inherit' => 'Inherit',
+			'initial' => 'Initial'
+		);
+		$font_styles = apply_filters('dilaz_panel_font_styles', $font_styles);
+		$font_styles = array_map('sanitize_text_field', $font_styles);
+		return $font_styles;
+	}
 }
 
 
 /**
  * Font case defaults
  */
-function dilaz_panel_font_cases() {	
-	$font_cases = array(
-		'none'       => 'None', 
-		'uppercase'  => 'Uppercase', 
-		'lowercase'  => 'Lowercase', 
-		'capitalize' => 'Capitalize'
-	);
-	$font_cases = apply_filters('dilaz_panel_font_cases', $font_cases);
-	$font_cases = array_map('sanitize_text_field', $font_cases);
-	return $font_cases;
+if (!function_exists('dilaz_panel_font_cases')) {
+	function dilaz_panel_font_cases() {
+		$font_cases = array(
+			''           => '', 
+			'none'       => 'None', 
+			'uppercase'  => 'Uppercase', 
+			'lowercase'  => 'Lowercase', 
+			'capitalize' => 'Capitalize'
+		);
+		$font_cases = apply_filters('dilaz_panel_font_cases', $font_cases);
+		$font_cases = array_map('sanitize_text_field', $font_cases);
+		return $font_cases;
+	}
 }
