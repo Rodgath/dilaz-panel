@@ -193,20 +193,3 @@ function dilaz_panel_import_export( array $options ) {
 	
 	return $options;
 }
-
-
-
-// add_action('dilaz_panel_select_action', 'dilaz_panel_select_action', 10, 1);
-// function dilaz_panel_select_action($field) {
-	// echo dilaz_panel_field_select($field);
-// }
-
-// add_action('dilaz_panel_radio2_action', 'dilaz_panel_radio2_action', 10, 1);
-// function dilaz_panel_radio2_action($field) {
-	// echo dilaz_panel_field_radio2($field);
-// }
-
-
-// function dilaz_panel_field_radio2() {
-	// return 'This is awesome custom.';
-// }

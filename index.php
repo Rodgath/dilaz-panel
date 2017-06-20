@@ -1,4 +1,22 @@
 <?php
+/*
+|| --------------------------------------------------------------------------------------------
+|| Admin Options
+|| --------------------------------------------------------------------------------------------
+||
+|| @package		Dilaz Panel
+|| @subpackage	Panel
+|| @version		1.1
+|| @since		Dilaz Panel 1.0
+|| @author		WebDilaz Team, http://webdilaz.com
+|| @copyright	Copyright (C) 2017, WebDilaz LTD
+|| @link		http://webdilaz.com/panel
+|| @License		GPL-2.0+
+|| @License URI	http://www.gnu.org/licenses/gpl-2.0.txt
+|| 
+*/
+
+defined('ABSPATH') || exit;
 
 /**
  * Options parameters
@@ -10,57 +28,75 @@
 if (!function_exists('dilaz_options_parameters')) {
 	function dilaz_options_parameters() {
 		
-		$panel_default_parameters = array(
-			'prefix'        => 'dilaz_panel', # should be unique. Not used to save settings
-			'option_name'   => 'dilaz_options', # must be unique. Any time its changed, saved settings are no longer used. New settings will be saved. Set this once.
-			'use_type'      => 'theme', # 'theme' if used within a theme OR 'plugin' if used within a plugin
-			'page_slug'     => 'dilaz_panel', # should be unique
-			'page_title'    => __('Dilaz Panel', 'dilaz-panel'),
-			'menu_title'    => __('Dilaz Panel', 'dilaz-panel'),
-			'options_cap'   => 'manage_options', # The capability required for this menu to be displayed to the user.
-			'menu_icon'     => '', # dashicon menu icon
-			'import_export' => true, # 'true' to enable import/export field
-			'log_title'     => __('Changelog', 'dilaz-panel'),
-			'log_url'       => '#', # leave empty to disable
-			'doc_title'     => __('Documentation', 'dilaz-panel'),
-			'doc_url'       => '#', # leave empty to disable
-			'support_title' => __('Support', 'dilaz-panel'),
-			'support_url'   => '#', # leave empty to disable
-		);
+		$panel_default_parameters = apply_filters('dilaz_panel_default_params', []);
+		
+		$use_type_parameters = [];
 		
 		if (isset($panel_default_parameters['use_type']) && $panel_default_parameters['use_type'] == 'theme') {
-			$theme_object  = wp_get_theme();
-			$theme_name    = is_child_theme() ? $theme_object['Template'] : $theme_object['Name'];
-			$theme_version = $theme_object['Version'];
 			
-			$use_type_parameters = array(
-				'item_name'    => $theme_name,
-				'item_version' => $theme_version,
-			);
+			# check if its plugin when in theme use type
+			if (strpos(dirname(__FILE__), 'plugins')) {
+
+				add_action( 'admin_notices', 'dilaz_panel_plugin_notice' );
+				
+				function dilaz_panel_plugin_notice() {
+					echo '<div id="message" class="error"><p><strong>'. __( 'Options panel is being used in a plugin. Please set "<em>use_type</em>" parameter to "<em>plugin</em>".', 'dilaz-panel' ) .'</strong></p></div>';
+				}
+				
+				# set use type error
+				$panel_default_parameters['use_type_error'] = true;
+				
+			} else {
+			
+				$theme_object  = wp_get_theme();
+				$theme_name    = is_child_theme() ? $theme_object['Template'] : $theme_object['Name'];
+				$theme_version = $theme_object['Version'];
+				
+				$use_type_parameters = array(
+					'item_name'    => $theme_name,
+					'item_version' => $theme_version,
+				);
+			}
+			
 		} else if (isset($panel_default_parameters['use_type']) && $panel_default_parameters['use_type'] == 'plugin') {
 			
-			if (!function_exists('get_plugin_data')) {
-				require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+			# check if its theme when in plugin use type
+			if (strpos(dirname(__FILE__), 'themes')) {
+
+				add_action( 'admin_notices', 'dilaz_panel_theme_notice' );
+				
+				function dilaz_panel_theme_notice() {
+					echo '<div id="message" class="error"><p><strong>'. __( 'Options panel is being used in a theme. Please set "<em>use_type</em>" parameter to "<em>theme</em>".', 'dilaz-panel' ) .'</strong></p></div>';
+				}
+				
+				# set use type error
+				$panel_default_parameters['use_type_error'] = true;
+				
+			} else {
+			
+				if (!function_exists('get_plugin_data')) {
+					require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+				}
+				
+				$plugin_object = [];
+				
+				$plugins_dir     = ABSPATH . 'wp-content/plugins/'; 
+				$plugin_basename = plugin_basename(__FILE__);
+				$plugin_folder   = strtok($plugin_basename, '/');
+				
+				# use global to check plugin data from all PHP files within plugin main folder
+				foreach (glob(trailingslashit($plugins_dir . $plugin_folder) . '*.php') as $file) {
+					$plugin_object = get_plugin_data($file);
+				}
+				
+				$plugin_name    = $plugin_object['Name'];
+				$plugin_version = $plugin_object['Version'];
+				
+				$use_type_parameters = array(
+					'item_name'    => $plugin_name,
+					'item_version' => $plugin_version,
+				);
 			}
-			
-			$plugin_object = [];
-			
-			$plugins_dir     = ABSPATH . 'wp-content/plugins/'; 
-			$plugin_basename = plugin_basename( __FILE__ );
-			$plugin_folder   = strtok($plugin_basename, '/');
-			
-			# use global to check plugin data from all PHP files within plugin main folder
-			foreach (glob(trailingslashit($plugins_dir . $plugin_folder) . '*.php') as $file) {
-				$plugin_object = get_plugin_data($file);
-			}
-			
-			$plugin_name    = $plugin_object['Name'];
-			$plugin_version = $plugin_object['Version'];
-			
-			$use_type_parameters = array(
-				'item_name'    => $plugin_name,
-				'item_version' => $plugin_version,
-			);
 		}
 		
 		$panel_parameters = wp_parse_args($use_type_parameters, $panel_default_parameters);
@@ -69,6 +105,18 @@ if (!function_exists('dilaz_options_parameters')) {
 	}
 }
 
+
+/**
+ * Config
+ *
+ * @since	1.1
+ */
+require_once file_exists(dirname(__FILE__) .'/includes/config.php') ? dirname(__FILE__) .'/includes/config.php' : dirname(__FILE__) .'/includes/config-sample.php';
+
+
+/**
+ * Globalize parameters
+ */
 $GLOBALS['dilaz_panel_params'] = dilaz_options_parameters();
 
 
@@ -84,9 +132,11 @@ $GLOBALS['dilaz_panel_params'] = dilaz_options_parameters();
 if (!function_exists('dilaz_panel_get_url')) {
 	function dilaz_panel_get_url($file) {
 		
+		global $dilaz_panel_params; 
+		
 		$parentTheme = wp_normalize_path(trailingslashit(get_template_directory()));
 		$childTheme  = wp_normalize_path(trailingslashit(get_stylesheet_directory()));
-		$file        = (isset($GLOBALS['dilaz_panel_params']['use_type']) && $GLOBALS['dilaz_panel_params']['use_type'] == 'plugin') ? wp_normalize_path(trailingslashit($file)) : wp_normalize_path(trailingslashit(dirname($file)));
+		$file        = (isset($dilaz_panel_params['use_type']) && $dilaz_panel_params['use_type'] == 'plugin') ? wp_normalize_path(trailingslashit($file)) : wp_normalize_path(trailingslashit(dirname($file)));
 		
 		# if in a parent theme
 		if (false !== stripos($file, $parentTheme)) {
@@ -116,6 +166,7 @@ if (!function_exists('dilaz_panel_get_url')) {
 @define('DILAZ_OPTIONS_NAME', $GLOBALS['dilaz_panel_params']['option_name']);
 @define('DILAZ_PANEL_IMAGES', DILAZ_PANEL_URL .'assets/images/' );
 @define('DILAZ_PANEL_PREFIX', (isset($GLOBALS['dilaz_panel_params']['prefix']) && $GLOBALS['dilaz_panel_params']['prefix'] != '') ? $GLOBALS['dilaz_panel_params']['prefix'] .'_' : 'dilaz_panel_');
+
 
 /**
  * Initialize Admin Panel
@@ -178,8 +229,8 @@ if (!function_exists('dilaz_panel_register_menu')) {
 		);
 
 		# Enqueue scripts and styles
-		add_action('admin_print_styles-' . $panel_page, 'dilaz_panel_enqueue_styles' );
-		add_action('admin_print_scripts-' . $panel_page, 'dilaz_panel_enqueue_scripts');
+		add_action('admin_print_styles-'. $panel_page, 'dilaz_panel_enqueue_styles' );
+		add_action('admin_print_scripts-'. $panel_page, 'dilaz_panel_enqueue_scripts');
 	}
 }
 
@@ -225,11 +276,11 @@ if (!function_exists('dilaz_panel_enqueue_scripts')) {
 			array(
 				'dilaz_panel_images' => DILAZ_PANEL_IMAGES,
 				'dilaz_panel_prefix' => DILAZ_PANEL_PREFIX,
-				'upload'         => __('Upload', 'dilaz-panel'),
-				'remove'         => __('Remove', 'dilaz-panel'),
-				'upload_title'   => __('Select Image', 'dilaz-panel'),
-				'upload_alert'   => __('Only image is allowed, please try again!', 'dilaz-panel'),
-				'confirm_delete' => __('Are you sure?', 'dilaz-panel')
+				'upload'             => __('Upload', 'dilaz-panel'),
+				'remove'             => __('Remove', 'dilaz-panel'),
+				'upload_title'       => __('Select Image', 'dilaz-panel'),
+				'upload_alert'       => __('Only image is allowed, please try again!', 'dilaz-panel'),
+				'confirm_delete'     => __('Are you sure?', 'dilaz-panel')
 			)
 		);
 	}
@@ -265,77 +316,81 @@ if (!function_exists('dilaz_panel_options')) {
 	}
 }
 
+
 /**
  * Admin panel page
  */
 if (!function_exists('dilaz_panel_page')) {
 	function dilaz_panel_page() {
 		
-		// var_dump(dilaz_get_option('dilaz_options'));
 		global $dilaz_panel_params;
-		?>
 		
-		<div id="dilaz-panel-wrap" class="wrap">
+		if ($dilaz_panel_params['use_type_error'] == false) {
 			
-			<?php
-			if (isset($_GET['updated'])) {
-				if ($_GET['updated']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings updated.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
-			}
-			
-			if (isset($_GET['reset'])) {
-				if ($_GET['reset']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings reset.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
-			}
 			?>
-			<div id="dilaz-panel">
 			
-				<div id="dilaz-panel-header" class="clearfix">
-					<div class="dilaz-panel-item-details">
-						<span class="name"><?php echo $dilaz_panel_params['item_name']; ?></span>
-						<span class="version">Version: <?php echo $dilaz_panel_params['item_version']; ?></span>
+			<div id="dilaz-panel-wrap" class="wrap">
+				
+				<?php
+				if (isset($_GET['updated'])) {
+					if ($_GET['updated']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings updated.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
+				}
+				
+				if (isset($_GET['reset'])) {
+					if ($_GET['reset']) echo '<div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible"><p><strong>'. esc_html($dilaz_panel_params['item_name']) .' '. esc_html__('settings reset.', 'dilaz-panel') .'</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">'. esc_html__('Dismiss this notice.', 'dilaz-panel') .'</span></button></div>';
+				}
+				?>
+				<div id="dilaz-panel">
+				
+					<div id="dilaz-panel-header" class="clearfix">
+						<div class="dilaz-panel-item-details">
+							<span class="name"><?php echo $dilaz_panel_params['item_name']; ?></span>
+							<span class="version">Version: <?php echo $dilaz_panel_params['item_version']; ?></span>
+						</div>
+					</div>
+					
+					<div id="dilaz-panel-content" class="clearfix">
+						<form enctype="multipart/form-data" action="options.php" method="post">
+							<div class="dilaz-panel-top clearfix">
+								<div style="float:left">
+									<ul class="subsubsub">
+										<?php if (!empty($dilaz_panel_params['log_url'])) { ?>
+										<li><a href="<?php echo $dilaz_panel_params['log_url']; ?>"><?php echo $dilaz_panel_params['log_title']; ?></a> <span>&#124;</span></li>
+										<?php } ?>
+										<?php if (!empty($dilaz_panel_params['doc_url'])) { ?>
+										<li><a href="<?php echo $dilaz_panel_params['doc_url']; ?>"><?php echo $dilaz_panel_params['doc_title']; ?></a> <span>&#124;</span></li>
+										<?php } ?>
+										<?php if (!empty($dilaz_panel_params['support_url'])) { ?>
+										<li><a href="<?php echo $dilaz_panel_params['support_url']; ?>"><?php echo $dilaz_panel_params['support_title']; ?></a> <span>&#124;</span></li>
+										<?php } ?>
+									</ul>
+								</div>
+								<div style="float:right">
+									<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
+								</div>
+							</div>
+							<div class="dilaz-panel-menu">
+								<?php echo dilaz_panel_menu(); ?>
+							</div>
+							<div class="dilaz-panel-fields">
+								<?php echo dilaz_panel_fields(); ?>
+							</div>
+							<div class="clear"></div>
+							<div class="dilaz-panel-bottom clearfix">
+								<div style="float:left">
+									<input type="submit" class="button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" onclick="return confirm('<?php print esc_js(__('Click OK to reset. All settings will be lost and replaced with default settings!', 'dilaz-panel')); ?>');" />
+								</div>
+								<div style="float:right">
+									<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
-				
-				<div id="dilaz-panel-content" class="clearfix">
-					<form enctype="multipart/form-data" action="options.php" method="post">
-						<div class="dilaz-panel-top clearfix">
-							<div style="float:left">
-								<ul class="subsubsub">
-									<?php if (!empty($dilaz_panel_params['log_url'])) { ?>
-									<li><a href="<?php echo $dilaz_panel_params['log_url']; ?>"><?php echo $dilaz_panel_params['log_title']; ?></a> <span>&#124;</span></li>
-									<?php } ?>
-									<?php if (!empty($dilaz_panel_params['doc_url'])) { ?>
-									<li><a href="<?php echo $dilaz_panel_params['doc_url']; ?>"><?php echo $dilaz_panel_params['doc_title']; ?></a> <span>&#124;</span></li>
-									<?php } ?>
-									<?php if (!empty($dilaz_panel_params['support_url'])) { ?>
-									<li><a href="<?php echo $dilaz_panel_params['support_url']; ?>"><?php echo $dilaz_panel_params['support_title']; ?></a> <span>&#124;</span></li>
-									<?php } ?>
-								</ul>
-							</div>
-							<div style="float:right">
-								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
-							</div>
-						</div>
-						<div class="dilaz-panel-menu">
-							<?php echo dilaz_panel_menu(); ?>
-						</div>
-						<div class="dilaz-panel-fields">
-							<?php echo dilaz_panel_fields(); ?>
-						</div>
-						<div class="clear"></div>
-						<div class="dilaz-panel-bottom clearfix">
-							<div style="float:left">
-								<input type="submit" class="button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" onclick="return confirm('<?php print esc_js(__('Click OK to reset. All settings will be lost and replaced with default settings!', 'dilaz-panel')); ?>');" />
-							</div>
-							<div style="float:right">
-								<input type="submit" class="button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
-							</div>
-						</div>
-					</form>
-				</div>
 			</div>
-		</div>
-		
-		<?php
+			
+			<?php
+		}
 	}
 }
 
@@ -585,7 +640,7 @@ if (!function_exists('dilaz_panel_fields')) {
 					case 'import'      : $output .= dilaz_panel_field_import($field); break;
 					
 					# add custom field types via this hook - 'dilaz_panel_FIELD_TYPE_action'
-					case $field['type'] : do_action('dilaz_panel_'. $field['type'] .'_action', $field); break; 
+					case $field['type'] : do_action('dilaz_panel_field_'. $field['type'] .'_hook', $field); break; 
 		
 				endswitch; 
 				
@@ -839,6 +894,12 @@ if (!function_exists('dilaz_panel_sanitize_option')) {
 					$output[] = absint($v);
 				}
 				return is_array($output) ? array_unique($output) : $output;
+				break;
+				
+			# sanitize custom option types via this filter hook
+			case $type: 
+				$output = apply_filters('dilaz_panel_sanitize_option_'. $type .'_hook', $input, $option); 
+				return $output;
 				break;
 		}
 	}
