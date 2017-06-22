@@ -1,7 +1,7 @@
 <?php
 /*
 || --------------------------------------------------------------------------------------------
-|| Admin Options
+|| Admin Options Panel
 || --------------------------------------------------------------------------------------------
 ||
 || @package		Dilaz Panel
@@ -175,8 +175,23 @@ add_action('admin_init', 'dilaz_panel_admin_init');
 if (!function_exists('dilaz_panel_admin_init')) {
 	function dilaz_panel_admin_init() {
 		
-		# load options config 
-		require_once DILAZ_PANEL_DIR .'options/options.php';
+		global $dilaz_panel_params; 
+		
+		# load main options
+		if (isset($dilaz_panel_params['default_options']) && $dilaz_panel_params['default_options'] == false) {
+			require_once file_exists(DILAZ_PANEL_DIR .'options/options.php') ? DILAZ_PANEL_DIR .'options/options.php' : DILAZ_PANEL_DIR .'options/options-sample.php';
+		}
+		
+		# load default options
+		if (isset($dilaz_panel_params['default_options']) && $dilaz_panel_params['default_options'] == true) {
+			if (file_exists(DILAZ_PANEL_DIR .'options/default-options.php'))
+				require_once DILAZ_PANEL_DIR .'options/default-options.php';
+		}
+		
+		# load custom options
+		if (isset($dilaz_panel_params['custom_options']) && $dilaz_panel_params['custom_options'] == true) {
+			require_once file_exists(DILAZ_PANEL_DIR .'options/custom-options.php') ? DILAZ_PANEL_DIR .'options/custom-options.php' : DILAZ_PANEL_DIR .'options/custom-options-sample.php';
+		}
 		
 		# include required function file 
 		require_once DILAZ_PANEL_DIR .'includes/functions.php';
@@ -593,7 +608,7 @@ if (!function_exists('dilaz_panel_fields')) {
 
 				# Panel content
 				if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
-					$section_id = 'dilaz-panel-section-'. sanitize_key($field['id']);
+					$section_id    = 'dilaz-panel-section-'. sanitize_key($field['id']);
 					$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
 
 					$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
@@ -933,7 +948,7 @@ if (!function_exists('dilaz_panel_export_options')) {
 			$option_name = $GLOBALS['dilaz_panel_params']['option_name'];
 			$options     = get_option($option_name);
 		
-			if (!empty($options)) {		
+			if (!empty($options)) {	
 				$response['success'] = 1;
 				$response['message'] = esc_html__('Export Successful', 'dilaz-panel');
 				$response['exp']     = DILAZ_PANEL_URL .'includes/export.php?dilaz-panel-export='. $option_name .'';
