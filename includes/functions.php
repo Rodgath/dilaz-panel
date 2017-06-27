@@ -6,10 +6,11 @@
  *
  * @since 1.0
  *
- * @param string $_POST['q']          search string
- * @param array  $_POST['selected']   selected items
- * @param string $_POST['query_type'] 'post', 'user', 'term'
- * @param array  $_POST['query_args'] query arguments
+ * @global	wpdb	$wpdb                WordPress database abstraction object
+ * @param	string	$_POST['q']          search string
+ * @param	array	$_POST['selected']   selected items
+ * @param	string	$_POST['query_type'] 'post', 'user', 'term'
+ * @param	array	$_POST['query_args'] query arguments
  *
  * @return json.data
  */
@@ -136,14 +137,17 @@ if (!function_exists('dilaz_panel_get_post_titles')) {
  *
  * @since 1.0
  *
- * @param array $options all panel options
+ * @global	array	$dilaz_mb_params
+ * @param	array	$options          all panel options
  *
  * @return array $options
  */
 add_filter('dilaz_panel_options_filter', 'dilaz_panel_import_export');
 function dilaz_panel_import_export( array $options ) {
 	
-	if ($GLOBALS['dilaz_panel_params']['import_export'] == true) {
+	global $dilaz_panel_params;
+	
+	if ($dilaz_panel_params['import_export'] == true) {
 		
 		# MAIN TAB - Export / Import
 		# =============================================================================================
