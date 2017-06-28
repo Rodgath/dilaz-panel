@@ -29,7 +29,7 @@ WordPress options panel for themes and plugins.
 * Multiple Color Picker
 * Font Select
 * File Upload - *Image, Audio, Video, Document, Spreadsheet, Interactive, Text, Archive, Code*
-* Background Select - *Image, Audio, Video, Document, Spreadsheet, Interactive, Text, Archive, Code*
+* Background Select
 	* Files - *Image, Audio, Video, Document, Spreadsheet, Interactive, Text, Archive, Code*
 	* Attributes - *Size, Repeat, Position, Attachment, Origin, Color*
 * WordPress Editor
