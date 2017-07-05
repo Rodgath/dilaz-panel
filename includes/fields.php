@@ -67,17 +67,6 @@ if (!function_exists('dilaz_panel_field_text')) {
 	}
 }
 
-# Email
-if (!function_exists('dilaz_panel_field_email')) {
-	function dilaz_panel_field_email($field) {
-		
-		extract($field);
-		
-		echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
-		
-	}
-}
-
 # Textarea
 if (!function_exists('dilaz_panel_field_textarea')) {
 	function dilaz_panel_field_textarea($field) {
@@ -88,6 +77,17 @@ if (!function_exists('dilaz_panel_field_textarea')) {
 		$rows = isset($args['rows']) && is_numeric($args['rows']) ? intval($args['rows']) : '5';
 		
 		return '<textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-textarea" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea>';
+		
+	}
+}
+
+# Email
+if (!function_exists('dilaz_panel_field_email')) {
+	function dilaz_panel_field_email($field) {
+		
+		extract($field);
+		
+		echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
 		
 	}
 }
