@@ -16,7 +16,13 @@
 
 defined('ABSPATH') || exit;
 
-
+/**
+ * Default option parameters
+ *
+ * @since 1.0
+ *
+ * @return array
+ */
 add_filter('dilaz_panel_default_params', 'dilaz_panel_config_parameters');
 function dilaz_panel_config_parameters() {
 	

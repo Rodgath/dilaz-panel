@@ -97,7 +97,7 @@ if (!function_exists('dilaz_panel_query_select')) {
  *
  * @since 1.0
  *
- * @param array  $_POST['selected']   selected items
+ * @param array  $_POST['selected'] selected items
  *
  * @return json.data
  */
