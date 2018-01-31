@@ -1096,6 +1096,7 @@ input.dilaz-panel-switch {
 }
 .dilaz-panel-font.font-preview {
 	display: block;
+	overflow: hidden
 }
 .dilaz-panel-font.font-preview .content {
 	margin-top: 10px;
@@ -1179,6 +1180,7 @@ input.dilaz-panel-switch {
 	float: left;
 	display: inline-block;
 	margin-top: 15px;
+	margin-left: 10px;
 	display: none
 }
 .dilaz-panel-export {

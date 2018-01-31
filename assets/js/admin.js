@@ -206,10 +206,10 @@ jQuery(document).ready(function($) {
 	/* File sorting, drag-and-drop */
 	$('.dilaz-panel-file-wrapper').each(function() {
 		
-		var $this  = $(this),
-			$media = $this.find('.dilaz-panel-media-file');
+		var $this     = $(this),
+			$multiple = $this.data('file-multiple');
 			
-		if ($media.length > 1) {
+		if ($multiple) {
 			$this.sortable({
 				opacity : 0.6,
 				revert : true,
