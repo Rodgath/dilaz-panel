@@ -119,11 +119,11 @@ final class DilazPanel {
 	 *
 	 * @since 1.0
 	 */
-	function __construct( $parameters = array(), array $options = array() ) {
+	function __construct( $option_name = '', $parameters = array(), array $options = array() ) {
 
 		do_action( 'dilaz_panel_before_load' );
 		
-		$this->option_name = isset($parameters['option_name']) ? $parameters['option_name'] : '';
+		$this->option_name = $option_name;
 		$this->params      = $parameters;
 		$this->options     = apply_filters('dilaz_panel_options_filter', $options);
 		
@@ -431,7 +431,7 @@ final class DilazPanel {
 									<input type="hidden" name="option_name" value="<?php echo $this->option_name; ?>" />
 									<input type="hidden" name="security" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
 									<span class="spinner"></span>
-									<span class="progress"><?php _e('Saving options... Please wait.', 'dilaz-panel'); ?></span>
+									<span class="progress"><?php _e('Saving options... Please wait...', 'dilaz-panel'); ?></span>
 									<span class="finished"></span>
 									<input type="submit" class="update button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 								</div>
@@ -955,6 +955,7 @@ final class DilazPanel {
 		
 	}
 	
+	
 	/**
 	 * Save all options
 	 *
@@ -1031,60 +1032,6 @@ final class DilazPanel {
 	
 	
 	/**
-  
-	 * Save all options
-	 *
-	 * @since 1.0
-	 *
-	 * @param string $option_name option name as used in wp_options table
-	 *
-	 * @return void|bool false if option is not saved
-	 */
-	function save_options($option_name) {
-		
-		if (!isset($option_name)) return false;
-		
-		$sanitized_options = array();
-		$defined_options   = $this->options;
-		$saved_options     = $this->get_options($option_name);
-		
-		foreach ($defined_options as $option) {
-			
-			if (!isset($option['id']) || !isset($option['type'])) continue;
-			if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
-			if ($option['type'] == 'export' || $option['type'] == 'import') continue;
-			
-			$id = sanitize_key($option['id']);
-			
-			# Set checkbox to false if not set
-			if ('checkbox' == $option['type'] && !isset($_POST[$id])) {
-				$_POST[$id] = false;
-			}
-			
-			# Set all checbox fields to false if not set
-			if ('multicheck' == $option['type'] && !isset($_POST[$id])) {
-				foreach ($option['options'] as $key => $value) {
-					$_POST[$id][$key] = false;
-				}
-			}
-			
-			# Get sanitiszed options
-			$sanitized_options[$id] = isset($_POST[$id]) ? $this->sanitize_option($option['type'], $_POST[$id], $option) : $this->sanitize_option($option['type'], '', $option);
-			
-		}
-		
-		$merged_options = array_merge($saved_options, $sanitized_options);
-		
-		update_option($this->option_name, $merged_options);	
-		
-		header('Location: admin.php?page='. $this->params['page_slug'] .'&updated=true');
-		
-		exit();
-	}
-	
-	
-	/**
-  
 	 * Save single option
 	 *
 	 * @since 1.2
@@ -1342,7 +1289,6 @@ final class DilazPanel {
 						
 						update_option($option_name, $data);
 						
-						$response['d']  = $data;
 						$response['success']  = 1;
 						$response['message']  = esc_html__('Import Successful.', 'dilaz-panel');
 						$response['redirect'] = admin_url('admin.php?page='. $option_page);
