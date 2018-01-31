@@ -18,6 +18,7 @@ defined('ABSPATH') || exit;
 
 class DilazPanelFunctions {
 	
+	
 	function __construct() {
 		
 		add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'query_select'));

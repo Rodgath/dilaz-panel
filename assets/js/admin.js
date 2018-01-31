@@ -375,11 +375,121 @@ jQuery(document).ready(function($) {
 	/* Color picker */
 	$('.dilaz-panel-color').wpColorPicker();
 	
+	/* Ajax - reset options */
+	$('#dilaz-panel-form').on('click', '.reset', function() {
+		
+		// e.preventDefault();
+		
+		var $resetButton = $(this),
+			$panelForm   = $resetButton.closest('#dilaz-panel-form'),
+			$security    = $('input[name="security"]', $panelForm).val(),
+			$optionName  = $panelForm.data('option-name'),
+			$optionPage  = $panelForm.data('option-page'),
+			$spinner     = $resetButton.siblings('.spinner'),
+			$progress    = $resetButton.siblings('.progress'),
+			$finished    = $resetButton.siblings('.finished');
+			
+		$.ajax({
+			type     : 'POST',
+			url      : ajaxurl,
+			dataType : 'json',
+			cache	 : false,
+			data     : {
+				action            : 'dilaz_panel_reset_options',
+				security          : $security, 
+				dilaz_option_name : $optionName, 
+				dilaz_option_page : $optionPage, 
+			},
+			beforeSend : function() {
+				$spinner.show().addClass('is-active');
+				$progress.show();
+			},
+			success : function(response) {
+				
+				if (response.success) {
+					$spinner.delay(1800).hide(290);
+					$progress.delay(1800).hide(290);
+				}
+				
+				if (response.success == 1) {
+					$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
+				} else {
+					$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
+				}
+			},
+			complete : function() {
+				$finished.delay(5000).fadeOut(260);
+			}
+		});
+		
+		return false;
+	});
+	
+	/* Ajax - save options */
+	$('#dilaz-panel-form').on('submit', function(e) {
+		
+		e.preventDefault();
+		
+		var $panelForm    = $(this),
+			$submitButton = $('input[name="update"]', $panelForm),
+			$spinner      = $submitButton.siblings('.spinner'),
+			$progress     = $submitButton.siblings('.progress'),
+			$finished     = $submitButton.siblings('.finished'),
+			$formData   = {
+				'action'    : 'dilaz_panel_save_options',
+				'form_data' : $panelForm.serialize(), 
+			};
+		
+			// var $dataArray = $panelForm.serializeArray(),
+				// $formData = {};
+			
+			// $dataArray.push({ name: 'action', value: 'dilaz_panel_save_options' });
+
+			// $.each($dataArray, function(i, item) {
+				// $formData[item.name] = item.value
+			// });
+			
+			
+		$.ajax({
+			type     : 'POST',
+			url      : ajaxurl,
+			dataType : 'json',
+			cache	 : false,
+			data     : $formData,
+			beforeSend : function() {
+				$spinner.show().addClass('is-active');
+				$progress.show();
+			},
+			success : function(response) {
+				
+				if (response.success) {
+					$spinner.delay(1800).hide(290);
+					$progress.delay(1800).hide(290);
+				}
+				
+				if (response.success == 1) {
+					$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
+				} else {
+					$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
+				}
+			},
+			complete : function() {
+				$finished.delay(5000).fadeOut(260);
+			}
+		});
+		
+		return false;
+	});
+	
 	/* Ajax - export options */
 	$('.dilaz-panel-fields').on('click', '.dilaz-panel-export', function() {
 		
-		var $this  = $(this),
-			$nonce = $this.parent().data('export-nonce');
+		var $exportButton = $(this),
+			$spinner      = $exportButton.siblings('.spinner'),
+			$progress     = $exportButton.siblings('.progress'),
+			$finished     = $exportButton.siblings('.finished'),
+			$nonce        = $exportButton.parent().data('export-nonce'),
+			$optionName   = $exportButton.closest('#dilaz-panel-form').data('option-name');
 			
 		$.ajax({
 			type     : 'POST',
@@ -388,21 +498,27 @@ jQuery(document).ready(function($) {
 			cache	 : false,
 			data     : {
 				action             : 'dilaz_panel_export_options',
-				dilaz_export_nonce : $nonce
+				dilaz_export_nonce : $nonce,
+				dilaz_option_name  : $optionName,
 			},
 			beforeSend : function() {
-				$this.siblings('.spinner').show().addClass('is-active');
-				$this.siblings('.progress').show();
+				$spinner.show().addClass('is-active');
+				$progress.show();
 			},
 			success : function(response) {
+				
+				if (response.success) {
+					$spinner.delay(1800).hide(290);
+					$progress.delay(1800).hide(290);
+				}
+				
 				if (response.success == 1) {
 					window.location = response.exp;
-					$this.siblings('.finished').css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
+					$finished.css({'color':'green'}).delay(2000).fadeIn(260);
 				}
 			},
 			complete : function() {
-				$this.siblings('.spinner').delay(1900).hide(290);
-				$this.siblings('.progress').delay(1900).hide(290);
+				$finished.delay(5000).fadeOut(260);
 			}
 		});
 	});	
@@ -418,21 +534,29 @@ jQuery(document).ready(function($) {
 	/* Ajax - import options */
 	$('.dilaz-panel-fields').on('click', '.dilaz-panel-import', function() {
 		
-		var $this       = $(this),
-			$importWrap = $this.closest('#dilaz-panel-import'),
-			$nonce      = $importWrap.data('import-nonce'),
-			$filesData  = $importWrap.find('.dilaz-import-file'),
-			$fileName   = $filesData.attr('name'),
-			$formData   = new FormData();
+		var $importButton = $(this),
+			$spinner      = $importButton.siblings('.spinner'),
+			$progress     = $importButton.siblings('.progress'),
+			$finished     = $importButton.siblings('.finished'),
+			$importForm   = $importButton.closest('#dilaz-panel-form'),
+			$optionName   = $importForm.data('option-name'),
+			$optionPage   = $importForm.data('option-page'),
+			$importWrap   = $importButton.closest('#dilaz-panel-import'),
+			$nonce        = $importWrap.data('import-nonce'),
+			$filesData    = $importWrap.find('.dilaz-import-file'),
+			$fileName     = $filesData.attr('name'),
+			$formData     = new FormData();
 		
 		if ($filesData.val() == '') {
-			$this.parent().siblings('.upload-response').removeClass('hidden').html('<div class="notification error"><p>Please select a file</p></div>');
+			$importButton.parent().siblings('.upload-response').removeClass('hidden').html('<div class="notification error"><p>Please select a file</p></div>');
 			return;
 		}
 		
 		$formData.append($fileName, $($filesData)[0].files[0]);
 		$formData.append('action', 'dilaz_panel_import_options');
 		$formData.append('dilaz_import_nonce', $nonce);
+		$formData.append('dilaz_option_page', $optionPage);
+		$formData.append('dilaz_option_name', $optionName);
 		$formData.append('dilaz_import_file', $fileName);
 		
 		$.ajax({
@@ -444,18 +568,29 @@ jQuery(document).ready(function($) {
 			contentType : false,
 			processData : false,
 			beforeSend  : function() {
-				$this.siblings('.spinner').addClass('is-active').show();
-				$this.siblings('.progress').show();
+				$spinner.addClass('is-active').show();
+				$progress.show();
 			},
 			success : function(response) {
-				if (response.success == 1) {
-					$this.siblings('.finished').css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
-					window.location = response.redirect;
+				
+				if (response.success) {
+					$spinner.delay(1800).fadeOut(290);
+					$progress.delay(1800).fadeOut(290);
 				}
+				
+				if (response.success == 1) {
+					console.log(response.d);
+					$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
+					setTimeout(function() {
+						window.location = response.redirect;
+					}, 3000);
+				} else {
+					$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
+				}
+				
 			},
 			complete : function() {
-				$this.siblings('.spinner').delay(1900).fadeOut(290);
-				$this.siblings('.progress').delay(1900).fadeOut(290);
+				
 			}
 		});
 	});
