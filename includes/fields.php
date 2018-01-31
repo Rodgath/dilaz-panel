@@ -567,9 +567,7 @@ class DilazPanelFields {
 	
 	# File Upload
 	public static function _upload($field) {
-		
-		// global $post;
-		
+
 		extract($field);
 		
 		$output = '';
@@ -907,7 +905,7 @@ class DilazPanelFields {
 		
 		$output = '';
 		
-		$output .= '<div id="dilaz-panel-export" data-export-nonce="'. wp_create_nonce(basename(__FILE__)) .'" data-option-name="'. wp_create_nonce(basename(__FILE__)) .'">
+		$output .= '<div id="dilaz-panel-export" data-export-nonce="'. wp_create_nonce(basename(__FILE__)) .'">
 			<span class="dilaz-panel-export button button-primary button-hero">'. __('Export Settings', 'dilaz-panel') .'</span>
 			<span class="spinner"></span>
 			<span class="progress">'. __('Exporting options... Please wait.', 'dilaz-panel') .'</span>
@@ -925,7 +923,7 @@ class DilazPanelFields {
 		
 		$output = '';
 		
-		$output .= '<div id="dilaz-panel-import" data-import-nonce="'. wp_create_nonce(basename(__FILE__)) .'">
+		$output .= '<div id="dilaz-panel-import" data-import-nonce="'. wp_create_nonce(basename(__FILE__)) .'"">
 			<label class="dilaz-import-select button" for="dilaz_panel_import">
 				<input type="file" class="dilaz-import-file" name="dilaz_panel_import" accept="json" />
 				<i class="fa fa-upload"></i>&nbsp;&nbsp;<span>Select file&hellip;</span>
@@ -935,7 +933,7 @@ class DilazPanelFields {
 			<div class="clear"></div>
 			<span class="spinner"></span>
 			<span class="progress">'. __('Importing options... Please wait.', 'dilaz-panel') .'</span>
-			<span class="finished">'. __('Import finished successfully.', 'dilaz-panel') .'</span>
+			<span class="finished"></span>
 		</div>';
 		
 		return $output;

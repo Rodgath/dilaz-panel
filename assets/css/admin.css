@@ -1186,3 +1186,36 @@ input.dilaz-panel-switch {
 .dilaz-panel-export {
 	float: left
 }
+
+/*--------------------------------------------------------------*/
+/* Reset button
+/*--------------------------------------------------------------*/
+.dilaz-ajax-save .reset {
+	float: left;
+	display: inline-block
+}
+
+/*--------------------------------------------------------------*/
+/* Ajax fields
+/*--------------------------------------------------------------*/
+#dilaz-panel-form .dilaz-ajax-save .spinner {
+	float: left;
+	display: inline-block;
+	margin-top: 4px;
+	display: none
+}
+#dilaz-panel-form .dilaz-ajax-save .progress {
+	float: left;
+	display: inline-block;
+	margin-top: 5px;
+	margin-right: 15px;
+	display: none
+}
+#dilaz-panel-form .dilaz-ajax-save .finished {
+	float: left;
+	display: inline-block;
+	margin-top: 5px;
+	margin-left: 10px;
+	margin-right: 15px;
+	display: none
+}
