@@ -135,8 +135,8 @@ final class DilazPanel {
 		add_action('admin_init', array($this, 'init'));
 		add_action('admin_menu', array($this, 'register_menu'));
 		add_action('wp_before_admin_bar_render', array($this, 'admin_bar'));
-		add_action('wp_ajax_dilaz_panel_save_options', array($this, 'ajax_save_options'));
-		add_action('wp_ajax_dilaz_panel_reset_options', array($this, 'ajax_reset_options'));
+		add_action('wp_ajax_dilaz_panel_save_options', array($this, 'save_options'));
+		add_action('wp_ajax_dilaz_panel_reset_options', array($this, 'reset_options'));
 		add_action('wp_ajax_dilaz_panel_export_options', array($this, 'export_options'));
 		add_action('wp_ajax_dilaz_panel_import_options', array($this, 'import_options'));
 
@@ -921,7 +921,7 @@ final class DilazPanel {
 	 *
 	 * @return void
 	 */
-	function ajax_reset_options() {
+	function reset_options() {
 		
 		$response = array();
 		
@@ -955,7 +955,16 @@ final class DilazPanel {
 		
 	}
 	
-	function ajax_save_options() {
+	/**
+	 * Save all options
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $option_name option name as used in wp_options table
+	 *
+	 * @return json
+	 */
+	function save_options() {
 		
 		$response = array();
 		
@@ -1022,6 +1031,7 @@ final class DilazPanel {
 	
 	
 	/**
+  
 	 * Save all options
 	 *
 	 * @since 1.0
@@ -1074,6 +1084,7 @@ final class DilazPanel {
 	
 	
 	/**
+  
 	 * Save single option
 	 *
 	 * @since 1.2
