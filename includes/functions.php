@@ -1,22 +1,45 @@
 <?php 
+/*
+|| --------------------------------------------------------------------------------------------
+|| Admin Panel Functions
+|| --------------------------------------------------------------------------------------------
+||
+|| @package		Dilaz Panel
+|| @subpackage	Functions
+|| @since		Dilaz Panel 2.0
+|| @author		WebDilaz Team, http://webdilaz.com
+|| @copyright	Copyright (C) 2017, WebDilaz LTD
+|| @link		http://webdilaz.com/panel
+|| @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+|| 
+*/
 
+defined('ABSPATH') || exit;
 
-/**
- * Query select function
- *
- * @since 1.0
- *
- * @global	wpdb	$wpdb                WordPress database abstraction object
- * @param	string	$_POST['q']          search string
- * @param	array	$_POST['selected']   selected items
- * @param	string	$_POST['query_type'] 'post', 'user', 'term'
- * @param	array	$_POST['query_args'] query arguments
- *
- * @return json.data
- */
-add_action('wp_ajax_dilaz_panel_query_select', 'dilaz_panel_query_select');
-if (!function_exists('dilaz_panel_query_select')) {
-	function dilaz_panel_query_select() {
+class DilazPanelFunctions {
+	
+	function __construct() {
+		
+		add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'query_select'));
+		add_action('wp_ajax_dilaz_panel_get_post_titles', array(&$this, 'get_post_titles'));
+		
+	}
+	
+	
+	/**
+	 * Query select function
+	 *
+	 * @since 1.0
+	 *
+	 * @global	wpdb	$wpdb                WordPress database abstraction object
+	 * @param	string	$_POST['q']          search string
+	 * @param	array	$_POST['selected']   selected items
+	 * @param	string	$_POST['query_type'] 'post', 'user', 'term'
+	 * @param	array	$_POST['query_args'] query arguments
+	 *
+	 * @return json.data
+	 */
+	function query_select() {
 		
 		global $wpdb;
 		
@@ -89,21 +112,18 @@ if (!function_exists('dilaz_panel_query_select')) {
 		
 		die();
 	}
-}
-
-
-/**
- * Get post titles
- *
- * @since 1.0
- *
- * @param array  $_POST['selected'] selected items
- *
- * @return json.data
- */
-add_action('wp_ajax_dilaz_panel_get_post_titles', 'dilaz_panel_get_post_titles');
-if (!function_exists('dilaz_panel_get_post_titles')) {
-	function dilaz_panel_get_post_titles() {
+	
+	
+	/**
+	 * Get post titles
+	 *
+	 * @since 1.0
+	 *
+	 * @param array  $_POST['selected'] selected items
+	 *
+	 * @return json.data
+	 */
+	function get_post_titles() {
 		
 		$result = array();
 		
@@ -129,71 +149,5 @@ if (!function_exists('dilaz_panel_get_post_titles')) {
 
 		die;
 	}
-}
-
-
-/**
- * Add Import / Export fields
- *
- * @since 1.0
- *
- * @global	array	$dilaz_mb_params
- * @param	array	$options          all panel options
- *
- * @return array $options
- */
-add_filter('dilaz_panel_options_filter', 'dilaz_panel_import_export');
-function dilaz_panel_import_export( array $options ) {
 	
-	global $dilaz_panel_params;
-	
-	if ($dilaz_panel_params['import_export'] == true) {
-		
-		# MAIN TAB - Export / Import
-		# =============================================================================================
-		$options[] = array(
-			'name' => __('Export / Import', 'dilaz-panel'),
-			'type' => 'heading',
-			'icon' => 'fa-cloud'
-		);
-			
-			# SUB TAB - Export
-			# *****************************************************************************************
-			$options[] = array(
-				'name' => __('Export', 'dilaz-panel'),
-				'type' => 'subheading',
-			);
-				
-				# FIELDS - Export
-				# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-				$options[] = array(
-					'id'    => 'export',
-					'name'  => __('Export', 'dilaz-panel'),
-					'desc'  => __('Export', 'dilaz-panel'),
-					'type'  => 'export',
-					'std'   => '',
-					'class' => ''
-				);
-			
-			# SUB TAB - Import
-			# *****************************************************************************************
-			$options[] = array(
-				'name' => __('Import', 'dilaz-panel'),
-				'type' => 'subheading',
-			);
-				
-				# FIELDS - Import
-				# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-				$options[] = array(
-					'id'    => 'import',
-					'name'  => __('Import', 'dilaz-panel'),
-					'desc'  => __('Import', 'dilaz-panel'),
-					'type'  => 'import',
-					'std'   => '',
-					'class' => 'last'
-				);
-				
-	}
-	
-	return $options;
 }

@@ -14,8 +14,6 @@
 || 
 */
 
-defined('ABSPATH') || exit;
-
 /**
  * Export manager
  *
