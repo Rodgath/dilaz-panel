@@ -21,8 +21,8 @@ class DilazPanelFunctions {
 	
 	function __construct() {
 		
-		add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'query_select'));
-		add_action('wp_ajax_dilaz_panel_get_post_titles', array(&$this, 'get_post_titles'));
+		add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'querySelect'));
+		add_action('wp_ajax_dilaz_panel_get_post_titles', array(&$this, 'getPostTitles'));
 		
 	}
 	
@@ -32,15 +32,15 @@ class DilazPanelFunctions {
 	 *
 	 * @since 1.0
 	 *
-	 * @global	wpdb	$wpdb                WordPress database abstraction object
-	 * @param	string	$_POST['q']          search string
-	 * @param	array	$_POST['selected']   selected items
-	 * @param	string	$_POST['query_type'] 'post', 'user', 'term'
-	 * @param	array	$_POST['query_args'] query arguments
+	 * @global wpdb   $wpdb                WordPress database abstraction object
+	 * @param  string $_POST['q']          search string
+	 * @param  array  $_POST['selected']   selected items
+	 * @param  string $_POST['query_type'] 'post', 'user', 'term'
+	 * @param  array  $_POST['query_args'] query arguments
 	 *
 	 * @return json.data
 	 */
-	function query_select() {
+	function querySelect() {
 		
 		global $wpdb;
 		
@@ -120,11 +120,11 @@ class DilazPanelFunctions {
 	 *
 	 * @since 1.0
 	 *
-	 * @param array  $_POST['selected'] selected items
+	 * @param array $_POST['selected'] selected items
 	 *
 	 * @return json.data
 	 */
-	function get_post_titles() {
+	function getPostTitles() {
 		
 		$result = array();
 		

@@ -211,12 +211,12 @@ jQuery(document).ready(function($) {
 			
 		if ($multiple) {
 			$this.sortable({
-				opacity : 0.6,
-				revert : true,
-				handle : '.sort',
-				cursor : 'move',
-				// axis: 'y',
-				placeholder: 'ui-sortable-placeholder'
+				opacity     : 0.6,
+				revert      : true,
+				handle      : '.sort',
+				cursor      : 'move',
+				// axis        : 'y',
+				placeholder : 'ui-sortable-placeholder'
 			});
 			$('.dilaz-panel-file-wrapper').disableSelection();
 		}
@@ -286,8 +286,8 @@ jQuery(document).ready(function($) {
 		
 		$this.select2({
 			placeholder : '',
-			width : $this.data('width'),
-			allowClear : true,
+			width       : $this.data('width'),
+			allowClear  : true,
 		});
 	});
 	
@@ -451,11 +451,11 @@ jQuery(document).ready(function($) {
 			
 			
 		$.ajax({
-			type     : 'POST',
-			url      : ajaxurl,
-			dataType : 'json',
-			cache	 : false,
-			data     : $formData,
+			type       : 'POST',
+			url        : ajaxurl,
+			dataType   : 'json',
+			cache	   : false,
+			data       : $formData,
 			beforeSend : function() {
 				$spinner.show().addClass('is-active');
 				$progress.show();
