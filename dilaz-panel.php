@@ -4,22 +4,18 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.1
+ * Version:		2.2
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
-*/
-
-defined('ABSPATH') || exit;
-
-/*
+||
 || --------------------------------------------------------------------------------------------
 || Admin Options Panel
 || --------------------------------------------------------------------------------------------
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.1
+|| @version		2.2
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -28,6 +24,8 @@ defined('ABSPATH') || exit;
 || @License URI	http://www.gnu.org/licenses/gpl-2.0.txt
 || 
 */
+
+defined('ABSPATH') || exit;
 
 /**
  * Dilaz Panel main class
@@ -148,7 +146,7 @@ class DilazPanel {
 		# Load constants
 		$this->constants();
 		
-		# Addons
+		# Actions
 		add_action('init', array($this, 'parameters'));
 		add_action('admin_init', array($this, 'init'));
 		add_action('admin_menu', array($this, 'registerMenu'));
@@ -785,7 +783,7 @@ class DilazPanel {
 	 * @param string $option_name  option name as used in wp_options table
 	 * @param string $option_id    option key
 	 *
-	 * @access public	 *
+	 * @access public 
 	 * @return void|bool
 	 */
 	function deleteOption($option_name, $option_id) {
@@ -1401,4 +1399,4 @@ class DilazPanel {
 		return $wp_filesystem->get_contents($file);
 	}
 	
-}
+} // end class

@@ -20,10 +20,8 @@ class DilazPanelFunctions {
 	
 	
 	function __construct() {
-		
 		add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'querySelect'));
 		add_action('wp_ajax_dilaz_panel_get_post_titles', array(&$this, 'getPostTitles'));
-		
 	}
 	
 	

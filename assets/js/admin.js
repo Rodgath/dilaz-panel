@@ -579,7 +579,6 @@ jQuery(document).ready(function($) {
 				}
 				
 				if (response.success == 1) {
-					console.log(response.d);
 					$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
 					setTimeout(function() {
 						window.location = response.redirect;
