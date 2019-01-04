@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.2
+ * Version:		2.4
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.2
+|| @version		2.4
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -675,6 +675,7 @@ class DilazPanel {
 					case 'subheading'  : $output .= DilazPanelFields::_subheading($field); break;
 					case 'info'        : $output .= DilazPanelFields::_info($field); break;
 					case 'text'        : $output .= DilazPanelFields::_text($field); break;
+					case 'multitext'   : $output .= DilazPanelFields::_multitext($field); break;
 					case 'email'       : $output .= DilazPanelFields::_email($field); break;
 					case 'textarea'    : $output .= DilazPanelFields::_textarea($field); break;
 					case 'select'      : $output .= DilazPanelFields::_select($field); break;
@@ -827,28 +828,17 @@ class DilazPanel {
 			
 			$parameters = $saved_options['panel-atts']['params'];
 			
-			# get option files
-			if (is_file($saved_options['panel-atts']['files'][0]))
-				$defaults_file = $saved_options['panel-atts']['files'][0];
-			if (is_file($saved_options['panel-atts']['files'][2]))
-				$options_file = $saved_options['panel-atts']['files'][2];
-			
 			# include default options file
-			if (isset($parameters['default_options']) && $parameters['default_options'] == true)
-				include $defaults_file;
-			
-			# include main options file
-			if (isset($parameters['default_options']) && $parameters['default_options'] == false) {
-				include $options_file;
-				
-				# include default options if main options are not set
-				if (!isset($options))
-					include $defaults_file;
-			}
+			if (is_file($saved_options['panel-atts']['files'][0]))
+				include $saved_options['panel-atts']['files'][0];
 			
 			# include custom options file
-			if (isset($parameters['custom_options']) && $parameters['custom_options'] == true) 
+			if (is_file($saved_options['panel-atts']['files'][1]))
 				include $saved_options['panel-atts']['files'][1];
+			
+			# include main options file
+			if (is_file($saved_options['panel-atts']['files'][2]))
+				include $saved_options['panel-atts']['files'][2];
 			
 			return $options;
 			
@@ -910,7 +900,7 @@ class DilazPanel {
 	 */
 	function dafaultValues($option_name = '') {
 		
-		$output  = [];
+		$output = [];
 		if ($option_name != '') {
 			$options    = $this->getOptionsFromFile($option_name);
 			$panel_atts = $this->getOptions($option_name)['panel-atts'];
@@ -1053,7 +1043,13 @@ class DilazPanel {
 				}
 				
 				# Get sanitiszed options
-				$sanitized_options[$id] = isset($form_data[$id]) ? $this->sanitizeOption($option['type'], $form_data[$id], $option) : $this->sanitizeOption($option['type'], '', $option);
+				if (isset($form_data[$id])) { 
+					$sanitized_options[$id] = $this->sanitizeOption($option['type'], $form_data[$id], $option);
+				} else if (!isset($form_data[$id]) && isset($saved_options[$id])) {
+					$sanitized_options[$id] = $this->sanitizeOption($option['type'], $saved_options[$id], $option);
+				} else {
+					$sanitized_options[$id] = $this->sanitizeOption($option['type'], '', $option);
+				}
 				
 			}
 			
@@ -1138,6 +1134,16 @@ class DilazPanel {
 			case 'text':
 			case 'switch':
 				return sanitize_text_field($input);
+				break;
+				
+			case 'multitext':
+				$output = '';
+				foreach ((array)$input as $k => $v) {
+					if (isset($option['options'][$k]) || $set_option) {
+						$output[$k] = $v;
+					}
+				}
+				return $output;
 				break;
 				
 			case 'email':

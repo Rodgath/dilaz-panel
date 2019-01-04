@@ -363,6 +363,24 @@
 
 
 /*--------------------------------------------------------------*/
+/* Multitext
+/*--------------------------------------------------------------*/
+.dilaz-panel-section-multitext .dilaz-panel-multi-text {
+	margin-bottom: 14px;
+}
+.dilaz-panel-section-multitext .option .inline {
+	float: none;
+	display: inline-block;
+}
+.dilaz-panel-section-multitext .option .inline input{
+	width: 100%
+}
+.dilaz-panel-multi-text-wrap {
+	margin-right: 10px;
+}
+
+
+/*--------------------------------------------------------------*/
 /* Radio & Checkbox
 /*--------------------------------------------------------------*/
 .dilaz-panel-radio,

@@ -78,8 +78,46 @@ class DilazPanelFields {
 		
 		extract($field);
 		
-		echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
+		return '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
 		
+	}
+	
+	
+	# Multiple Text Input
+	public static function _multitext($field) {
+		
+		extract($field);
+		
+		$class = isset($class) ? sanitize_html_class($class) : '';
+		
+		$saved_texts = $value;
+		
+		$output = '';
+		
+		if (isset($options)) {
+			foreach ($options as $key => $val) {
+				
+				$text_name    = isset($val['name']) ? $val['name'] : '';
+				$default_text = isset($val['default']) ? $val['default'] : '';
+				$saved_text   = isset($saved_texts[$key]) ? $saved_texts[$key] : $default_text;
+				$inline       = isset($args['inline']) && $args['inline'] == true ? 'inline' : '';
+				
+				if ($inline == '') {
+					$cols = 'style="width:100%;display:block"'; # set width to 100% if fields are not inline
+				} else {
+					$cols = isset($args['cols']) ? 'style="width:'. (100/intval($args['cols'])) .'%"' : 'style="width:30%"';
+				}
+				
+				$output .= '<div class="dilaz-panel-multi-text '. $inline .'" '. $cols .'>';
+					$output .= '<div class="dilaz-panel-multi-text-wrap">';
+						$output .= '<strong>'. $text_name .'</strong><br />';
+						$output .= '<input class="dilaz-panel-text '. $class .'" type="text" name="'. esc_attr($id) .'['. esc_attr($key) .']" id="'. esc_attr($id) .'" value="'. $saved_text .'" />';
+					$output .= '</div>';
+				$output .= '</div>';
+			}
+		}
+		
+		return $output;
 	}
 	
 	
@@ -138,7 +176,7 @@ class DilazPanelFields {
 		$select2_width = isset($args['select2width']) ? 'data-width="'. sanitize_text_field($args['select2width']) .'"' : 'data-width="100px"';
 		
 		$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" multiple="multiple" name="'. esc_attr($id) .'[]" '. $select2_width .'>';
-			$selected_data = is_array($option_data[$id]) ? $option_data[$id] : array();
+			$selected_data = (isset($option_data[$id]) && is_array($option_data[$id])) ? $option_data[$id] : array();
 			foreach ($options as $key => $option) {
 				$selected = (in_array($key, $selected_data)) ? 'selected="selected"' : '';
 				$output .= '<option '. $selected .' value="'. esc_attr($key) .'">'. esc_html($option) .'</option>';
@@ -183,7 +221,7 @@ class DilazPanelFields {
 		data-multiple="'. esc_attr($multiple_bool) .'" 
 		data-width="'. esc_attr($select2_width) .'">';
 		
-		$selected_data = is_array($option_data[$id]) ? $option_data[$id] : array();
+		$selected_data = (isset($option_data[$id]) && is_array($option_data[$id])) ? $option_data[$id] : array();
 		
 		foreach ($selected_data as $key => $item_id) {
 			
@@ -426,10 +464,10 @@ class DilazPanelFields {
 		$saved_colors = wp_parse_args($value, $multicolor_defaults);
 		
 		if (isset($options)) {
-			foreach ($options as $key => $value) {
+			foreach ($options as $key => $val) {
 				
-				$color_name    = isset($value['name']) ? $value['name'] : '';
-				$default_color = isset($value['color']) ? $value['color'] : '';
+				$color_name    = isset($val['name']) ? $val['name'] : '';
+				$default_color = isset($val['color']) ? $val['color'] : '';
 				$saved_color   = isset($saved_colors[$key]) ? $saved_colors[$key] : $default_color;
 				
 				$output .= '<div class="dilaz-panel-multi-color">';
