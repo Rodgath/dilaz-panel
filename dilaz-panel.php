@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.4
+ * Version:		2.5
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.4
+|| @version		2.5
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -138,7 +138,7 @@ class DilazPanel {
 		do_action( 'dilaz_panel_before_load' );
 		
 		$this->args       = $option_args;
-		$this->params     = $this->args[0];
+		$this->params     = $this->sanitizeParams($this->args[0]);
 		$this->options    = $this->args[1];
 		$this->optionName = $this->params['option_name'];
 		$this->panelAtts  = $this->options[0];
@@ -256,24 +256,47 @@ class DilazPanel {
 		# bail if parameters are not set
 		if (!isset($params)) return;
 		
+		# clean up params
+		// $params = array_map('sanitize_text_field', $params);
+		
 		# bail if page and menu parameters are not set
 		if (
 			!isset($params['page_title']) || 
 			!isset($params['menu_title']) || 
 			!isset($params['options_cap']) || 
-			!isset($params['page_slug']) || 
-			!isset($params['menu_icon'])
+			!isset($params['page_slug'])
 		) return;
 		
-		# Menu page
-		$panel_page = add_menu_page(
-			$params['page_title'], 
-			$params['menu_title'], 
-			$params['options_cap'], 
-			$params['page_slug'], 
-			array($this, 'page'), 
-			$params['menu_icon']
-		);
+		# Add submenu page if 'parent_slug' is set
+		if (isset($params['parent_slug']) && trim($params['parent_slug']) != '') {
+			
+			# Menu page
+			$panel_page = add_submenu_page(
+				$params['parent_slug'], 
+				$params['page_title'], 
+				$params['menu_title'], 
+				$params['options_cap'], 
+				$params['page_slug'], 
+				array($this, 'page')
+			);
+		
+		# Add a top-level menu page if 'parent_slug' is not set
+		} else {
+			
+			# bail if 'menu_icon' or 'menu_position' parameters are not set
+			if (!isset($params['menu_icon']) || !array_key_exists('menu_position', $params)) return;
+			
+			# Menu page
+			$panel_page = add_menu_page(
+				$params['page_title'], 
+				$params['menu_title'], 
+				$params['options_cap'], 
+				$params['page_slug'], 
+				array($this, 'page'), 
+				$params['menu_icon'],
+				$params['menu_position']
+			);
+		}
 		
 		# Enqueue scripts and styles
 		add_action('admin_print_styles-'. $panel_page, array($this, 'enqueueStyles'));
@@ -332,6 +355,65 @@ class DilazPanel {
 				'confirm_delete'     => __('Are you sure?', 'dilaz-panel')
 			)
 		);
+	}
+	
+	/**
+	 * Sanitize parameters
+	 *
+	 * @since  2.5
+	 * @access public
+	 * @return void
+	 */
+	function sanitizeParams($params) {
+		
+		foreach($params as $key => $val) {
+			switch ($key) {
+				case 'option_name':
+				case 'option_prefix':
+				case 'use_type':
+				case 'page_slug':
+				case 'page_title':
+				case 'menu_title':
+				case 'options_cap':
+				case 'menu_icon':
+				case 'parent_slug':
+				case 'log_title':
+				case 'doc_title':
+				case 'support_title':
+				case 'item_name':
+				case 'item_version':
+					$params[$key] = sanitize_text_field($val);
+					break;
+					
+				case 'admin_bar_menu':
+				case 'import_export':
+				case 'use_type_error':
+					$params[$key] = ($val == '') ? false : (bool)$val;
+					break;
+					
+				case 'menu_position':
+					if (trim($val) != '' && $val != null) {
+						$params[$key] = is_int($val) ? absint($val) : null;
+					} else {
+						$params[$key] = null;
+					}
+					break;
+					
+				case 'log_url':
+				case 'doc_url':
+				case 'support_url':
+				case 'dir_url':
+					$params[$key] = esc_url($val);
+					break;
+					
+				# sanitize custom parameters via this filter hook
+				case $key:
+					$params[$key] = apply_filters('dilaz_panel_sanitize_param_'. $key .'_hook', $val); 
+					break;
+			}
+		}
+		
+		return $params;
 	}
 	
 	
