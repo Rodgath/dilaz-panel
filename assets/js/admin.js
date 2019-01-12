@@ -430,12 +430,28 @@ jQuery(document).ready(function($) {
 		
 		e.preventDefault();
 		
+		/* Autosave tinyMCE wp_editor() because we are using ajax */
+		$.each($('.dilaz-panel-section'), function($key, $data) {
+			var $id          = $data.id,
+				$idHashed    = $('#'+$id),
+				$fieldId     = $id.replace('dilaz-panel-section-', ''),
+				$isEditor    = $($idHashed).find('.wp-editor-wrap'),
+				$editorField = $($idHashed).find('#'+$fieldId);
+				
+			if ($isEditor.length) {
+				var $wpEditorFrame  = $('#'+$fieldId+'_ifr'),
+					$editorContents = $('#tinymce', $wpEditorFrame.contents())[0].innerHTML;
+					
+				$editorField.html($editorContents);
+			}
+		});
+		
 		var $panelForm    = $(this),
 			$submitButton = $('input[name="update"]', $panelForm),
 			$spinner      = $submitButton.siblings('.spinner'),
 			$progress     = $submitButton.siblings('.progress'),
 			$finished     = $submitButton.siblings('.finished'),
-			$formData   = {
+			$formData     = {
 				'action'    : 'dilaz_panel_save_options',
 				'form_data' : $panelForm.serialize(), 
 			};
@@ -448,7 +464,6 @@ jQuery(document).ready(function($) {
 			// $.each($dataArray, function(i, item) {
 				// $formData[item.name] = item.value
 			// });
-			
 			
 		$.ajax({
 			type       : 'POST',

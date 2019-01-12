@@ -343,14 +343,12 @@ class DilazPanelFields {
 	# Checkbox 
 	public static function _checkbox($field) {
 		
-		global $allowedtags;
-		
 		extract($field);
 		
 		$output = '';
 		
 		$state = checked($value, true, false) ? 'focus' : '';
-		$output .= '<label for="'. esc_attr($id) .'" class="dilaz-option"><input id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .'" type="checkbox" name="'. esc_attr($id) .'" '. checked($value, true, false) .' /><span class="checkbox"></span><span>'. wp_kses($desc, $allowedtags) .'</span></label><div class="clear"></div>';
+		$output .= '<label for="'. esc_attr($id) .'" class="dilaz-option"><input id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .'" type="checkbox" name="'. esc_attr($id) .'" '. checked($value, true, false) .' /><span class="checkbox"></span><span>'. wp_kses_post($desc) .'</span></label><div class="clear"></div>';
 		
 		return $output;
 	}
@@ -917,22 +915,19 @@ class DilazPanelFields {
 		
 		$output = '';
 		
-		$textarea_name = esc_attr( $option_name . '['. $id .']' );
 		$default_editor_settings = array(
-			'textarea_name' => $textarea_name,
 			'media_buttons' => false,
+			'textarea_name' => esc_attr($id),
+			'textarea_rows' => 20,
+			'editor_class'  => $class,
+			'teeny'         => true,
 			'tinymce'       => array('plugins' => 'wordpress')
 		);
-		$editor_settings = array();
-		if (isset($settings)) {
-			$editor_settings = $settings;
-		}
-		$editor_settings = array_merge($editor_settings, $default_editor_settings);
+		$editor_settings = [];
+		$editor_settings = wp_parse_args($args['editor'], $default_editor_settings);
 		ob_start();
 		wp_editor($value, $id, $editor_settings);
-		$output .= ob_get_clean();
-		
-		return $output;
+		return ob_get_clean();
 	}
 	
 	

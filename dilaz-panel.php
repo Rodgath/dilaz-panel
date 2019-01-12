@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.5
+ * Version:		2.6
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.5
+|| @version		2.6
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -357,6 +357,7 @@ class DilazPanel {
 		);
 	}
 	
+	
 	/**
 	 * Sanitize parameters
 	 *
@@ -613,8 +614,6 @@ class DilazPanel {
 	 */
 	public function fields() {
 		
-		global $allowedtags;
-		
 		$option_name   = $this->optionName;
 		$option_data   = get_option($option_name);
 		$option_fields = $this->options;
@@ -636,6 +635,7 @@ class DilazPanel {
 				if ( !isset( $field['type'] ) ) $field['type'] = '';
 				if ( !isset( $field['name'] ) ) $field['name'] = '';
 				if ( !isset( $field['desc'] ) ) $field['desc'] = '';
+				if ( !isset( $field['desc2'] ) ) $field['desc2'] = '';
 				if ( !isset( $field['std'] ) ) $field['std'] = '';
 				if ( !isset( $field['class'] ) ) $field['class'] = '';
 				if ( !isset( $field['file_format'] ) ) $field['file_format'] = '';
@@ -743,7 +743,7 @@ class DilazPanel {
 					}
 					
 					if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc'] != '') {
-						$output .= '<div class="description">'. wp_kses($field['desc'], $allowedtags) .'</div>';
+						$output .= '<div class="description">'.wp_kses_post($field['desc']).'</div>';
 					}
 					
 					$output .= '<div class="option clearfix">' ."\n";
@@ -786,6 +786,9 @@ class DilazPanel {
 				endswitch; 
 				
 				if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
+					if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc2'] != '') {
+						$output .= '<div class="description desc2">'.wp_kses_post($field['desc2']).'</div>';
+					}
 					$output .= '</div><!-- .option -->'; # .option
 					$output .= '</div><!-- .section_class -->'; # .$section_class
 				}
@@ -1234,6 +1237,10 @@ class DilazPanel {
 				
 			case 'textarea':
 				return sanitize_textarea_field($input);
+				break;
+				
+			case 'editor':
+				return $input;
 				break;
 				
 			case 'number':

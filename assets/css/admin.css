@@ -272,8 +272,8 @@
 	border: none
 }
 .dilaz-panel-field .dilaz-panel-section .dilaz-panel-section-heading {
-	margin: 0 0 15px;
-	font-size: 16px;
+	margin: 0 0 12px;
+	font-size: 15px;
 	font-weight: bold;
 	line-height: 100%
 }
@@ -287,10 +287,14 @@
 	width: auto
 }
 .dilaz-panel-field .dilaz-panel-section .description {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	color: #888;
 	font-size: 11px;
 	line-height: 1.3em
+}
+.dilaz-panel-field .dilaz-panel-section .description.desc2 {
+	margin-bottom: 0;
+	margin-top: 15px;
 }
 
 /*--------------------------------------------------------------*/
