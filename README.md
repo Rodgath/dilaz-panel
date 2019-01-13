@@ -1,4 +1,4 @@
-# Dilaz-Panel
+# Dilaz Panel
 Simple WordPress options panel for themes and plugins.
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
@@ -13,6 +13,7 @@ Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b) to se
 * __Extendability__ - Easy to update or create new functionality 
 * __Easy updating__ - Your settings will not be part of core files
 * __AddOns availability__ - AddOns created by WebDilaz Team and other developers
+* __Both Plugins & Themes__ - Can be used with any WordPress theme or plugin
 
 ## Metabox Fields
 * Heading
