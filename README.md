@@ -3,7 +3,11 @@ Simple WordPress options panel for themes and plugins.
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
 ## How to use
-See this [metabox example](https://github.com/Rodgath/Dilaz-Panel-Options-Sample) on how to integrate this metaboxes plugin into your WordPress development project.
+1. Download and install Dilaz Panel plugin
+2. Download [Dilaz Panel Options](https://github.com/Rodgath/Dilaz-Panel-Options-Sample) and add it into your WordPress project. 
+
+## Example of how to use Dilaz Panel in a theme
+Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b) to see a useful example on how to integrate this dilaz panel plugin into your WordPress theme development project.
 
 ## Features
 * Extendability - Easy to update or create new functionality 
@@ -42,22 +46,18 @@ See this [metabox example](https://github.com/Rodgath/Dilaz-Panel-Options-Sample
 
 ## File Structure
 ```
-your-directory/your-admin-folder/ # → Root of your admin panel
-├── assets/                       # → Assets
+wp-includes/plugins/dilaz-panel/  # → Dilaz panel plugin
+├── assets/                       # → Plugin ssets
 │   ├── css/                      # → Stylesheets
 │   ├── fonts/                    # → Fonts
 │   ├── images/                   # → Images
 │   └── js/                       # → JavaScripts
 ├── includes/                     # → Includes
-│   ├── config-sample.php         # → Sample config file - Rename to "config.php"
+│   ├── defaults.php              # → Defaults (never edit)
 │   ├── export.php                # → Export and Import file for panel options (never edit)
 │   ├── fields.php                # → Panel option fields (never edit)
 │   └── functions.php             # → Panel functions (never edit)
-├── options/                      # → Panel Options
-│   ├── custom-options-sample.php # → Sample custom options - Rename to custom-options.php
-│   ├── default-options.php       # → Default options (never edit)
-│   └── options-sample.php        # → Sample options file - Rename to options.php
-└── index.php                     # → Index file (never edit)
+└── dilaz-panel.php               # → Index file (never edit)
 ```
 
 
