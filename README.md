@@ -3,16 +3,16 @@ Simple WordPress options panel for themes and plugins.
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
 ## How to use
-1. Download and install Dilaz Panel plugin
+1. Download and install [Dilaz Panel](https://github.com/Rodgath/Dilaz-Panel-Plugin/archive/master.zip) plugin
 2. Download [Dilaz Panel Options](https://github.com/Rodgath/Dilaz-Panel-Options-Sample) and add it into your WordPress project. 
 
 ## Example of how to use Dilaz Panel in a theme
 Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b) to see a useful example on how to integrate this dilaz panel plugin into your WordPress theme development project.
 
 ## Features
-* Extendability - Easy to update or create new functionality 
-* Easy updating - Your settings will not be part of core files
-* AddOns availability - AddOns created by WebDilaz Team and other developers
+* __Extendability__ - Easy to update or create new functionality 
+* __Easy updating__ - Your settings will not be part of core files
+* __AddOns availability__ - AddOns created by WebDilaz Team and other developers
 
 ## Metabox Fields
 * Heading
