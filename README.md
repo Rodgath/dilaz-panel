@@ -2,6 +2,9 @@
 Simple WordPress options panel for themes and plugins.
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
+## How to use
+See this [metabox example](https://github.com/Rodgath/Dilaz-Panel-Options-Sample) on how to integrate this metaboxes plugin into your WordPress development project.
+
 ## Features
 * Extendability - Easy to update or create new functionality 
 * Easy updating - Your settings will not be part of core files
