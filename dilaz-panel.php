@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.6
+ * Version:		2.6.2
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.6
+|| @version		2.6.2
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -337,7 +337,7 @@ class DilazPanel {
 		}
 		
 		wp_enqueue_script('wp-color-picker');
-		wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2.min.js', false, '4.0.3', true);
+		wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', false, '4.0.3', true);
 		wp_enqueue_script('dilaz-dowhen-script', DILAZ_PANEL_URL .'assets/js/jquery.dowhen.js');
 		wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), '1.0', true);
 		

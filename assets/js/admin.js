@@ -297,14 +297,15 @@ jQuery(document).ready(function($) {
 		var $this = $(this);
 		
 		$this.select2({
-			placeholder            : $this.data('placeholder'),
-			multiple               : $this.data('multiple'),
-			width                  : $this.data('width'),
-			allowClear             : true,
-			minimumInputLength     : $this.data('min-input'), // minimum number of characters
-			maximumInputLength     : $this.data('max-input'), // maximum number of characters
-			delay                  : 250, // milliseconds before triggering the request
-			// debug               : true,
+			language : 'en',
+			placeholder : $this.data('placeholder'),
+			multiple : $this.data('multiple'),
+			width : $this.data('width'),
+			allowClear : true,
+			minimumInputLength : $this.data('min-input'), // minimum number of characters
+			maximumInputLength : $this.data('max-input'), // maximum number of characters
+			delay : 250, // milliseconds before triggering the request
+			// debug : true,
 			maximumSelectionLength : $this.data('max-options'), // maximum number of options selected
 			ajax : {
 				type     : 'POST',
@@ -413,6 +414,9 @@ jQuery(document).ready(function($) {
 				
 				if (response.success == 1) {
 					$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
+					setTimeout(function() {
+						window.location = response.redirect;
+					}, 3000);
 				} else {
 					$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
 				}

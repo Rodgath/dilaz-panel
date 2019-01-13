@@ -139,7 +139,7 @@ class DilazPanelFields {
 		
 		extract($field);
 		
-		echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
+		return '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
 		
 	}
 	
