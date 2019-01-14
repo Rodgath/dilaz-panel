@@ -1,5 +1,6 @@
 # Dilaz Panel
 Simple WordPress options panel for themes and plugins.
+
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
 ## How to use
