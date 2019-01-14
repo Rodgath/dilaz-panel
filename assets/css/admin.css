@@ -242,9 +242,9 @@
 .dilaz-panel-field {
 	display: none
 }
-.dilaz-panel-field:nth-of-type(2n) {
+/* .dilaz-panel-field:nth-of-type(2n) {
 	display: block
-}
+} */
 .dilaz-panel-field h3 {
 	display: none;
 	margin: 0 0 30px 0;
@@ -381,6 +381,58 @@
 }
 .dilaz-panel-multi-text-wrap {
 	margin-right: 10px;
+}
+
+/*--------------------------------------------------------------*/
+/* Repeatable
+/*--------------------------------------------------------------*/
+.dilaz-panel-repeatable  {
+	position: relative
+}
+.dilaz-panel-repeatable .ui-sortable-placeholder { 
+	border: 2px dashed #aaa !important; 
+	background: #f9f9f9 !important; 
+	visibility: visible !important; 
+	margin: 0 15px 15px 0 !important;
+	width: 100% !important;
+	height: 50px !important;
+	float: left !important;
+	display: inline-block !important;
+}
+.dilaz-panel-repeatable-item {
+	margin-bottom: 15px;
+	position: relative;
+	height: auto
+}
+.dilaz-panel-repeatable-item-wrap {
+	margin-right: 10px;
+}
+.dilaz-panel-repeatable-item-wrap.inline {
+	float: none;
+	display: inline-block;
+}
+.dilaz-panel-repeatable-item-wrap label {
+	float: none;
+	display: block;
+}
+.sort-repeatable {
+	vertical-align:bottom !important;
+	position: relative;
+	bottom: -2px;
+}
+.sort-repeatable .dashicons-move {
+	vertical-align: baseline;
+	margin-right: 5px;
+	font-size: 16px;
+	cursor: move;
+}
+.repeatable-remove {
+	position: relative;
+	vertical-align:bottom !important;
+	bottom: 3px;
+	padding: 0 !important;
+	line-height:initial !important;
+	height: auto !important
 }
 
 

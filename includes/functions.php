@@ -30,11 +30,12 @@ if (!class_exists('DilazPanelFunctions')) {
 		 * Query select function
 		 *
 		 * @since 1.0
+		 * @since 2.6.2 added 'page' query type
 		 *
 		 * @global wpdb   $wpdb                WordPress database abstraction object
 		 * @param  string $_POST['q']          search string
 		 * @param  array  $_POST['selected']   selected items
-		 * @param  string $_POST['query_type'] 'post', 'user', 'term'
+		 * @param  string $_POST['query_type'] 'post', 'page', 'user', 'term'
 		 * @param  array  $_POST['query_args'] query arguments
 		 *
 		 * @return json.data
@@ -52,7 +53,7 @@ if (!class_exists('DilazPanelFunctions')) {
 			
 			if ($query_type == 'post') {
 			
-				# The callback is a closure that needs to use the $search from the current scope
+				/* The callback is a closure that needs to use the $search from the current scope */
 				add_filter('posts_where', function ($where) use ($search) {
 					$where .= (' AND post_title LIKE "%'. $search .'%"');
 					return $where;
@@ -75,7 +76,7 @@ if (!class_exists('DilazPanelFunctions')) {
 				
 			} else if ($query_type == 'page') {
 			
-				# The callback is a closure that needs to use the $search from the current scope
+				/* The callback is a closure that needs to use the $search from the current scope */
 				add_filter('posts_where', function ($where) use ($search) {
 					$where .= (' AND post_title LIKE "%'. $search .'%"');
 					return $where;
