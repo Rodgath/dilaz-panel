@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.6.4
+ * Version:		2.6.5
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.6.4
+|| @version		2.6.5
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -227,12 +227,8 @@ if (!class_exists('DilazPanel')) {
 				$this->setDefaults($option_name);
 			} else {
 				
-				$saved_panel_atts   = isset($saved_options['panel-atts']) ? $saved_options['panel-atts'] : '';
-				$defined_panel_atts = $this->_panelAtts;
-				
-				# remove 'id' and 'type' fields from panel atts
-				unset($defined_panel_atts['id']);
-				unset($defined_panel_atts['type']);
+				$saved_panel_atts['panel-atts']   = isset($saved_options['panel-atts']) ? $saved_options['panel-atts'] : '';
+				$defined_panel_atts['panel-atts'] = $this->panelAttsReduced();
 				
 				if ($defined_panel_atts != $saved_panel_atts) {
 					array_splice($saved_options, 0, 1, $defined_panel_atts); // replace old atts with new atts
@@ -240,6 +236,25 @@ if (!class_exists('DilazPanel')) {
 			}
 			
 			do_action('dilaz_panel_after_init');
+		}
+		
+		
+		/**
+		 * Panel attributes reduced
+		 *
+		 * @since  2.6.5
+		 * @access public
+		 * @return void
+		 */
+		function panelAttsReduced() {
+			
+			$panel_atts = $this->_panelAtts;
+			
+			# remove 'id' and 'type' fields from panel atts
+			unset($panel_atts['id']);
+			unset($panel_atts['type']);
+			
+			return $panel_atts;
 		}
 		
 		
@@ -760,6 +775,7 @@ if (!class_exists('DilazPanel')) {
 						case 'info'        : $output .= DilazPanelFields::fieldInfo($field); break;
 						case 'text'        : $output .= DilazPanelFields::fieldText($field); break;
 						case 'multitext'   : $output .= DilazPanelFields::fieldMultitext($field); break;
+						case 'password'    : $output .= DilazPanelFields::fieldPassword($field); break;
 						case 'email'       : $output .= DilazPanelFields::fieldEmail($field); break;
 						case 'textarea'    : $output .= DilazPanelFields::fieldTextarea($field); break;
 						case 'select'      : $output .= DilazPanelFields::fieldSelect($field); break;
@@ -906,7 +922,7 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @return array|bool false if option is not set or option file does not exist
 		 */
-		public static function getOptionsFromFile($option_name) {
+		public function getOptionsFromFile($option_name) {
 			
 			if (!isset($option_name)) return false;
 			
@@ -928,7 +944,9 @@ if (!class_exists('DilazPanel')) {
 				if (is_file($saved_options['panel-atts']['files'][2]))
 					include $saved_options['panel-atts']['files'][2];
 				
-				return $options;
+				$panel_atts['panel-atts'] = $this->panelAttsReduced();
+				
+				return wp_parse_args($panel_atts, $options);
 				
 			} else {
 				return false;
@@ -1035,6 +1053,19 @@ if (!class_exists('DilazPanel')) {
 					foreach ($option['options'] as $key => $value) {
 						if (isset($option['options'][$key])) {
 							$option_std[$key] = isset($value['default']) ? $value['default'] : '';
+						}
+					}
+				}
+				
+				# Set all repeatable fields to standard value
+				if ('repeatable' == $option['type']) {
+					
+					# create an array
+					$option_std = [];
+					
+					foreach ($option['options'] as $key => $value) {
+						foreach ($value as $k => $v) {
+							$option_std[$key][$k] = isset($v['value']) ? $v['value'] : '';
 						}
 					}
 				}
@@ -1154,7 +1185,9 @@ if (!class_exists('DilazPanel')) {
 					
 				}
 				
-				$merged_options = array_merge($saved_options, $sanitized_options);
+				$panel_atts['panel-atts'] = $this->panelAttsReduced();
+				
+				$merged_options = array_merge(wp_parse_args($panel_atts, $saved_options), $sanitized_options);
 				
 				update_option($option_name, $merged_options);
 				
@@ -1234,6 +1267,7 @@ if (!class_exists('DilazPanel')) {
 			
 				case 'text':
 				case 'switch':
+				case 'password':
 					return sanitize_text_field($input);
 					break;
 					

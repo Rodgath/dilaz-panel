@@ -298,7 +298,7 @@
 }
 
 /*--------------------------------------------------------------*/
-/* Infor
+/* Info
 /*--------------------------------------------------------------*/
 #dilaz-panel .info {
 	background: #f0f0f0;
@@ -389,7 +389,7 @@
 .dilaz-panel-repeatable  {
 	position: relative
 }
-.dilaz-panel-repeatable .ui-sortable-placeholder { 
+.dilaz-panel-repeatable .dilaz-panel-repeatable-item.ui-sortable-placeholder { 
 	border: 2px dashed #aaa !important; 
 	background: #f9f9f9 !important; 
 	visibility: visible !important; 
