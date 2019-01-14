@@ -54,7 +54,7 @@
 	border-left: 1px solid #dfdfdf;
 }
 .dilaz-panel-bottom {
-	border-top: 0;
+	border-top-color: #ebebeb;
 }
 .dilaz-panel-top {
 	background: #f8f8f8;
@@ -255,7 +255,7 @@
 }
 .dilaz-panel-field .dilaz-panel-section {
 	margin: 0;
-	border-bottom: 1px solid #ebebeb;
+	border-top: 1px solid #ebebeb;
 	padding: 25px 25px;
 }
 .dilaz-panel-field .dilaz-panel-section.half {

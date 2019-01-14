@@ -24,11 +24,21 @@ var DilazPanelScript = new function() {
 	var $ = jQuery.noConflict();
 	var $doc = $(document);
 	
+	
 	/**
 	 * DoWhen start
 	 */
 	$t.doWhen = function() {
 		$doc.doWhen();
+	}
+	
+	/**
+	 * Remove panel border bottom on the last item
+	 */
+	$t.removeBorderBottom = function(tabsContent) {
+		if (typeof tabsContent != 'undefined') {
+			tabsContent.find('.dilaz-panel-section:visible').first().css({'border-top':'0px'});
+		}
 	}
 	
 	/**
@@ -74,6 +84,9 @@ var DilazPanelScript = new function() {
 			
 			/* show only current fields */
 			$tabsContent.find($tabTarget).show().siblings().hide();
+			
+			/* remove bottom border for the first panel section */
+			$tabsContent.find('.dilaz-panel-section:visible').first().css({'border-top':'0'});
 			
 			/* hide all opened submenus */
 			$parent.siblings().find('.submenu').slideUp();
@@ -716,10 +729,112 @@ var DilazPanelScript = new function() {
 	}
 	
 	/**
+	 * Set Cookie
+	 * @since Dilaz Panel 2.6.8
+	 */
+	$t.setCookie = function(c_name, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var c_value = escape(value)+((exdays==null) ? "" : ("; expires="+exdate.toUTCString()));
+		document.cookie = c_name + "=" + c_value;
+	}
+	
+	/**
+	 * Get Cookie
+	 * @since Dilaz Panel 2.6.8
+	 */
+	$t.getCookie = function(c_name) {
+		var i, x, y, ARRcookies=document.cookie.split(";");
+		for (i = 0; i < ARRcookies.length; i++) {
+			x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+			y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+			x = x.replace(/^\s+|\s+$/g, "");
+			if (x == c_name) {
+				return unescape(y);
+			}
+		}
+	}
+	
+	/**
+	 * Get JSON
+	 * @since Dilaz Panel 2.6.8
+	 */
+	$t.getJSON = function(file, callback) {
+		
+		$.getJSON(file).done(function(jasonData) {
+			callback(jasonData);
+		}).error(function() {
+			
+			var $alertJsonError = $t.getCookie('DilazAlertJsonError') || '';
+			
+			/* prevent multiple alert popups */
+			if ($alertJsonError != 'yes') {
+				$t.setCookie('DilazAlertJsonError', 'yes', (1/(24*60*60)) * 10); // cookie expires after 10 seconds
+				alert('DilazPanel Error: Please check your JSON file.');
+			}
+		});
+	}
+	
+	/**
+	 * Get JSON
+	 * @since Dilaz Panel 2.6.8
+	 */
+	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
+		
+		var $linkId    = sectionId+'-'+fontFamily.replace(/ /g, '-').toLowerCase(),
+			$links     = document.getElementsByTagName('link'),
+			fontURLarr = [],
+			fontURL    = '';
+		
+		/* if Google Font resource link exists, delete it so that it can be updated */
+		for (var i = 0; i < $links.length; i++) {
+			if ($links[i].id == $linkId) {
+				$links[i].remove();
+			}
+		}
+		
+		fontURLarr.push('https://fonts.googleapis.com/css?family=');
+		fontURLarr.push(fontFamily.replace(/ /g, '+'));
+		
+		/* import Google Fonts */
+		$t.getJSON(dilaz_panel_lang.dilaz_panel_url +'includes/google-fonts.json', function(jasonData) {
+			// console.log(jasonData);
+			// console.log(jasonData[fontFamily]);
+			// console.log(jasonData[fontFamily].variants);
+			// console.log(jasonData[fontFamily].subsets);
+			var fontVariants    = jasonData[fontFamily].variants,
+				checkFontStyle  = JSON.stringify(fontVariants).indexOf(fontStyle) > -1,
+				checkFontWeight = JSON.stringify(fontVariants).indexOf(fontWeight) > -1,
+				fontSubsets     = jasonData[fontFamily].subsets,
+				checkFontSubset = JSON.stringify(fontSubsets).indexOf(fontSubset) > -1;
+				
+			if (checkFontStyle || checkFontWeight) {
+				var theStyle  = (checkFontStyle) ? fontStyle : '',
+					theWeight = (checkFontWeight) ? fontWeight : '';
+				if (theStyle !== '' || theWeight !== '') {
+					fontURLarr.push(':');
+					fontURLarr.push(theStyle+theWeight);
+				}
+			}
+			
+			if (checkFontSubset && fontSubset !== '') {
+				fontURLarr.push('&subset=');
+				fontURLarr.push(fontSubset);
+			}
+			
+			fontURL += fontURLarr.join('');
+			
+			if ($("link[href*='" + fontFamily + "']").length === 0) {
+				$('head>link:last').after('<link id="'+$linkId+'" href="'+fontURL+'" rel="stylesheet" type="text/css">');
+			}
+		});
+	}
+	
+	/**
 	 * Font preview
 	 */
 	$t.fontPreview = function() {
-		$('.dilaz-panel-section-font').each(function(){
+		$('.dilaz-panel-section-font').each(function() {
 			
 			var $this        = $(this),
 				$fFamily     = $this.find('.family'),
@@ -727,14 +842,15 @@ var DilazPanelScript = new function() {
 				$fWeight     = $this.find('.weight'),
 				$fStyle      = $this.find('.style'),
 				$fCase       = $this.find('.case'),
-				$fSize       = $this.find('.font-size'),
-				$fHeight     = $this.find('.font-height'),
+				$fSize       = $this.find('.f-size'),
+				$fHeight     = $this.find('.f-height'),
 				$panelColor  = $this.find('.dilaz-panel-color'),
 				$resultColor = $this.find('.wp-color-result'),
 				$fPreview    = $this.find('.font-preview'),
 				$fContent    = $fPreview.find('.content'),
 				$fColor      = $resultColor.css('background-color'),
-				$bgColor     = $t.bgColorBasedOnTextColor($fColor, '#fbfbfb', '#444');
+				$bgColor     = $t.bgColorBasedOnTextColor($fColor, '#fbfbfb', '#222'),
+				$fSectionId  = $this.closest('.dilaz-panel-section').attr('id');
 				
 			/* show preview */
 			$fPreview.show();
@@ -751,31 +867,45 @@ var DilazPanelScript = new function() {
 				'background-color' : $bgColor,
 			});
 			
-			$fFamily.on('change', function(){
-				$fContent.css({'font-family':$fFamily.val()});
+			/**
+			 * show Google Font in preview if its saved
+			 * @since Dilaz Panel 2.6.8
+			 */
+			$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
+			
+			$fFamily.on('change', function() {
+				var $familyVal = $fFamily.val();
+				var $defaultFonts = 'arial verdana trebuchet georgia times tahoma palatino helvetica';
+				$fContent.css({'font-family':$familyVal});
+				if ($defaultFonts.indexOf($familyVal) == -1) {
+					$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
+				}
 			});
 			
-			$fSubset.on('change', function(){
-				// $fContent.css({'font-family':$fSubset.val()});
+			$fSubset.on('change', function() {
+				$fContent.css({'font-subset':$fSubset.val()});
+				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
 			
-			$fWeight.on('change', function(){
+			$fWeight.on('change', function() {
 				$fContent.css({'font-weight':$fWeight.val()});
+				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
 			
-			$fStyle.on('change', function(){
+			$fStyle.on('change', function() {
 				$fContent.css({'font-style':$fStyle.val()});
+				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
 			
-			$fCase.on('change', function(){
+			$fCase.on('change', function() {
 				$fContent.css({'text-transform':$fCase.val()});
 			});
 			
-			$fSize.on('keyup', function(){
+			$fSize.on('keyup', function() {
 				$fContent.css({'font-size':$fSize.val() +'px'});
 			});
 			
-			$fHeight.on('keyup', function(){
+			$fHeight.on('keyup', function() {
 				$fContent.css({'line-height':$fHeight.val() +'px'});
 			});
 			
@@ -784,7 +914,7 @@ var DilazPanelScript = new function() {
 					var textColor = ui.color.toString();
 					$fContent.css({
 						'color': textColor, 
-						'background-color': $t.bgColorBasedOnTextColor(textColor, '#fbfbfb', '#444')
+						'background-color': $t.bgColorBasedOnTextColor(textColor, '#fbfbfb', '#222')
 					});
 				}
 			});
@@ -1049,11 +1179,6 @@ var DilazPanelScript = new function() {
 	 * Background color based on text color
 	 */
 	$t.bgColorBasedOnTextColor = function(textColor, lightColor, darkColor) {
-		// var color = (textColor.charAt(0) === '#') ? textColor.substring(1, 7) : textColor;
-		// var r = parseInt(color.substring(0, 2), 16); // hexToR
-		// var g = parseInt(color.substring(2, 4), 16); // hexToG
-		// var b = parseInt(color.substring(4, 6), 16); // hexToB
-		// return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ? darkColor : lightColor;
 		
 		var checkColor = $t.checkColor(textColor),
 			rgb = null;

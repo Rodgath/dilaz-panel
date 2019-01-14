@@ -16,8 +16,11 @@
 
 defined('ABSPATH') || exit;
 
-
 class DilazPanelDefaults {
+	
+	function __construct() {
+		
+	}
 	
 	/**
 	 * Background defaults
@@ -97,6 +100,53 @@ class DilazPanelDefaults {
 	
 	
 	/**
+	 * Get Google Fonts
+	 *
+	 * @since 2.6.8
+	 *
+	 * @return array
+	 */
+	public static function _getGoogleFonts() {
+		
+		$g_fonts_array = array();
+		$get_g_fonts = file_get_contents(dirname(__FILE__).'/google-fonts.json');
+		if ($get_g_fonts !== false && !empty($get_g_fonts)) {
+			$g_fonts_array = json_decode($get_g_fonts, true);
+			foreach ((array)$g_fonts_array as $font => &$atts) {
+				foreach ($atts['variants'] as $ke => &$val) {
+					foreach ($val as $k => &$v) {
+						if (isset($v['url']))
+							unset($v['url']);
+					}
+				}
+			}
+		}
+		
+		return apply_filters('dilaz_panel_get_google_fonts', $g_fonts_array);
+	}
+	
+	
+	/**
+	 * Google Fonts
+	 *
+	 * @since 2.6.8
+	 *
+	 * @return array
+	 */
+	public static function _googleFonts() {
+		
+		$g_fonts = DilazPanelDefaults::_getGoogleFonts();
+		$g_font_names = [];
+		
+		foreach ((array)$g_fonts as $font_name => &$atts) {
+			$g_font_names[$font_name] = $font_name;
+		}
+		
+		return apply_filters('dilaz_panel_google_fonts', $g_font_names);
+	}
+	
+	
+	/**
 	 * Font defaults
 	 *
 	 * @since 1.0
@@ -128,7 +178,7 @@ class DilazPanelDefaults {
 	 * @return array
 	 */
 	public static function _font_family() {
-		$font_family = array(
+		$font_family = wp_parse_args(DilazPanelDefaults::_googleFonts(), array(
 			''          => '',
 			'arial'     => 'Arial',
 			'verdana'   => 'Verdana, Geneva',
@@ -138,7 +188,7 @@ class DilazPanelDefaults {
 			'tahoma'    => 'Tahoma, Geneva',
 			'palatino'  => 'Palatino',
 			'helvetica' => 'Helvetica',
-		);
+		));
 		$font_family = apply_filters('dilaz_panel_font_family', $font_family);
 		$font_family = array_map('sanitize_text_field', $font_family);
 		return $font_family;
@@ -155,7 +205,28 @@ class DilazPanelDefaults {
 	public static function _font_subset() {
 		$font_subset = array(
 			''      => '',
-			'latin' => 'Latin',
+			'arabic' => 'arabic',
+			'bengali' => 'bengali',
+			'cyrillic' => 'cyrillic',
+			'cyrillic-ext' => 'cyrillic-ext',
+			'devanagari' => 'devanagari',
+			'greek' => 'greek',
+			'greek-ext' => 'greek-ext',
+			'gujarati' => 'gujarati',
+			'gurmukhi' => 'gurmukhi',
+			'hebrew' => 'hebrew',
+			'kannada' => 'kannada',
+			'khmer' => 'khmer',
+			'latin' => 'latin',
+			'latin-ext' => 'latin-ext',
+			'malayalam' => 'malayalam',
+			'myanmar' => 'myanmar',
+			'oriya' => 'oriya',
+			'sinhala' => 'sinhala',
+			'tamil' => 'tamil',
+			'telugu' => 'telugu',
+			'thai' => 'thai',
+			'vietnamese' => 'vietnamese',
 		);
 		$font_subset = apply_filters('dilaz_panel_font_subset', $font_subset);
 		$font_subset = array_map('sanitize_text_field', $font_subset);
@@ -203,15 +274,15 @@ class DilazPanelDefaults {
 	public static function _font_weights() {
 		$font_weights = array(
 			''        => '',
-			'100'     => '100',
-			'200'     => '200',
-			'300'     => '300',
-			'400'     => '400',
-			'500'     => '500',
-			'600'     => '600',
-			'700'     => '700',
-			'800'     => '800',
-			'900'     => '900',
+			'100'     => 'Ultra-Light 100',
+			'200'     => 'Light 200',
+			'300'     => 'Book 300',
+			'400'     => 'Normal 400',
+			'500'     => 'Medium 500',
+			'600'     => 'Semi-Bold 600',
+			'700'     => 'Bold 700',
+			'800'     => 'Extra-Bold 800',
+			'900'     => 'Ultra-Bold 900',
 			'normal'  => 'Normal',
 			'lighter' => 'Lighter',
 			'bold'    => 'Bold',
