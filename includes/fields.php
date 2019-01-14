@@ -349,7 +349,7 @@ if (!class_exists('DilazPanelFields')) {
 			$select2_width = isset($args['select2width']) ? sanitize_text_field($args['select2width']) : '100px';
 			$select2       = isset($args['select2']) ? sanitize_html_class($args['select2']) : '';
 			$multiple_attr = $select2 == 'select2multiple' ? 'multiple="multiple"' : '';
-			$multiple_bool = $select2 == 'select2multiple' ? 'TRUE' : 'FALSE';
+			$multiple_bool = $select2 == 'select2multiple' ? 'true' : 'false';
 			
 			// if (wp_script_is('select2script', 'enqueued')) {
 				// wp_localize_script('select2script', 'dilaz_panel_post_select_lang', array(
@@ -885,10 +885,10 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
-			$data_file_multiple = (isset($args['multiple']) && $args['multiple'] == TRUE) ? 'data-file-multiple="TRUE"' : '';
+			$data_file_multiple = (isset($args['multiple']) && $args['multiple'] == TRUE) ? 'data-file-multiple="true"' : '';
 			$file_type          = (isset($args['file_type']) && $args['file_type'] != '') ? strtolower($args['file_type']) : 'image';
 			$data_file_type     = $file_type != '' ? 'data-file-type="'. $file_type .'"' : 'data-file-type="image"';
-			$data_file_specific = (isset($args['file_specific']) && $args['file_specific'] == TRUE) ? 'data-file-specific="TRUE"' : '';
+			$data_file_specific = (isset($args['file_specific']) && $args['file_specific'] == TRUE) ? 'data-file-specific="true"' : '';
 			$frame_title        = (isset($args['frame_title']) && $args['frame_title'] != '') ? sanitize_text_field($args['frame_title']) : '';
 			$frame_button_text  = (isset($args['frame_button_text']) && $args['frame_button_text'] != '') ? sanitize_text_field($args['frame_button_text']) : '';
 			
