@@ -301,19 +301,19 @@
 /* Info
 /*--------------------------------------------------------------*/
 #dilaz-panel .info {
-	background: #f0f0f0;
-	/*border: 1px solid #dfdfdf;*/
-	/*margin: 20px 20px 0px 20px;*/
-	padding: 25px 20px;
-	border-bottom: 1px solid #dfdfdf
+	background: #d7f2ff;
+	padding: 20px 20px 10px;
+	border: 1px solid #acd4e6;
+	margin: 25px 25px 0;
+	color: #1e6e91;
 }
 #dilaz-panel .info h4 {
-	margin: 0 0 15px;
+	margin: 0 0 10px;
 	font-size: 14px;
 	font-weight: bold;
 }
 #dilaz-panel .info p {
-	margin: 0
+	margin: 0 0 10px;
 }
 
 /*--------------------------------------------------------------*/

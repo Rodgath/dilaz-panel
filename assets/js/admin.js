@@ -94,21 +94,21 @@ var DilazPanelScript = new function() {
 				
 				var options, attachment;
 				
-				$self              = $(event.target);
-				$fileUpload        = $self.closest('.dilaz-panel-file-upload');
-				$fileWrapper       = $fileUpload.find('.dilaz-panel-file-wrapper');
-				$fileWrapperParent = $fileUpload.parent();
-				$fileId            = $fileWrapper.data('file-id') || '';
-				$fileLibrary       = $self.data('file-library') || '';
-				$fileFormat        = $self.data('file-format') || '';
-				$fileMime          = $self.data('file-mime') || '';
-				$fileSpecific      = $self.data('file-specific') || false;
-				$fileMultiple      = $self.data('file-multiple') || false;
-				$fileType          = $self.data('file-type') || '';
-				$fieldType         = $self.data('field-type') || '';
-				$frameTitle        = $self.data('frame-title') || '';
-				$frameButtonText   = $self.data('frame-button-text') || '';
-				$mediaPreview      = $fileWrapperParent.find('.dilaz-panel-media-file');
+				var $self              = $(event.target),
+					$fileUpload        = $self.closest('.dilaz-panel-file-upload'),
+					$fileWrapper       = $fileUpload.find('.dilaz-panel-file-wrapper'),
+					$fileWrapperParent = $fileUpload.parent(),
+					$fileId            = $fileWrapper.data('file-id') || '',
+					$fileLibrary       = $self.data('file-library') || '',
+					$fileFormat        = $self.data('file-format') || '',
+					$fileMime          = $self.data('file-mime') || '',
+					$fileSpecific      = $self.data('file-specific') || false,
+					$fileMultiple      = $self.data('file-multiple') || false,
+					$fileType          = $self.data('file-type') || '',
+					$fieldType         = $self.data('field-type') || '',
+					$frameTitle        = $self.data('frame-title') || '',
+					$frameButtonText   = $self.data('frame-button-text') || '',
+					$mediaPreview      = $fileWrapperParent.find('.dilaz-panel-media-file');
 				
 				/* open the frame if it exists */
 				if ( imageFrame ) {
@@ -131,7 +131,7 @@ var DilazPanelScript = new function() {
 				/* frame select handler */
 				imageFrame.on( 'select', function() {
 					
-					selection = imageFrame.state().get('selection');
+					var selection = imageFrame.state().get('selection');
 					
 					if (!selection)
 						return;
@@ -732,20 +732,23 @@ var DilazPanelScript = new function() {
 				$panelColor  = $this.find('.dilaz-panel-color'),
 				$resultColor = $this.find('.wp-color-result'),
 				$fPreview    = $this.find('.font-preview'),
-				$fContent    = $fPreview.find('.content');
+				$fContent    = $fPreview.find('.content'),
+				$fColor      = $resultColor.css('background-color'),
+				$bgColor     = $t.bgColorBasedOnTextColor($fColor, '#fbfbfb', '#444');
 				
 			/* show preview */
 			$fPreview.show();
 			
 			/* render already set values */
 			$fContent.css({
-				'font-family'    : $fFamily.val(),
-				'font-weight'    : $fWeight.val(),
-				'font-style'     : $fStyle.val(),
-				'text-transform' : $fCase.val(),
-				'font-size'      : $fSize.val() +'px',
-				'line-height'    : $fHeight.val() +'px',
-				'color'          : $resultColor.css('background-color'),
+				'font-family'      : $fFamily.val(),
+				'font-weight'      : $fWeight.val(),
+				'font-style'       : $fStyle.val(),
+				'text-transform'   : $fCase.val(),
+				'font-size'        : $fSize.val() +'px',
+				'line-height'      : $fHeight.val() +'px',
+				'color'            : $fColor,
+				'background-color' : $bgColor,
 			});
 			
 			$fFamily.on('change', function(){
@@ -777,8 +780,12 @@ var DilazPanelScript = new function() {
 			});
 			
 			$panelColor.wpColorPicker({
-				change:function( event, ui ) {
-					$fContent.css({'color':ui.color.toString()});
+				change: function(event, ui) {
+					var textColor = ui.color.toString();
+					$fContent.css({
+						'color': textColor, 
+						'background-color': $t.bgColorBasedOnTextColor(textColor, '#fbfbfb', '#444')
+					});
 				}
 			});
 		});
@@ -956,6 +963,126 @@ var DilazPanelScript = new function() {
 			
 			return false;
 		});
+	}
+	
+	/**
+	 * check if color is HEX, RGB, RGBA, HSL, HSLA
+	 * 
+	 * @since Dilaz Panel 2.6.6
+	 * @link https://stackoverflow.com/a/32685393
+	 */
+	$t.checkColor = function(color) {
+		
+		/* check HEX */
+		var isHex = /^#(?:[A-Fa-f0-9]{3}){1,2}$/i.test(color);
+		if (isHex) { return 'hex'; }
+		
+		/* check RGB */
+		var isRgb = /^rgb[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*(?:,(?![)])|(?=[)]))){3}[)]$/i.test(color);
+		if (isRgb) { return 'rgb'; }
+		
+		/* check RGBA */
+		var isRgba = /^^rgba[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*,){3}\s*0*(?:\.\d+|1(?:\.0*)?)\s*[)]$/i.test(color);
+		if (isRgba) { return 'rgba'; }
+		
+		/* check HSL */
+		var isHsl = /^hsl[(]\s*0*(?:[12]?\d{1,2}|3(?:[0-5]\d|60))\s*(?:\s*,\s*0*(?:\d\d?(?:\.\d+)?\s*%|\.\d+\s*%|100(?:\.0*)?\s*%)){2}\s*[)]$/i.test(color);
+		if (isHsl) { return 'hsl'; }
+		
+		/* check HSLA */
+		var isHsla = /^hsla[(]\s*0*(?:[12]?\d{1,2}|3(?:[0-5]\d|60))\s*(?:\s*,\s*0*(?:\d\d?(?:\.\d+)?\s*%|\.\d+\s*%|100(?:\.0*)?\s*%)){2}\s*,\s*0*(?:\.\d+|1(?:\.0*)?)\s*[)]$/i.test(color);
+		if (isHsla) { return 'hsla'; }
+		
+	}
+	
+	/**
+	 * RGB to HEX
+	 * 
+	 * @since Dilaz Panel 2.6.6
+	 */
+	$t.rgbToHex = function(red, green, blue) {
+		var rgb = blue | (green << 8) | (red << 16);
+		return '#' + (0x1000000 + rgb).toString(16).slice(1);
+	}
+	
+	/**
+	 * HEX to RGB
+	 * 
+	 * @since Dilaz Panel 2.6.6
+	 * @return Object|String
+	 */
+	$t.hexToRgb = function(hex) {
+		/* Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF") */
+		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+		hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+			return r + r + g + g + b + b;
+		});
+
+		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16)
+		} : null;
+	}
+	
+	/**
+	 * HEX to RGBA
+	 * 
+	 * @return Object|String
+	 */
+	$t.hexToRgba = function(hex, opacity = 1) {
+		
+		if ($t.checkColor(hex) != 'hex') return null; 
+		
+		/* convert the hex to RGB */
+		var hexToRgb = $t.hexToRgb(hex);
+		
+		if (typeof opacity != 'undefined') {
+			return $.extend(hexToRgb, {'o':opacity});
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Background color based on text color
+	 */
+	$t.bgColorBasedOnTextColor = function(textColor, lightColor, darkColor) {
+		// var color = (textColor.charAt(0) === '#') ? textColor.substring(1, 7) : textColor;
+		// var r = parseInt(color.substring(0, 2), 16); // hexToR
+		// var g = parseInt(color.substring(2, 4), 16); // hexToG
+		// var b = parseInt(color.substring(4, 6), 16); // hexToB
+		// return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ? darkColor : lightColor;
+		
+		var checkColor = $t.checkColor(textColor),
+			rgb = null;
+			
+		if (checkColor == 'hex') {
+			var hexToRgb = $t.hexToRgb(textColor);
+			if (typeof(hexToRgb) === 'object' && hexToRgb != null) {
+				var red   = hexToRgb.hasOwnProperty('r') ? hexToRgb.r : 0,
+					green = hexToRgb.hasOwnProperty('g') ? hexToRgb.g : 0,
+					blue  = hexToRgb.hasOwnProperty('b') ? hexToRgb.b : 0,
+					rgb   = 'rgb('+red+', '+green+', '+blue+')';
+			}
+		} else if (checkColor == 'rgb') {
+			var rgb = textColor;
+		}
+		
+		if (rgb == null) return null;
+		
+		// var matches = rgb.match(/rgb\((\d+),\s?(\d+),\s?(\d+)\)/);
+		var matches = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		
+		if (!matches) return null;
+		
+		if (matches != null && matches.length && matches.length > 3) {
+			var c = 'rgb(' + matches[1] + ',' + matches[2] + ',' + matches[3] + ')';
+			var o = Math.round(((parseInt(matches[1], 10) * 299) + (parseInt(matches[2], 10) * 587) + (parseInt(matches[3], 10) * 114)) / 1000);
+			
+			return (o > 125) ? darkColor : lightColor;
+		}
 	}
 	
 	/**

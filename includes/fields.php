@@ -86,8 +86,8 @@ if (!class_exists('DilazPanelFields')) {
 			$output = '';
 			
 			$output .= '<div class="info">';
-			$output .= '<h4>'. $name .'</h4>';
-			$output .= '<p>'. $desc .'</p>';
+			$output .= $name != '' ? '<h4>'. $name .'</h4>' : '';
+			$output .= $desc != '' ? '<p>'. $desc .'</p>' : '';
 			$output .= '</div>';
 			
 			return $output;
@@ -188,7 +188,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			extract($field);
 			
-			return '<input type="password" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-password" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
+			return '<input type="password" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-password" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" size="46" />';
 			
 		}
 		
@@ -263,39 +263,22 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			$output .= '<ul id="'. esc_attr($id) .'" class="dilaz-panel-repeatable '.$class.'" data-ns="'.$not_sortable.'" data-s="'.$sortable.'" data-nr="'.$not_removable.'" data-r="'.$removable.'">';
-				$i = 0;	
-				if ($value != '') {
-					foreach($value as $key => $val) {
-						$output .= '<li class="dilaz-panel-repeatable-item">'.($not_sortable > $i ? '' : $sorter);
-							if (is_array($val)) {
-								foreach($val as $k => $v) {
-									$label = isset($options[0][$k]['label']) ? $options[0][$k]['label'] : '';
-									$field_size = isset($options[0][$k]['size']) ? intval($options[0][$k]['size']) : 30;
-									$output .= '<div class="dilaz-panel-repeatable-item-wrap inline">';
-									if ($label != '') {
-										$output .= '<label for="'.esc_attr($id).'"><strong>'.$label.'</strong></label>';
-									}
-									$output .= '<input type="text" class="'.$k.$i.'" name="'.esc_attr($id).'['.$i.'][]" value="'.$v.'" size="'.$field_size.'" />
-									</div>';
-								}
-							} else {
-								$output .= '<input type="text" name="'.esc_attr($id).'['.$i.']" value="'.$val.'" size="30" />';
-							}
-						$output .= ($not_removable > $i || $i < 1 ? '' : $remover).'</li>';
-						$i++;
-					}
-				} else {
+				if (isset($options)) {
+					$i = 0;
 					foreach ((array)$options as $option_key => $option_value) {
 						$output .= '<li class="dilaz-panel-repeatable-item">'.($not_sortable > $i ? '' : $sorter);
 							if (is_array($option_value)) {
 								foreach($option_value as $k => $v) {
+									
+									$saved_value = isset($value[$option_key][$k]) ? $value[$option_key][$k] : $v['value'];
 									$label = isset($v['label']) ? $v['label'] : '';
 									$field_size = isset($options[0][$k]['size']) ? intval($options[0][$k]['size']) : 30;
+									
 									$output .= '<div class="dilaz-panel-repeatable-item-wrap inline">';
 									if ($label != '') {
 										$output .= '<label for="'.esc_attr($id).'"><strong>'.$v['label'].'</strong></label>';
 									}
-									$output .= '<input type="text" class="'.$k.$i.'" name="'.esc_attr($id).'['.$i.'][]" value="'.$v['value'].'" size="'.$field_size.'" />
+									$output .= '<input type="text" class="'.$k.$i.'" name="'.esc_attr($id).'['.$i.'][]" value="'.$saved_value.'" size="'.$field_size.'" />
 									</div>';
 								}
 							} else {

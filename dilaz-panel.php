@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.6.5
+ * Version:		2.6.6
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.6.5
+|| @version		2.6.6
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -944,8 +944,10 @@ if (!class_exists('DilazPanel')) {
 				if (is_file($saved_options['panel-atts']['files'][2]))
 					include $saved_options['panel-atts']['files'][2];
 				
+				# set attributes
 				$panel_atts['panel-atts'] = $this->panelAttsReduced();
 				
+				# merge attributes to options
 				return wp_parse_args($panel_atts, $options);
 				
 			} else {
@@ -1282,7 +1284,8 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'email':
-					return sanitize_email($input);
+					$sanitized_email = sanitize_email($input);
+					return is_email($sanitized_email) ? $sanitized_email : '';
 					break;
 					
 				case 'textarea':
