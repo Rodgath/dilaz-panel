@@ -47,7 +47,7 @@ Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b) to se
 
 ## File Structure
 ```
-wp-includes/plugins/dilaz-panel/  # → Dilaz panel plugin
+wp-content/plugins/dilaz-panel/  # → Dilaz panel plugin
 ├── assets/                       # → Plugin ssets
 │   ├── css/                      # → Stylesheets
 │   ├── fonts/                    # → Fonts
