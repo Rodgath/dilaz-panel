@@ -611,31 +611,31 @@ input.dilaz-panel-switch {
     border-radius: 2px;
     border: 1px solid #c8c8c8
 }
-.dilaz-panel-slider .ui-slider-handle {
+.dilaz-panel-slider.ui-widget-content .ui-slider-handle {
 	position: absolute;
 	top: -7px;
 	margin-left: -8px;
-    width: 16px;
-    height: 16px;
-    background: #708a51;
-    border-radius: 100%;
-    cursor: default;
-    cursor: pointer;
-    -webkit-box-shadow: inset 0 0 0 4px #fff;
-	   -moz-box-shadow: inset 0 0 0 4px #fff;
-			box-shadow: inset 0 0 0 4px #fff;
-    z-index: 2
+	width: 16px;
+	height: 16px;
+	background: #708a51 !important;
+	border-radius: 100%;
+	cursor: default;
+	cursor: pointer;
+	-webkit-box-shadow: inset 0 0 0 4px #fff !important;
+	-moz-box-shadow: inset 0 0 0 4px #fff !important;
+	box-shadow: inset 0 0 0 4px #fff !important;
+	z-index: 2;
 }
 .dilaz-panel-slider .ui-slider-handle.ui-corner-all {
-    border: 2px solid #708a51
+    border: 2px solid #708a51 !important;
 }
 .dilaz-panel-slider .ui-widget-header {
 	position:absolute;
-	background: #8BC34A;
+	background: #8BC34A !important;
 	height:6px;
 	left:-1px;
 	top:-1px;
-	border: 1px solid #809f5c;
+	border: 1px solid #809f5c !important;
 	-webkit-border-radius: 8px;
 	   -moz-border-radius: 8px;
 			border-radius: 8px;
@@ -652,19 +652,19 @@ input.dilaz-panel-switch {
 	text-align: left;
 }
 .dilaz-panel-range .ui-slider .ui-slider-handle {
-    border: 2px solid #708a51;
+    border: 2px solid #708a51 !important;
     position: absolute;
     top: -7px;
     margin-left: -8px;
     width: 16px;
     height: 16px;
-    background: #708a51;
+    background: #708a51 !important;
     border-radius: 100%;
     cursor: default;
     cursor: pointer;
-    -webkit-box-shadow: inset 0 0 0 4px #fff;
-    -moz-box-shadow: inset 0 0 0 4px #fff;
-    box-shadow: inset 0 0 0 4px #fff;
+    -webkit-box-shadow: inset 0 0 0 4px #fff !important;
+    -moz-box-shadow: inset 0 0 0 4px #fff !important;
+    box-shadow: inset 0 0 0 4px #fff !important;
     z-index: 1;
 }
 .dilaz-panel-range .ui-slider .ui-slider-range {
@@ -681,16 +681,16 @@ input.dilaz-panel-switch {
 	height: 6px;
 	width: 400px;
 	text-align: left;
-	background: #eee;
+	background: #eee !important;
 	border-radius: 2px;
 	margin-right: 15px;
-	border: 1px solid #cccccc;
+	border: 1px solid #cccccc !important;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 }
 .dilaz-panel-range .ui-widget-header {
-    background: #8BC34A;
+    background: #8BC34A !important;
     margin-top: -1px;
     border: 1px solid #809f5c !important;
 }
