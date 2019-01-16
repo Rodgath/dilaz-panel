@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.6.8
+ * Version:		2.7
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.6.8
+|| @version		2.7
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -180,7 +180,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function constants() {
+		public function constants() {
 			@define('DILAZ_PANEL_URL', plugin_dir_url(__FILE__));
 			@define('DILAZ_PANEL_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 			@define('DILAZ_PANEL_IMAGES', DILAZ_PANEL_URL .'assets/images/');
@@ -195,7 +195,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function includes() {
+		public function includes() {
 			require_once DILAZ_PANEL_DIR .'includes/functions.php';
 			require_once DILAZ_PANEL_DIR .'includes/fields.php';
 			require_once DILAZ_PANEL_DIR .'includes/defaults.php';
@@ -209,7 +209,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function init() {
+		public function init() {
 
 			do_action('dilaz_panel_before_init');
 			
@@ -246,7 +246,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function panelAttsReduced() {
+		public function panelAttsReduced() {
 			
 			$panel_atts = $this->_panelAtts;
 			
@@ -266,7 +266,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function registerMenu() {
+		public function registerMenu() {
 			
 			$params = $this->_params;
 
@@ -370,7 +370,8 @@ if (!class_exists('DilazPanel')) {
 					'remove'             => __('Remove', 'dilaz-panel'),
 					'upload_title'       => __('Select Image', 'dilaz-panel'),
 					'upload_alert'       => __('Only image is allowed, please try again!', 'dilaz-panel'),
-					'confirm_delete'     => __('Are you sure?', 'dilaz-panel')
+					'confirm_delete'     => __('Are you sure?', 'dilaz-panel'),
+					'confirm_reset'      => __('Are you sure? All settings will be lost and replaced with default settings!', 'dilaz-panel'),
 				)
 			);
 		}
@@ -383,7 +384,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function sanitizeParams($params) {
+		public function sanitizeParams($params) {
 			
 			foreach($params as $key => $val) {
 				switch ($key) {
@@ -444,7 +445,7 @@ if (!class_exists('DilazPanel')) {
 		 * @global string $wp_admin_bar
 		 * @return void
 		 */
-		function adminBar() {
+		public function adminBar() {
 			
 			$params = $this->_params;
 			
@@ -492,7 +493,7 @@ if (!class_exists('DilazPanel')) {
 							</div>
 						</div>
 						<div id="dilaz-panel-content" class="clearfix">
-							<form id="dilaz-panel-form" enctype="multipart/form-data" action="options.php" method="post" data-option-name="<?php echo $this->_optionName; ?>" data-option-page="<?php echo $_GET['page']; ?>">
+							<form id="dilaz-panel-form" enctype="multipart/form-data" method="post" data-option-name="<?php echo $this->_optionName; ?>" data-option-page="<?php echo $_GET['page']; ?>">
 								<div class="dilaz-panel-top clearfix">
 									<div style="float:left">
 										<ul class="subsubsub">
@@ -523,7 +524,7 @@ if (!class_exists('DilazPanel')) {
 								<div class="clear"></div>
 								<div class="dilaz-panel-bottom clearfix">
 									<div class="dilaz-ajax-save" style="float:left">
-										<input type="submit" class="reset button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" onclick="return confirm('<?php print esc_js(__('Click OK to reset. All settings will be lost and replaced with default settings!', 'dilaz-panel')); ?>');" />
+										<input type="submit" class="reset button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" />
 										<span class="spinner"></span>
 										<span class="progress"><?php _e('Resetting options... Please wait...', 'dilaz-panel'); ?></span>
 										<span class="finished"></span>
@@ -829,7 +830,7 @@ if (!class_exists('DilazPanel')) {
 		 * @param  string $option_name
 		 * @return void
 		 */
-		function setDefaults($option_name) {
+		public function setDefaults($option_name) {
 			
 			$values = $this->dafaultValues();
 			
@@ -851,7 +852,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void|bool
 		 */
-		function setOption($option_name, $option_id, $option_value = false, $option_type = false) {
+		public function setOption($option_name, $option_id, $option_value = false, $option_type = false) {
 			
 			if (!isset($option_name)) return false;
 			if (!isset($option_id)) return false;
@@ -892,7 +893,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public 
 		 * @return void|bool
 		 */
-		function deleteOption($option_name, $option_id) {
+		public function deleteOption($option_name, $option_id) {
 			
 			if (!isset($option_name)) return false;
 			if (!isset($option_id)) return false;
@@ -1007,7 +1008,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return array all default values
 		 */
-		function dafaultValues($option_name = '') {
+		public function dafaultValues($option_name = '') {
 			
 			$output = [];
 			if ($option_name != '') {
@@ -1095,7 +1096,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function resetOptions() {
+		public function resetOptions() {
 			
 			$response = array();
 			
@@ -1114,7 +1115,7 @@ if (!class_exists('DilazPanel')) {
 				
 				$response['success']  = 1;
 				$response['message']  = esc_html__('Options reset successfully.', 'dilaz-panel');
-				$response['redirect'] = admin_url('admin.php?page='. $option_page .'&reset=true');
+				$response['redirect'] = admin_url('admin.php?page='. $option_page);
 				
 			} else {
 				$response['success'] = 0;
@@ -1137,7 +1138,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return json
 		 */
-		function saveOptions() {
+		public function saveOptions() {
 			
 			$response = array();
 			
@@ -1221,7 +1222,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void|bool false if option is not saved
 		 */
-		function saveOption($option_name, $option_id, $option_value = false, $option_type = false) {
+		public function saveOption($option_name, $option_id, $option_value = false, $option_type = false) {
 			
 			if (!isset($option_name)) return false;
 			if (!isset($option_id)) return false;
@@ -1264,7 +1265,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return string|mixed|bool sanitized values
 		 */
-		function sanitizeOption($type, $input, $option = '', $set_option = false) {
+		public function sanitizeOption($type, $input, $option = '', $set_option = false) {
 			
 			switch ($type) {
 			
@@ -1447,7 +1448,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function exportOptions() {
+		public function exportOptions() {
 			
 			$response = array();
 			
@@ -1483,7 +1484,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		function importOptions() {
+		public function importOptions() {
 			
 			$response = array();
 			
@@ -1538,7 +1539,7 @@ if (!class_exists('DilazPanel')) {
 		 * @global WP_Filesystem_Base $wp_filesystem Subclass
 		 * @return string|bool        file content, false on failure
 		 */
-		function initializeFileSystem($file) {
+		public function initializeFileSystem($file) {
 			
 			$url = wp_nonce_url('admin.php?page='. $this->_params['page_slug']);
 			

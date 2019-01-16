@@ -251,7 +251,7 @@ var DilazPanelScript = new function() {
 			var $this = $(this);
 			
 			$this.siblings('input').attr('value', '');
-			$this.closest('.dilaz-panel-media-file').slideUp(200);
+			$this.closest('.dilaz-panel-media-file').slideUp(500);
 			setTimeout(function() {
 				$this.closest('.dilaz-panel-media-file').remove();
 			}, 1000);
@@ -477,54 +477,59 @@ var DilazPanelScript = new function() {
 	 * Ajax - reset options
 	 */
 	$t.resetOptions = function() {
-		$('#dilaz-panel-form').on('click', '.reset', function() {
+		$('#dilaz-panel-form').on('click', '.reset', function(e) {
 			
-			var $resetButton = $(this),
-				$panelForm   = $resetButton.closest('#dilaz-panel-form'),
-				$security    = $('input[name="security"]', $panelForm).val(),
-				$optionName  = $panelForm.data('option-name'),
-				$optionPage  = $panelForm.data('option-page'),
-				$spinner     = $resetButton.siblings('.spinner'),
-				$progress    = $resetButton.siblings('.progress'),
-				$finished    = $resetButton.siblings('.finished');
+			e.preventDefault();
+			
+			if (confirm(dilaz_panel_lang.confirm_reset)) {
+			
+				var $resetButton = $(this),
+					$panelForm   = $resetButton.closest('#dilaz-panel-form'),
+					$security    = $('input[name="security"]', $panelForm).val(),
+					$optionName  = $panelForm.data('option-name'),
+					$optionPage  = $panelForm.data('option-page'),
+					$spinner     = $resetButton.siblings('.spinner'),
+					$progress    = $resetButton.siblings('.progress'),
+					$finished    = $resetButton.siblings('.finished');
+					
+				$.ajax({
+					type     : 'POST',
+					url      : ajaxurl,
+					dataType : 'json',
+					cache	 : false,
+					data     : {
+						action            : 'dilaz_panel_reset_options',
+						security          : $security, 
+						dilaz_option_name : $optionName, 
+						dilaz_option_page : $optionPage, 
+					},
+					beforeSend : function() {
+						$spinner.show().addClass('is-active');
+						$progress.show();
+					},
+					success : function(response) {
+						
+						if (response.success) {
+							$spinner.delay(1800).hide(290);
+							$progress.delay(1800).hide(290);
+						}
+						
+						if (response.success == 1) {
+							$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
+							setTimeout(function() {
+								window.location = response.redirect;
+							}, 3000);
+						} else {
+							$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
+						}
+					},
+					complete : function() {
+						$finished.delay(5000).fadeOut(260);
+					}
+				});
 				
-			$.ajax({
-				type     : 'POST',
-				url      : ajaxurl,
-				dataType : 'json',
-				cache	 : false,
-				data     : {
-					action            : 'dilaz_panel_reset_options',
-					security          : $security, 
-					dilaz_option_name : $optionName, 
-					dilaz_option_page : $optionPage, 
-				},
-				beforeSend : function() {
-					$spinner.show().addClass('is-active');
-					$progress.show();
-				},
-				success : function(response) {
-					
-					if (response.success) {
-						$spinner.delay(1800).hide(290);
-						$progress.delay(1800).hide(290);
-					}
-					
-					if (response.success == 1) {
-						$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
-						setTimeout(function() {
-							window.location = response.redirect;
-						}, 3000);
-					} else {
-						$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
-					}
-				},
-				complete : function() {
-					$finished.delay(5000).fadeOut(260);
-				}
-			});
-			
-			return false;
+				return false;
+			}
 		});
 	}
 	
@@ -532,7 +537,7 @@ var DilazPanelScript = new function() {
 	 * Ajax - save options
 	 */
 	$t.saveOptions = function() {
-		$('#dilaz-panel-form').on('submit', function(e) {
+		$('#dilaz-panel-form').on('click', '.update', function(e) {
 			
 			e.preventDefault();
 			
@@ -551,8 +556,8 @@ var DilazPanelScript = new function() {
 					$editorField.html($editorContents);
 				}
 			});
-			
-			var $panelForm    = $(this),
+			var $saveButton = $(this),
+				$panelForm   = $saveButton.closest('#dilaz-panel-form'),
 				$submitButton = $('input[name="update"]', $panelForm),
 				$spinner      = $submitButton.siblings('.spinner'),
 				$progress     = $submitButton.siblings('.progress'),
@@ -780,7 +785,7 @@ var DilazPanelScript = new function() {
 	 * @since Dilaz Panel 2.6.8
 	 */
 	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
-		
+	
 		var $linkId    = sectionId+'-'+fontFamily.replace(/ /g, '-').toLowerCase(),
 			$links     = document.getElementsByTagName('link'),
 			fontURLarr = [],
@@ -798,34 +803,40 @@ var DilazPanelScript = new function() {
 		
 		/* import Google Fonts */
 		$t.getJSON(dilaz_panel_lang.dilaz_panel_url +'includes/google-fonts.json', function(jasonData) {
+			// console.log(Object.keys(jasonData).length);
 			// console.log(jasonData);
 			// console.log(jasonData[fontFamily]);
 			// console.log(jasonData[fontFamily].variants);
 			// console.log(jasonData[fontFamily].subsets);
-			var fontVariants    = jasonData[fontFamily].variants,
-				checkFontStyle  = JSON.stringify(fontVariants).indexOf(fontStyle) > -1,
-				checkFontWeight = JSON.stringify(fontVariants).indexOf(fontWeight) > -1,
-				fontSubsets     = jasonData[fontFamily].subsets,
-				checkFontSubset = JSON.stringify(fontSubsets).indexOf(fontSubset) > -1;
+			
+			/* Check if its a Google font selected */
+			if (jasonData[fontFamily] !== undefined) {
 				
-			if (checkFontStyle || checkFontWeight) {
-				var theStyle  = (checkFontStyle) ? fontStyle : '',
-					theWeight = (checkFontWeight) ? fontWeight : '';
-				if (theStyle !== '' || theWeight !== '') {
-					fontURLarr.push(':');
-					fontURLarr.push(theStyle+theWeight);
+				var fontVariants    = jasonData[fontFamily].variants,
+					checkFontStyle  = JSON.stringify(fontVariants).indexOf(fontStyle) > -1,
+					checkFontWeight = JSON.stringify(fontVariants).indexOf(fontWeight) > -1,
+					fontSubsets     = jasonData[fontFamily].subsets,
+					checkFontSubset = JSON.stringify(fontSubsets).indexOf(fontSubset) > -1;
+					
+				if (checkFontStyle || checkFontWeight) {
+					var theStyle  = (checkFontStyle) ? fontStyle : '',
+						theWeight = (checkFontWeight) ? fontWeight : '';
+					if (theStyle !== '' || theWeight !== '') {
+						fontURLarr.push(':');
+						fontURLarr.push(theStyle+theWeight);
+					}
 				}
-			}
-			
-			if (checkFontSubset && fontSubset !== '') {
-				fontURLarr.push('&subset=');
-				fontURLarr.push(fontSubset);
-			}
-			
-			fontURL += fontURLarr.join('');
-			
-			if ($("link[href*='" + fontFamily + "']").length === 0) {
-				$('head>link:last').after('<link id="'+$linkId+'" href="'+fontURL+'" rel="stylesheet" type="text/css">');
+				
+				if (checkFontSubset && fontSubset !== '') {
+					fontURLarr.push('&subset=');
+					fontURLarr.push(fontSubset);
+				}
+				
+				fontURL += fontURLarr.join('');
+				
+				if ($("link[href*='" + fontFamily + "']").length === 0) {
+					$('head>link:last').after('<link id="'+$linkId+'" href="'+fontURL+'" rel="stylesheet" type="text/css">');
+				}
 			}
 		});
 	}
