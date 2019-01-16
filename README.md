@@ -8,7 +8,7 @@ Feel free to use this admin panel in your __premium__ and __commercial__ project
 2. Download [Dilaz Panel Options](https://github.com/Rodgath/Dilaz-Panel-Options) and add it into your WordPress project. 
 
 ## Example of how to use Dilaz Panel in a theme
-Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b) to see a useful example on how to integrate this *dilaz panel plugin* into your WordPress theme development project.
+Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme) to see a useful example on how to integrate this *dilaz panel plugin* into your WordPress theme development project.
 
 ## Features
 * __Extendability__ - Easy to update or create new functionality 
