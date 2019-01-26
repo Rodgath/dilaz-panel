@@ -290,11 +290,15 @@
 	margin-bottom: 15px;
 	color: #888;
 	font-size: 11px;
-	line-height: 1.3em
+	line-height: 1.3em;
+	display: block;
+	clear: both;
 }
 .dilaz-panel-field .dilaz-panel-section .description.desc2 {
-	margin-bottom: 0;
-	margin-top: 15px;
+	margin: 0;
+	padding-top: 15px;
+	display: block;
+	clear: both;
 }
 
 /*--------------------------------------------------------------*/

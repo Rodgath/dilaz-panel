@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.7
+ * Version:		2.7.1
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.7
+|| @version		2.7.1
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -329,10 +329,17 @@ if (!class_exists('DilazPanel')) {
 		 * @return void
 		 */
 		public function enqueueStyles() {
+			
 			wp_enqueue_style('wp-color-picker');
-			wp_enqueue_style('fontawesome', DILAZ_PANEL_URL .'assets/css/font-awesome.min.css', false, '4.5.0');
-			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, '4.0.3');
-			wp_enqueue_style('dilaz-panel-css', DILAZ_PANEL_URL .'assets/css/admin.css', false, '1.0');
+			
+			# Create auto-updating cache version based on the last file update
+			$fontawesome_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/font-awesome.min.css' ));
+			$select2_css_ver     = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/select2.min.css' ));
+			$dilaz_panel_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/admin.css' ));
+			
+			wp_enqueue_style('fontawesome', DILAZ_PANEL_URL .'assets/css/font-awesome.min.css', false, $fontawesome_css_ver);
+			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, $select2_css_ver);
+			wp_enqueue_style('dilaz-panel-css', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
 		}
 		
 		
@@ -353,10 +360,14 @@ if (!class_exists('DilazPanel')) {
 				wp_enqueue_script('media-upload');
 			}
 			
+			# Create auto-updating cache version based on the last file update
+			$select2_js_ver     = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/js/select2/select2.min.js' ));
+			$dilaz_panel_js_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/js/admin.js' ));
+			
 			wp_enqueue_script('wp-color-picker');
-			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', false, '4.0.3', true);
+			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', false, $select2_js_ver, true);
 			wp_enqueue_script('dilaz-dowhen-script', DILAZ_PANEL_URL .'assets/js/jquery.dowhen.js');
-			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), '1.0', true);
+			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), $dilaz_panel_js_ver, true);
 			
 			# Localization
 			wp_localize_script(
