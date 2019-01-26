@@ -1244,6 +1244,7 @@ var DilazPanelScript = new function() {
 		$t.colorPicker();
 		$t.resetOptions();
 		$t.saveOptions();
+		$t.exportOptions();
 		$t.selectImportFile();
 		$t.importOptions();
 		$t.fontPreview();
