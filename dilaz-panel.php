@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.7.1
+ * Version:		2.7.2
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.7.1
+|| @version		2.7.2
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -471,11 +471,32 @@ if (!class_exists('DilazPanel')) {
 				
 				global $wp_admin_bar;
 				
+				$menu_id = $params['page_slug'] .'_node';
+				
+				# add Dilaz menu node
 				$wp_admin_bar->add_node(array(
-					'id'    => $params['page_slug'] .'_node',
+					'id'    => $menu_id,
 					'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. $params['menu_title'] .'</span>',
 					'href'  => admin_url('admin.php?page='. $params['page_slug'])
 				));
+				
+				# add Dilaz submenu dropdown
+				foreach ($this->_options as $key => $val) {
+					
+					# get headers only
+					if ($val['type'] == 'heading') {
+						
+						$sanitized_tab_name = preg_replace('/[^a-zA-Z0-9]/', '', $val['name']);
+						
+						$wp_admin_bar->add_menu(array(
+							'parent' => $menu_id,
+							'title'  => $val['name'],
+							'id'     => $menu_id.'_'.str_replace(' ', '', strtolower($sanitized_tab_name)),
+							'href'   => admin_url('admin.php?page='. $params['page_slug'].'#'.str_replace(' ', '', strtolower($sanitized_tab_name))),
+							'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
+						));
+					}
+				}
 			}
 		}
 		

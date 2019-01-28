@@ -3,16 +3,32 @@
 || Panel JS
 || --------------------------------------------------------------------------------------------
 ||
-|| @package		Dilaz Panel
-|| @subpackage	Panel
-|| @since		Dilaz Panel 2.6.4
-|| @author		WebDilaz Team, http://webdilaz.com, http://themedilaz.com
-|| @copyright	Copyright (C) 2018, WebDilaz LTD
-|| @link		http://webdilaz.com/panel
-|| @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+|| @package    Dilaz Panel
+|| @subpackage Panel
+|| @since      Dilaz Panel 2.6.4
+|| @author     WebDilaz Team, http://webdilaz.com, http://themedilaz.com
+|| @copyright  Copyright (C) 2018, WebDilaz LTD
+|| @link       http://webdilaz.com/panel
+|| @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 || 
 */
 
+/**
+ * Prevent page from jumping when page URL is hashed
+ * @see DilazPanelScript.tabMenuOpenHashed
+ */
+if (location.hash) {
+	window.scrollTo(0, 0);
+	
+	/* wait for browser compitibility just in case */
+	setTimeout(function() {
+		window.scrollTo(0, 0);
+	}, 1);
+}
+
+/**
+ * Dilaz Panel script
+ */
 var DilazPanelScript = new function() {
 	
 	"use strict";
@@ -23,7 +39,6 @@ var DilazPanelScript = new function() {
 	var $t = this;
 	var $ = jQuery.noConflict();
 	var $doc = $(document);
-	
 	
 	/**
 	 * DoWhen start
@@ -42,17 +57,57 @@ var DilazPanelScript = new function() {
 	}
 	
 	/**
-	 * Open first submenu item when parent tab is clicked
+	 * Open hashed menu tab when page is loaded
+	 * @since Dilaz Panel 2.7.2
 	 */
-	$t.tabMenuOpenFirst = function() {
-		/* setTimeout() makes the trigger('click') work; I don't know why */
-		setTimeout(function() { 
-			$('.dilaz-panel-menu > ul > li:first-of-type > .trigger').trigger('click')
-		}, 100);
+	$t.tabMenuOpenHashed = function(trigger = '.trigger') {
+		
+		var $trigger = $('.dilaz-panel-menu').find(trigger),
+			$currentTab = window.location.hash;
+		
+		/* if there's a hashed tab in the page URL, then lets open it */
+		if ($currentTab) {
+			
+			/* go through all the tab anchor elements */
+			$trigger.each(function() {
+				
+				var $this = $(this);
+				
+				/* check if tab element has the current page hash */
+				if ($this.attr('href') == $currentTab) {
+					
+					var $triggerParent = $this.closest('ul');
+					
+					/* check if tab element is a submenu tab */
+					if ($triggerParent.hasClass('submenu')) {
+						
+						/* setTimeout() makes the trigger('click') work; I'm yet to find out why */
+						setTimeout(function() {
+							$triggerParent.prev('a').trigger('click');
+							$this.trigger('click');
+						}, 100);
+						
+					} else {
+						setTimeout(function() {
+							$this.trigger('click');
+						}, 100);
+					}
+				}
+			});
+			
+		/* if there's no hash in the page URL, then lets open the first tab */
+		} else {
+			setTimeout(function() {
+				$trigger.first().trigger('click');
+				
+				/* disable scrolling down the page */
+				window.scrollTo(0, 0);
+			}, 100);
+		}
 	}
 	
 	/**
-	 * Panel tabbed menu
+	 * Panel open tabbed menu content
 	 */
 	$t.tabMenu = function() {
 		$('.dilaz-panel-menu').on('click', '.trigger', function(e) {
@@ -63,7 +118,8 @@ var DilazPanelScript = new function() {
 				$parent      = $this.parent(),
 				$tabsNav     = $this.closest('.dilaz-panel-menu'),
 				$tabTarget   = $this.attr('href'),
-				$tabsContent = $tabsNav.siblings('.dilaz-panel-fields');
+				$tabsContent = $tabsNav.siblings('.dilaz-panel-fields'),
+				$tabClicked  = $this.attr('href');
 				
 			/* toggle submenu */
 			if ($parent.hasClass('has_children')) {
@@ -90,6 +146,38 @@ var DilazPanelScript = new function() {
 			
 			/* hide all opened submenus */
 			$parent.siblings().find('.submenu').slideUp();
+			
+			/* add the tab hash to page URL */
+			window.location.hash = $tabClicked;
+			
+			/* disable scrolling down the page */
+			window.scrollTo(0, 0);
+		});
+	}
+	
+	/**
+	 * Panel open admin bar menu content
+	 * @since Dilaz Panel 2.7.2
+	 */
+	$t.adminBarTabMenu = function() {
+		$('.dilaz-panel-admin-bar-menu').find('a').on('click', function(e) {
+			
+			e.preventDefault();
+			
+			var $this          = $(this),
+				$thisUrl       = $this.attr('href'),
+				$thisHashIndex = $thisUrl.indexOf('#'),
+				$thisHash      = $thisUrl.substring($thisHashIndex, $thisUrl.length),
+				$trigger       = $('.dilaz-panel-menu').find('.trigger');
+			
+			/* add the admin bar menu hash to page URL */
+			window.location.hash = $thisHash;
+			
+			/* disable page jump/scroll */
+			window.scrollTo(0, 0);
+			
+			/* after menu link is clicked open respective tab */
+			$t.tabMenuOpenHashed($trigger);
 		});
 	}
 	
@@ -781,7 +869,7 @@ var DilazPanelScript = new function() {
 	}
 	
 	/**
-	 * Get JSON
+	 * Get Google fonts from JSON file
 	 * @since Dilaz Panel 2.6.8
 	 */
 	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
@@ -1228,8 +1316,9 @@ var DilazPanelScript = new function() {
 	$t.init = function() {
 
 		$t.doWhen();
-		$t.tabMenuOpenFirst();
+		$t.tabMenuOpenHashed();
 		$t.tabMenu();
+		$t.adminBarTabMenu();
 		$t.fileUpload();
 		$t.removeFile();
 		$t.fileSorting();
@@ -1251,7 +1340,7 @@ var DilazPanelScript = new function() {
 		$t.backgroundPreview();
 		$t.repeatableField();
 		$t.addRepeatableField();
-		$t.removeRepeatableField();
+		$t.removeRepeatableField();		
 
 	};
 }
