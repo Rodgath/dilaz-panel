@@ -39,6 +39,7 @@
 	border-top: none;
 }
 .dilaz-panel-fields {
+	position: relative;
 	float: left;
 	width: 678px;
 	min-height: 400px;
@@ -224,13 +225,13 @@
 .dilaz-panel-menu ul ul.submenu .trigger:hover {
 	background: #f7f7f7
 }
-.dilaz-panel-menu > ul > li > .fa {
+.dilaz-panel-menu > ul > li > .mdi {
 	float: left;
 	display: inline-block;
 	width: 36px;
 	height: 36px;
-	font-size: 14px;
-	line-height: 36px;
+	font-size: 18px;
+	line-height: 38px;
 	vertical-align: middle;
 	text-align: center;
 	margin: 0
@@ -299,6 +300,27 @@
 	padding-top: 15px;
 	display: block;
 	clear: both;
+}
+.dilaz-panel-fields-preloader {
+	position: absolute; 
+	top: 0;
+	left: 1px;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+	z-index: 9999
+}
+.dilaz-panel-fields-preloader .mdi {
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	margin-top: -50px;
+	margin-left: -50px;
+	font-size: 100px
+}
+.dilaz-panel-fields-preloader .mdi-spin:before {
+  -webkit-animation: mdi-spin 1.3s infinite linear;
+  animation: mdi-spin 1.3s infinite linear;
 }
 
 /*--------------------------------------------------------------*/
@@ -1296,4 +1318,11 @@ input.dilaz-panel-switch {
 	margin-left: 10px;
 	margin-right: 15px;
 	display: none
+}
+
+/*--------------------------------------------------------------*/
+/* Admin bar menu
+/*--------------------------------------------------------------*/
+.dilaz-panel-admin-bar-menu .mdi {
+	line-height: 1px !important
 }

@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.7.2
+ * Version:		2.7.3
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.7.2
+|| @version		2.7.3
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -333,11 +333,11 @@ if (!class_exists('DilazPanel')) {
 			wp_enqueue_style('wp-color-picker');
 			
 			# Create auto-updating cache version based on the last file update
-			$fontawesome_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/font-awesome.min.css' ));
+			$meterial_css_ver    = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/materialdesignicons.min.css' ));
 			$select2_css_ver     = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/select2.min.css' ));
 			$dilaz_panel_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/admin.css' ));
 			
-			wp_enqueue_style('fontawesome', DILAZ_PANEL_URL .'assets/css/font-awesome.min.css', false, $fontawesome_css_ver);
+			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', false, $meterial_css_ver);
 			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, $select2_css_ver);
 			wp_enqueue_style('dilaz-panel-css', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
 		}
@@ -473,28 +473,52 @@ if (!class_exists('DilazPanel')) {
 				
 				$menu_id = $params['page_slug'] .'_node';
 				
-				# add Dilaz menu node
+				# add Dilaz Panel menu node in admin bar
 				$wp_admin_bar->add_node(array(
 					'id'    => $menu_id,
 					'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. $params['menu_title'] .'</span>',
-					'href'  => admin_url('admin.php?page='. $params['page_slug'])
+					'href'  => admin_url('admin.php?page='. $params['page_slug']),
+					'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
 				));
 				
-				# add Dilaz submenu dropdown
-				foreach ($this->_options as $key => $val) {
-					
-					# get headers only
-					if ($val['type'] == 'heading') {
+				# add Dilaz Panel submenu dropdown in admin bar
+				$menu_items = $this->menuArray();
+				
+				if ( !empty($menu_items) ) {
+					foreach ( $menu_items as $key => $val ) {
 						
-						$sanitized_tab_name = preg_replace('/[^a-zA-Z0-9]/', '', $val['name']);
+						$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
 						
-						$wp_admin_bar->add_menu(array(
+						if ( isset($val['icon']) && ($val['icon'] != '') ) {
+							$menu_icon = '<span class="mdi '. $val['icon'] .'" style="font-family:Material Design Icons;margin-right:5px"></span>';
+						} else {
+							$menu_icon = '<span class="mdi mdi-settings" style="font-family:Material Design Icons;margin-right:5px"></span>';
+						}
+						
+						# drop down level 1
+						$drop_down_parent_id = $menu_id .'_'. $parent_target;
+						$wp_admin_bar->add_node(array(
 							'parent' => $menu_id,
-							'title'  => $val['name'],
-							'id'     => $menu_id.'_'.str_replace(' ', '', strtolower($sanitized_tab_name)),
-							'href'   => admin_url('admin.php?page='. $params['page_slug'].'#'.str_replace(' ', '', strtolower($sanitized_tab_name))),
-							'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
+							'title'  => $menu_icon . esc_html($val['name']),
+							'id'     => $drop_down_parent_id,
+							'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $parent_target),
+							'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l1')
 						));
+						
+						# drop down level 2
+						if (isset($val['children']) && sizeof($val['children']) > 0) {
+							foreach ($val['children'] as $child) {
+								$child_target = $child['target'];
+								$wp_admin_bar->add_node(array(
+									'parent' => $drop_down_parent_id,
+									'title'  => esc_html($child['name']),
+									'id'     => $menu_id .'_'. $child_target,
+									'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $child_target),
+									'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l2')
+								));
+							}
+						}
+						
 					}
 				}
 			}
@@ -548,9 +572,10 @@ if (!class_exists('DilazPanel')) {
 									</div>
 								</div>
 								<div class="dilaz-panel-menu">
-									<?php echo $this->menu(); ?>
+									<?php echo $this->menuHTML(); ?>
 								</div>
 								<div class="dilaz-panel-fields">
+									<div class="dilaz-panel-fields-preloader" style="display:block !important"><span class="mdi mdi-loading mdi-spin"></span></div>
 									<?php echo $this->fields(); ?>
 								</div>
 								<div class="clear"></div>
@@ -581,19 +606,18 @@ if (!class_exists('DilazPanel')) {
 		
 		
 		/**
-		 * Panel menu
+		 * Panel menu array
 		 *
-		 * @since  1.0
+		 * @since  2.7.3
 		 * @access public
 		 * @return void
 		 */
-		public function menu() {
+		public function menuArray() {
 			
 			$options = $this->_options;
 			
-			$menu       = '';
 			$parent     = 0;
-			$menu_items = array();
+			$menu_array = array();
 			$headings   = array();
 			
 			foreach ($options as $key => $val) {
@@ -609,15 +633,33 @@ if (!class_exists('DilazPanel')) {
 					$val['target'] = $target;
 					
 					if ($val['type'] == 'heading') {
-						$menu_items[$target] = $val;
+						$menu_array[$target] = $val;
 						$parent = $target;
 					}
 					
 					if ($val['type'] == 'subheading') {
-						$menu_items[$parent]['children'][] = $val;
+						$menu_array[$parent]['children'][] = $val;
 					}
 				}
 			}
+			
+			return $menu_array;
+			
+		}
+		
+		
+		/**
+		 * Panel menu
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function menuHTML() {
+			
+			$menu_items = $this->menuArray();
+			
+			$menu = '';
 			
 			if (!empty($menu_items) && sizeof($menu_items) > 0) {
 				
@@ -626,21 +668,21 @@ if (!class_exists('DilazPanel')) {
 					foreach ($menu_items as $key => $val) {
 						
 						$class = (isset($val['children']) && $val['children'] != '') ? 'has_children' : '';
-						$target = (isset($val['target']) && $val['target'] != '') ? $val['target'] : '';
+						$parent_target = (isset($val['target']) && $val['target'] != '') ? $val['target'] : '';
 						
-						$menu .= '<li id="'. $target .'" class="top_level '. $class .'">';
+						$menu .= '<li id="'. $parent_target .'" class="top_level '. $class .'">';
 						
 							if (isset($val['icon']) && ($val['icon'] != '')) {
-								$menu .= '<i class="fa '. $val['icon'] .'"></i>';
+								$menu .= '<span class="mdi '. $val['icon'] .'"></span>';
 							}
 							
-							$menu .= '<a class="trigger" href="#'. $val['target'] .'">'. esc_html($val['name']) .'</a>';
+							$menu .= '<a class="trigger" href="#'. $parent_target .'">'. esc_html($val['name']) .'</a>';
 							
 							if (isset($val['children']) && sizeof($val['children']) > 0) {
 								$menu .= '<ul class="submenu">';
 									foreach ($val['children'] as $child) {
-										$target = $child['target'];
-										$menu .= '<li id="'. $target .'" class="child"><a class="trigger" href="#'. $child['target'] .'">'. esc_html($child['name']) .'</a></li>';
+										$child_target = $child['target'];
+										$menu .= '<li id="'. $child_target .'" class="child"><a class="trigger" href="#'. $child_target .'">'. esc_html($child['name']) .'</a></li>';
 									}
 								$menu .= '</ul>';
 							}

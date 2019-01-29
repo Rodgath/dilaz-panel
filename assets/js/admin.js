@@ -6,7 +6,7 @@
 || @package    Dilaz Panel
 || @subpackage Panel
 || @since      Dilaz Panel 2.6.4
-|| @author     WebDilaz Team, http://webdilaz.com, http://themedilaz.com
+|| @author     WebDilaz Team, http://webdilaz.com, http://themedilaz.com, http://codedilaz.com
 || @copyright  Copyright (C) 2018, WebDilaz LTD
 || @link       http://webdilaz.com/panel
 || @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -15,9 +15,12 @@
 
 /**
  * Prevent page from jumping when page URL is hashed
- * @see DilazPanelScript.tabMenuOpenHashed
+ * @see DilazPanelScript.tabMenuOpenHashed()
+ * @since Dilaz Panel 2.7.2
  */
 if (location.hash) {
+	
+	/* disable scroll right away */
 	window.scrollTo(0, 0);
 	
 	/* wait for browser compitibility just in case */
@@ -41,7 +44,7 @@ var DilazPanelScript = new function() {
 	var $doc = $(document);
 	
 	/**
-	 * DoWhen start
+	 * DoWhen plugin start
 	 */
 	$t.doWhen = function() {
 		$doc.doWhen();
@@ -83,7 +86,10 @@ var DilazPanelScript = new function() {
 						
 						/* setTimeout() makes the trigger('click') work; I'm yet to find out why */
 						setTimeout(function() {
-							$triggerParent.prev('a').trigger('click');
+							
+							/* Do not click parent tab if its already open */
+							if (!$triggerParent.parent().hasClass('active')) $triggerParent.prev('a').trigger('click');
+							
 							$this.trigger('click');
 						}, 100);
 						
@@ -100,7 +106,7 @@ var DilazPanelScript = new function() {
 			setTimeout(function() {
 				$trigger.first().trigger('click');
 				
-				/* disable scrolling down the page */
+				/* disable scrolling down the page when tab is clicked */
 				window.scrollTo(0, 0);
 			}, 100);
 		}
@@ -121,6 +127,9 @@ var DilazPanelScript = new function() {
 				$tabsContent = $tabsNav.siblings('.dilaz-panel-fields'),
 				$tabClicked  = $this.attr('href');
 				
+			/* show fields preloader effect */
+			$('.dilaz-panel-fields').find('.dilaz-panel-fields-preloader').fadeIn();
+				
 			/* toggle submenu */
 			if ($parent.hasClass('has_children')) {
 				
@@ -139,7 +148,9 @@ var DilazPanelScript = new function() {
 			$parent.siblings().removeClass('active');
 			
 			/* show only current fields */
-			$tabsContent.find($tabTarget).show().siblings().hide();
+			setTimeout(function(){
+				$tabsContent.find($tabTarget).fadeIn().siblings().hide();
+			}, 1000);
 			
 			/* remove bottom border for the first panel section */
 			$tabsContent.find('.dilaz-panel-section:visible').first().css({'border-top':'0'});
