@@ -39,9 +39,9 @@ var DilazPanelScript = new function() {
 	/**
 	 * Global Variables
 	 */
-	var $t = this;
-	var $ = jQuery.noConflict();
-	var $doc = $(document);
+	var $t = this,
+		$ = jQuery.noConflict(),
+		$doc = $(document);
 	
 	/**
 	 * DoWhen plugin start
@@ -67,7 +67,7 @@ var DilazPanelScript = new function() {
 		
 		var $trigger = $('.dilaz-panel-menu').find(trigger),
 			$currentTab = window.location.hash;
-		
+			
 		/* if there's a hashed tab in the page URL, then lets open it */
 		if ($currentTab) {
 			
@@ -100,6 +100,9 @@ var DilazPanelScript = new function() {
 					}
 				}
 			});
+			
+			/* update current sidebar active link */
+			$t.sideBarMenuUpdate($currentTab);
 			
 		/* if there's no hash in the page URL, then lets open the first tab */
 		} else {
@@ -161,6 +164,9 @@ var DilazPanelScript = new function() {
 			/* add the tab hash to page URL */
 			window.location.hash = $tabClicked;
 			
+			/* update current sidebar active link */
+			$t.sideBarMenuUpdate($tabClicked);
+			
 			/* disable scrolling down the page */
 			window.scrollTo(0, 0);
 		});
@@ -189,6 +195,64 @@ var DilazPanelScript = new function() {
 			
 			/* after menu link is clicked open respective tab */
 			$t.tabMenuOpenHashed($trigger);
+		});
+	}
+	
+	/**
+	 * Panel open admin bar menu content
+	 * @since Dilaz Panel 2.7.4
+	 */
+	$t.adminSideBarMenu = function() {
+		
+		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').on('click', function(e) {
+			
+			e.preventDefault();
+			
+			var $this          = $(this),
+				$thisUrl       = $this.attr('href'),
+				$thisHashIndex = $thisUrl.indexOf('#'),
+				$trigger       = $('.dilaz-panel-menu').find('.trigger'),
+				$thisHash      = $thisHashIndex > -1 ? $thisUrl.substring($thisHashIndex, $thisUrl.length) : $trigger.first().attr('href');
+			
+			/* add the admin bar menu hash to page URL */
+			window.location.hash = $thisHash;
+			
+			/* disable page jump/scroll */
+			window.scrollTo(0, 0);
+			
+			/* after menu link is clicked open respective tab */
+			$t.tabMenuOpenHashed($trigger);
+		});
+	}
+	
+	/**
+	 * Update active link on sidebar menu
+	 * @since Dilaz Panel 2.7.4
+	 */
+	$t.sideBarMenuUpdate = function($currentHash = '') {
+		
+		/* update current sidebar active link */
+		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').each(function() {
+			
+			var $sbLink_a    = $(this),
+				$sbLink_li   = $sbLink_a.parent(),
+				$sbUrl       = $sbLink_a.attr('href'),
+				$sbHashIndex = $sbUrl.indexOf('#'),
+				$sbHash      = $sbHashIndex > -1 ? $sbUrl.substring($sbHashIndex, $sbUrl.length) : '';
+				
+			/* hightlight current link */
+			if ($currentHash == $sbHash) {
+				$sbLink_a.addClass('current');
+				$sbLink_li.addClass('current');
+			} else {
+				if ($sbLink_li.hasClass('wp-first-item') && $('.dilaz-panel-menu').find('.trigger').first().attr('href') == $currentHash) {
+					$sbLink_a.addClass('current');
+					$sbLink_li.addClass('current');
+				} else {
+					$sbLink_a.removeClass('current');
+					$sbLink_li.removeClass('current');
+				}
+			}
 		});
 	}
 	
@@ -1330,6 +1394,7 @@ var DilazPanelScript = new function() {
 		$t.tabMenuOpenHashed();
 		$t.tabMenu();
 		$t.adminBarTabMenu();
+		$t.adminSideBarMenu();
 		$t.fileUpload();
 		$t.removeFile();
 		$t.fileSorting();

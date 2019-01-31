@@ -4,7 +4,7 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
- * Version:		2.7.3
+ * Version:		2.7.4
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
  * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
@@ -15,7 +15,7 @@
 ||
 || @package		Dilaz Panel
 || @subpackage	Panel
-|| @version		2.7.3
+|| @version		2.7.4
 || @since		Dilaz Panel 1.0
 || @author		WebDilaz Team, http://webdilaz.com
 || @copyright	Copyright (C) 2017, WebDilaz LTD
@@ -313,6 +313,30 @@ if (!class_exists('DilazPanel')) {
 					$params['menu_icon'],
 					$params['menu_position']
 				);
+				
+				# add Dilaz Panel submenu dropdown in admin bar
+				# @since Dilaz Panel 2.7.4
+				$menu_items = $this->menuArray();
+				$count_items = 0;
+				if ( !empty($menu_items) ) {
+					foreach ( $menu_items as $key => $val ) {
+						
+						$count_items++;
+						
+						$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
+						
+						$sub_menu_page_slug = $count_items > 1 ? $params['page_slug'] .'#'. $parent_target : $params['page_slug'];
+						add_submenu_page(
+							$params['page_slug'], 
+							esc_html($val['name']), 
+							esc_html($val['name']), 
+							$params['options_cap'], 
+							$sub_menu_page_slug, 
+							array($this, 'page')
+						);
+						
+					}
+				}
 			}
 			
 			# Enqueue scripts and styles
@@ -339,7 +363,7 @@ if (!class_exists('DilazPanel')) {
 			
 			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', false, $meterial_css_ver);
 			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, $select2_css_ver);
-			wp_enqueue_style('dilaz-panel-css', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
+			wp_enqueue_style('dilaz-panel', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
 		}
 		
 		
@@ -377,6 +401,7 @@ if (!class_exists('DilazPanel')) {
 					'dilaz_panel_url'    => DILAZ_PANEL_URL,
 					'dilaz_panel_images' => DILAZ_PANEL_IMAGES,
 					'dilaz_panel_prefix' => DILAZ_PANEL_PREFIX,
+					'page_slug'          => !empty($this->_params) && isset($this->_params['page_slug']) ? $this->_params['page_slug'] : '',
 					'upload'             => __('Upload', 'dilaz-panel'),
 					'remove'             => __('Remove', 'dilaz-panel'),
 					'upload_title'       => __('Select Image', 'dilaz-panel'),
@@ -482,6 +507,7 @@ if (!class_exists('DilazPanel')) {
 				));
 				
 				# add Dilaz Panel submenu dropdown in admin bar
+				# @since Dilaz Panel 2.7.2
 				$menu_items = $this->menuArray();
 				
 				if ( !empty($menu_items) ) {
@@ -521,6 +547,7 @@ if (!class_exists('DilazPanel')) {
 						
 					}
 				}
+				
 			}
 		}
 		
