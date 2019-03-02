@@ -4,6 +4,8 @@
  * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
  * Description:	Simple options panel for WordPress themes and plugins.
  * Author:		WebDilaz Team
+ * Text Domain: dilaz-panel
+ * Domain Path: /languages
  * Version:		2.7.4
  * Author URI:	http://webdilaz.com/
  * License:		GPL-2.0+
