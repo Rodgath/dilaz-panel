@@ -11,10 +11,14 @@ Feel free to use this admin panel in your __premium__ and __commercial__ project
 Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme) to see a useful example on how to integrate this *dilaz panel plugin* into your WordPress theme development project.
 
 ## Features
-* __Extendability__ - Easy to update or create new functionality 
-* __Easy updating__ - Your settings will not be part of core files
-* __AddOns availability__ - AddOns created by WebDilaz Team and other software developers
-* __Both Plugins & Themes__ - Can be used with any WordPress theme or plugin
+* __Fault Tolerant__ - Continues to working effectively even when a component is faulty.
+* __Backward Compatible__ - Fairly interoperable with WP older legacy versions and your own option settings.
+* __Extendability__ - Easy to update or create new functionality. Future growth considered. 
+* __Reliability__ - Full operational under stated WP conditions. No surprises.
+* __Maintainability__ - Easy to maintain, update, correct defects or repair faulty parts.
+* __Easy updating__ - Your settings will not be part of core files. 
+* __AddOns availability__ - AddOns created by WebDilaz Team and other software developers.
+* __Both Plugins & Themes__ - Can be used with any WordPress theme or plugin.
 
 ## Metabox Fields
 * Heading
