@@ -1,29 +1,29 @@
 <?php
 /*
- * Plugin Name:	Dilaz Panel
- * Plugin URI:	http://webdilaz.com/plugins/dilaz-panel/
- * Description:	Simple options panel for WordPress themes and plugins.
- * Author:		WebDilaz Team
+ * Plugin Name: Dilaz Panel
+ * Plugin URI:  http://webdilaz.com/plugins/dilaz-panel/
+ * Description: Simple options panel for WordPress themes and plugins.
+ * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:		2.7.4
- * Author URI:	http://webdilaz.com/
- * License:		GPL-2.0+
- * License URI:	http://www.gnu.org/licenses/gpl-2.0.txt
+ * Version:     2.7.4
+ * Author URI:  http://webdilaz.com/
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 ||
 || --------------------------------------------------------------------------------------------
 || Admin Options Panel
 || --------------------------------------------------------------------------------------------
 ||
-|| @package		Dilaz Panel
-|| @subpackage	Panel
-|| @version		2.7.4
-|| @since		Dilaz Panel 1.0
-|| @author		WebDilaz Team, http://webdilaz.com
-|| @copyright	Copyright (C) 2017, WebDilaz LTD
-|| @link		http://webdilaz.com/panel
-|| @License		GPL-2.0+
-|| @License URI	http://www.gnu.org/licenses/gpl-2.0.txt
+|| @package     Dilaz Panel
+|| @subpackage  Panel
+|| @version     2.7.4
+|| @since       Dilaz Panel 1.0
+|| @author      WebDilaz Team, http://webdilaz.com
+|| @copyright   Copyright (C) 2017, WebDilaz LTD
+|| @link        http://webdilaz.com/panel
+|| @License     GPL-2.0+
+|| @License URI http://www.gnu.org/licenses/gpl-2.0.txt
 || 
 */
 
@@ -130,9 +130,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Contructor method
 		 *
-		 * @param string $option_name unique option name
-		 * @param array  $parameters  panel parameters
-		 * @param array  $options     panel options
+		 * @param array $option_args panel arguments
 		 *
 		 * @since 1.0
 		 */
