@@ -1326,3 +1326,10 @@ input.dilaz-panel-switch {
 .dilaz-panel-admin-bar-menu .mdi {
 	line-height: 1px !important
 }
+
+/*--------------------------------------------------------------*/
+/* Notice
+/*--------------------------------------------------------------*/
+.dilaz-panel-notice.notice {
+	margin: 25px 20px 0 2px;
+}

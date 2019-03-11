@@ -60,6 +60,27 @@ var DilazPanelScript = new function() {
 	}
 	
 	/**
+	 * Manage panel section border position (top|bottom) when 
+	 * an adjacent info box is added
+	 * @since Dilaz Panel 2.7.5
+	 */
+	$t.infoBoxBorderFix = function() {
+		
+		var $field    = $('.dilaz-panel-field'),
+			$info     = $field.find('.info'),
+			$infoNext = $info.next(),
+			$infoPrev = $info.prev();
+		
+		if ($infoNext.hasClass('dilaz-panel-section')) {
+			$infoNext.css({'border-top':0})
+		}
+		
+		if ($infoPrev.hasClass('dilaz-panel-section')) {
+			$infoPrev.css({'border-bottom': '1px solid #ebebeb'})
+		}
+	}
+	
+	/**
 	 * Open hashed menu tab when page is loaded
 	 * @since Dilaz Panel 2.7.2
 	 */
@@ -132,7 +153,7 @@ var DilazPanelScript = new function() {
 				
 			/* show fields preloader effect */
 			$('.dilaz-panel-fields').find('.dilaz-panel-fields-preloader').fadeIn();
-				
+			
 			/* toggle submenu */
 			if ($parent.hasClass('has_children')) {
 				
@@ -1273,7 +1294,7 @@ var DilazPanelScript = new function() {
 	 * check if color is HEX, RGB, RGBA, HSL, HSLA
 	 * 
 	 * @since Dilaz Panel 2.6.6
-	 * @link https://stackoverflow.com/a/32685393
+	 * @link  https://stackoverflow.com/a/32685393
 	 */
 	$t.checkColor = function(color) {
 		
@@ -1312,7 +1333,7 @@ var DilazPanelScript = new function() {
 	/**
 	 * HEX to RGB
 	 * 
-	 * @since Dilaz Panel 2.6.6
+	 * @since  Dilaz Panel 2.6.6
 	 * @return Object|String
 	 */
 	$t.hexToRgb = function(hex) {
@@ -1391,6 +1412,7 @@ var DilazPanelScript = new function() {
 	$t.init = function() {
 
 		$t.doWhen();
+		$t.infoBoxBorderFix();
 		$t.tabMenuOpenHashed();
 		$t.tabMenu();
 		$t.adminBarTabMenu();

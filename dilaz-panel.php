@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.4
+ * Version:     2.7.5
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.4
+|| @version     2.7.5
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
