@@ -39,8 +39,8 @@ var DilazPanelScript = new function() {
 	/**
 	 * Global Variables
 	 */
-	var $t = this,
-		$ = jQuery.noConflict(),
+	var $t   = this,
+		$    = jQuery.noConflict(),
 		$doc = $(document);
 	
 	/**
@@ -53,9 +53,11 @@ var DilazPanelScript = new function() {
 	/**
 	 * Remove panel border bottom on the last item
 	 */
-	$t.removeBorderBottom = function(tabsContent) {
+	$t.removeBorderBottom = function (tabsContent) {
 		if (typeof tabsContent != 'undefined') {
-			tabsContent.find('.dilaz-panel-section:visible').first().css({'border-top':'0px'});
+			tabsContent.find('.dilaz-panel-section:visible').first().css({
+				'border-top' : '0px'
+			});
 		}
 	}
 	
@@ -64,72 +66,77 @@ var DilazPanelScript = new function() {
 	 * an adjacent info box is added
 	 * @since Dilaz Panel 2.7.5
 	 */
-	$t.infoBoxBorderFix = function() {
-		
+	$t.infoBoxBorderFix = function () {
+
 		var $field    = $('.dilaz-panel-field'),
 			$info     = $field.find('.info'),
 			$infoNext = $info.next(),
 			$infoPrev = $info.prev();
-		
+
 		if ($infoNext.hasClass('dilaz-panel-section')) {
-			$infoNext.css({'border-top':0})
+			$infoNext.css({
+				'border-top' : 0
+			})
 		}
-		
+
 		if ($infoPrev.hasClass('dilaz-panel-section')) {
-			$infoPrev.css({'border-bottom': '1px solid #ebebeb'})
+			$infoPrev.css({
+				'border-bottom' : '1px solid #ebebeb'
+			})
 		}
 	}
-	
+		
 	/**
 	 * Open hashed menu tab when page is loaded
 	 * @since Dilaz Panel 2.7.2
 	 */
-	$t.tabMenuOpenHashed = function(trigger = '.trigger') {
-		
+	$t.tabMenuOpenHashed = function (trigger = '.trigger') {
+
 		var $trigger = $('.dilaz-panel-menu').find(trigger),
 			$currentTab = window.location.hash;
-			
+
 		/* if there's a hashed tab in the page URL, then lets open it */
 		if ($currentTab) {
-			
+
 			/* go through all the tab anchor elements */
-			$trigger.each(function() {
-				
+			$trigger.each(function () {
+
 				var $this = $(this);
-				
+
 				/* check if tab element has the current page hash */
 				if ($this.attr('href') == $currentTab) {
-					
+
 					var $triggerParent = $this.closest('ul');
-					
+
 					/* check if tab element is a submenu tab */
 					if ($triggerParent.hasClass('submenu')) {
-						
+
 						/* setTimeout() makes the trigger('click') work; I'm yet to find out why */
-						setTimeout(function() {
-							
+						setTimeout(function () {
+
 							/* Do not click parent tab if its already open */
-							if (!$triggerParent.parent().hasClass('active')) $triggerParent.prev('a').trigger('click');
-							
+							if (!$triggerParent.parent().hasClass('active'))
+								$triggerParent.prev('a').trigger('click');
+
 							$this.trigger('click');
 						}, 100);
-						
+
 					} else {
-						setTimeout(function() {
+						setTimeout(function () {
 							$this.trigger('click');
 						}, 100);
 					}
 				}
 			});
-			
+
 			/* update current sidebar active link */
 			$t.sideBarMenuUpdate($currentTab);
-			
-		/* if there's no hash in the page URL, then lets open the first tab */
+
+			/* if there's no hash in the page URL, then lets open the first tab */
 		} else {
-			setTimeout(function() {
+			setTimeout(function () {
 				$trigger.first().trigger('click');
-				
+
 				/* disable scrolling down the page when tab is clicked */
 				window.scrollTo(0, 0);
 			}, 100);
@@ -166,28 +173,29 @@ var DilazPanelScript = new function() {
 				$subMenuFirst.addClass('active');
 				$subMenuFirst.siblings().removeClass('active');
 			}
-			
 			/* highlight active triggers */
 			$parent.addClass('active');
 			$parent.siblings().removeClass('active');
-			
+
 			/* show only current fields */
-			setTimeout(function(){
+			setTimeout(function () {
 				$tabsContent.find($tabTarget).fadeIn().siblings().hide();
 			}, 1000);
-			
+
 			/* remove bottom border for the first panel section */
-			$tabsContent.find('.dilaz-panel-section:visible').first().css({'border-top':'0'});
-			
+			$tabsContent.find('.dilaz-panel-section:visible').first().css({
+				'border-top' : '0'
+			});
+
 			/* hide all opened submenus */
 			$parent.siblings().find('.submenu').slideUp();
-			
+
 			/* add the tab hash to page URL */
 			window.location.hash = $tabClicked;
-			
+
 			/* update current sidebar active link */
 			$t.sideBarMenuUpdate($tabClicked);
-			
+
 			/* disable scrolling down the page */
 			window.scrollTo(0, 0);
 		});

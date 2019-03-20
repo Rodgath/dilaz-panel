@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.5
+ * Version:     2.7.6
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.5
+|| @version     2.7.6
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
@@ -28,6 +28,11 @@
 */
 
 defined('ABSPATH') || exit;
+
+/**
+ * Dilaz Panel functions
+ */
+require_once plugin_dir_path(__FILE__) .'includes/functions.php';
 
 /**
  * Dilaz Panel main class
@@ -81,7 +86,7 @@ if (!class_exists('DilazPanel')) {
 		 * @since  2.0
 		 * @access protected
 		 */
-		protected static $_instance = null;
+		protected static $_instance = NULL;
 		
 		
 		/**
@@ -196,7 +201,6 @@ if (!class_exists('DilazPanel')) {
 		 * @return void
 		 */
 		public function includes() {
-			require_once DILAZ_PANEL_DIR .'includes/functions.php';
 			require_once DILAZ_PANEL_DIR .'includes/fields.php';
 			require_once DILAZ_PANEL_DIR .'includes/defaults.php';
 		}
@@ -361,9 +365,9 @@ if (!class_exists('DilazPanel')) {
 			$select2_css_ver     = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/select2.min.css' ));
 			$dilaz_panel_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/admin.css' ));
 			
-			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', false, $meterial_css_ver);
-			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, $select2_css_ver);
-			wp_enqueue_style('dilaz-panel', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
+			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', FALSE, $meterial_css_ver);
+			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', FALSE, $select2_css_ver);
+			wp_enqueue_style('dilaz-panel', DILAZ_PANEL_URL .'assets/css/admin.css', FALSE, $dilaz_panel_css_ver);
 		}
 		
 		
@@ -389,9 +393,9 @@ if (!class_exists('DilazPanel')) {
 			$dilaz_panel_js_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/js/admin.js' ));
 			
 			wp_enqueue_script('wp-color-picker');
-			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', false, $select2_js_ver, true);
+			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', FALSE, $select2_js_ver, TRUE);
 			wp_enqueue_script('dilaz-dowhen-script', DILAZ_PANEL_URL .'assets/js/jquery.dowhen.js');
-			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), $dilaz_panel_js_ver, true);
+			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), $dilaz_panel_js_ver, TRUE);
 			
 			# Localization
 			wp_localize_script(
@@ -444,14 +448,14 @@ if (!class_exists('DilazPanel')) {
 					case 'admin_bar_menu':
 					case 'import_export':
 					case 'use_type_error':
-						$params[$key] = ($val == '') ? false : (bool)$val;
+						$params[$key] = ($val == '') ? FALSE : (bool)$val;
 						break;
 						
 					case 'menu_position':
-						if (trim($val) != '' && $val != null) {
-							$params[$key] = is_int($val) ? absint($val) : null;
+						if (trim($val) != '' && $val != NULL) {
+							$params[$key] = is_int($val) ? absint($val) : NULL;
 						} else {
-							$params[$key] = null;
+							$params[$key] = NULL;
 						}
 						break;
 						
@@ -492,7 +496,7 @@ if (!class_exists('DilazPanel')) {
 			if ( !isset($params['menu_title']) || !isset($params['page_slug']) ) return;
 			
 			# show if enabled
-			if ( isset($params['admin_bar_menu']) && $params['admin_bar_menu'] == true ) {
+			if ( isset($params['admin_bar_menu']) && $params['admin_bar_menu'] == TRUE ) {
 				
 				global $wp_admin_bar;
 				
@@ -563,7 +567,7 @@ if (!class_exists('DilazPanel')) {
 			
 			$params = $this->_params;
 			
-			if ($params['use_type_error'] == false) {
+			if ($params['use_type_error'] == FALSE) {
 				
 				?>
 				
@@ -953,10 +957,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void|bool
 		 */
-		public function setOption($option_name, $option_id, $option_value = false, $option_type = false) {
+		public function setOption($option_name, $option_id, $option_value = FALSE, $option_type = FALSE) {
 			
-			if (!isset($option_name)) return false;
-			if (!isset($option_id)) return false;
+			if (!isset($option_name)) return FALSE;
+			if (!isset($option_id)) return FALSE;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -965,7 +969,7 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return false;
+			if (!isset($options) || !is_array($options) || !$options) return FALSE;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
@@ -974,7 +978,7 @@ if (!class_exists('DilazPanel')) {
 			$sanitized_options = [];
 			
 			# Get sanitiszed options
-			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', true);
+			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', TRUE);
 			
 			# Get sanitiszed options
 			$merged_options = array_merge($options, $sanitized_options);
@@ -996,8 +1000,8 @@ if (!class_exists('DilazPanel')) {
 		 */
 		public function deleteOption($option_name, $option_id) {
 			
-			if (!isset($option_name)) return false;
-			if (!isset($option_id)) return false;
+			if (!isset($option_name)) return FALSE;
+			if (!isset($option_id)) return FALSE;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -1006,7 +1010,7 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return false;
+			if (!isset($options) || !is_array($options) || !$options) return FALSE;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
@@ -1023,11 +1027,11 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
-		 * @return array|bool false if option is not set or option file does not exist
+		 * @return array|bool FALSE if option is not set or option file does not exist
 		 */
 		public function getOptionsFromFile($option_name) {
 			
-			if (!isset($option_name)) return false;
+			if (!isset($option_name)) return FALSE;
 			
 			$saved_options = get_option($option_name);
 			
@@ -1054,7 +1058,7 @@ if (!class_exists('DilazPanel')) {
 				return wp_parse_args($panel_atts, $options);
 				
 			} else {
-				return false;
+				return FALSE;
 			}
 		}
 		
@@ -1067,18 +1071,18 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $option_name option name as used in wp_options table
 		 * @param string $option_id   option key or unique identifier
 		 *
-		 * @return mixed|string|array|bool false if option is not set
+		 * @return mixed|string|array|bool FALSE if option is not set
 		 */
-		public static function getOption($option_name, $option_id = false) {
+		public static function getOption($option_name, $option_id = FALSE) {
 			
-			if (!isset($option_name)) return false;
+			if (!isset($option_name)) return FALSE;
 			
 			$options = get_option($option_name);
 			
 			if (isset($options) && isset($options[$option_id]) && !empty($option_id)) {
 				return $options[$option_id];
 			} else {
-				return false;
+				return FALSE;
 			}
 		}
 		
@@ -1090,15 +1094,15 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
-		 * @return array|bool false if option is not set
+		 * @return array|bool FALSE if option is not set
 		 */
 		public static function getOptions($option_name) {
 			
-			if (!isset($option_name)) return false;
+			if (!isset($option_name)) return FALSE;
 			
 			$options = get_option($option_name);
 			
-			return (isset($options)) ? $options : false;
+			return (isset($options)) ? $options : FALSE;
 		}
 		
 		
@@ -1145,7 +1149,7 @@ if (!class_exists('DilazPanel')) {
 					$option_std = [];
 					
 					foreach ($option['options'] as $key => $value) {
-						$option_std[$key] = is_array($standard) && in_array($key, $standard) ? true : false;
+						$option_std[$key] = is_array($standard) && in_array($key, $standard) ? TRUE : FALSE;
 					}
 				}
 				
@@ -1259,7 +1263,10 @@ if (!class_exists('DilazPanel')) {
 				$defined_options   = $this->getOptionsFromFile($option_name);
 				$saved_options     = $this->getOptions($option_name);
 				
-				foreach ($defined_options as $option) {
+				# get all options from files and those added via filter and then remove duplicates
+				$all_options = DilazPanelFunctions::unique_multidimensional_array(array_merge($this->_options, $defined_options), 'id');
+				
+				foreach ($all_options as $option) {
 					
 					if (!isset($option['id']) || !isset($option['type'])) continue;
 					if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
@@ -1267,15 +1274,15 @@ if (!class_exists('DilazPanel')) {
 					
 					$id = sanitize_key($option['id']);
 					
-					# Set checkbox to false if not set
-					if ('checkbox' == $option['type'] && !isset($form_data[$id])) {
-						$form_data[$id] = false;
+					# Set checkbox to FALSE if not set
+					if ('checkbox' == $option['type'] && isset($form_data[$id])) {
+						$form_data[$id] = FALSE;
 					}
 					
-					# Set all checbox fields to false if not set
-					if ('multicheck' == $option['type'] && !isset($form_data[$id])) {
+					# Set all checbox fields to FALSE if not set
+					if ('multicheck' == $option['type'] && isset($form_data[$id])) {
 						foreach ($option['options'] as $key => $value) {
-							$form_data[$id][$key] = false;
+							$form_data[$id][$key] = FALSE;
 						}
 					}
 					
@@ -1293,6 +1300,20 @@ if (!class_exists('DilazPanel')) {
 				$panel_atts['panel-atts'] = $this->panelAttsReduced();
 				
 				$merged_options = array_merge(wp_parse_args($panel_atts, $saved_options), $sanitized_options);
+				
+				# Remove any default options saved when 
+				# 'default_options' parameter is set to FALSE
+				if (FALSE == $this->_params['default_options']) {
+					foreach($merged_options as $key => $val) {
+						
+						# ensure we keep panel-atts
+						if ($key == 'panel-atts') continue;
+						
+						if (!isset($form_data[$key])) {
+							unset($merged_options[$key]);
+						}
+					}
+				}
 				
 				update_option($option_name, $merged_options);
 				
@@ -1321,12 +1342,12 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $option_type  option type
 		 *
 		 * @access public
-		 * @return void|bool false if option is not saved
+		 * @return void|bool FALSE if option is not saved
 		 */
-		public function saveOption($option_name, $option_id, $option_value = false, $option_type = false) {
+		public function saveOption($option_name, $option_id, $option_value = FALSE, $option_type = FALSE) {
 			
-			if (!isset($option_name)) return false;
-			if (!isset($option_id)) return false;
+			if (!isset($option_name)) return FALSE;
+			if (!isset($option_id)) return FALSE;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -1335,7 +1356,7 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return false;
+			if (!isset($options) || !is_array($options) || !$options) return FALSE;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
@@ -1344,7 +1365,7 @@ if (!class_exists('DilazPanel')) {
 			$sanitized_options = [];
 			
 			# Get sanitiszed options
-			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', true);
+			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', TRUE);
 			
 			# Get sanitiszed options
 			$merged_options = array_merge($options, $sanitized_options);
@@ -1361,12 +1382,12 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $type       field type
 		 * @param string $input      set/selected/inserted option
 		 * @param string $option     option array
-		 * @param bool   $set_option whether the option is being set. Default is false
+		 * @param bool   $set_option whether the option is being set. Default is FALSE
 		 *
 		 * @access public
 		 * @return string|mixed|bool sanitized values
 		 */
-		public function sanitizeOption($type, $input, $option = '', $set_option = false) {
+		public function sanitizeOption($type, $input, $option = '', $set_option = FALSE) {
 			
 			switch ($type) {
 			
@@ -1437,16 +1458,16 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'checkbox':
-					return ($input == '') ? false : (bool)$input;
+					return ($input == '') ? FALSE : (bool)$input;
 					break;
 					
 				case 'multicheck':
 					$output = array();
 					foreach ((array)$input as $k => $v) {
-						if ( ( isset($option['options'][$k]) && $v == true ) || $set_option ) {
-							$output[$k] = true;
+						if ( ( isset($option['options'][$k]) && $v == TRUE ) || $set_option ) {
+							$output[$k] = TRUE;
 						} else {
-							$output[$k] = false;
+							$output[$k] = FALSE;
 						}
 					}
 					return $output;
@@ -1599,12 +1620,12 @@ if (!class_exists('DilazPanel')) {
 				# file upload handler
 				if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					
-					$file = isset($_FILES[$import_file]) ? $_FILES[$import_file]['tmp_name'] : null;
+					$file = isset($_FILES[$import_file]) ? $_FILES[$import_file]['tmp_name'] : NULL;
 					
-					if ($file != null) {
+					if ($file != NULL) {
 						
 						$data = $this->initializeFileSystem($file);
-						$data = json_decode($data, true);
+						$data = json_decode($data, TRUE);
 						
 						if (isset($data['dilaz_panel_backup_time'])) {
 							
@@ -1638,20 +1659,20 @@ if (!class_exists('DilazPanel')) {
 		 * 
 		 * @param  str                $file - file to be read
 		 * @global WP_Filesystem_Base $wp_filesystem Subclass
-		 * @return string|bool        file content, false on failure
+		 * @return string|bool        file content, FALSE on failure
 		 */
 		public function initializeFileSystem($file) {
 			
 			$url = wp_nonce_url('admin.php?page='. $this->_params['page_slug']);
 			
 			# bail if can't get get credentials
-			if (false === ($creds = request_filesystem_credentials($url))) {
+			if (FALSE === ($creds = request_filesystem_credentials($url))) {
 				return;
 			}
 			
 			# use acquired credentials
 			if (!WP_Filesystem($creds)) {
-				request_filesystem_credentials($url, '', true, false, null);
+				request_filesystem_credentials($url, '', TRUE, FALSE, NULL);
 				return;
 			}
 			

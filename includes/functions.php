@@ -173,6 +173,189 @@ if (!class_exists('DilazPanelFunctions')) {
 
 			die;
 		}
+		
+		
+		/**
+		 * Find position of array using its key and value
+		 *
+		 * @param array  $array	array to be searched through
+		 * @param string $field	key of the array
+		 * @param string $value	value of the array
+		 * @since 2.7.6
+		 *
+		 * @return integer|bool
+		 */
+		public static function find_array_key_by_value($array, $field, $value) {
+			foreach ($array as $key => $array_item) {
+				if ($array_item[$field] === $value)
+					return $key;
+			}
+			
+			return false;
+		}
+		
+		
+		/**
+		 * Insert an array before the key of another array
+		 *
+		 * @param array  $array           array to insert into
+		 * @param array  $data            array to be inserted
+		 * @param string $key_offset      key position of the array to be inserted
+		 * @param string $insert_position 'before' or 'after' or 'last', default: before
+		 * @since 2.7.6
+		 *
+		 * @return array|bool
+		 */
+		public static function insert_array_adjacent_to_key($array, $data, $key_offset, $insert_position = 'before') {
+			
+			if (!is_array($data)) return false;
+			
+			switch ($insert_position) {
+				case 'before' : $offset = $key_offset; break;
+				case 'after'  : $offset = $key_offset+1; break;
+				case 'last'   : $offset = count($array); break; # usually used when inserting a tab to be the last one
+				default       : $offset = $key_offset; break;
+			}
+			
+			foreach ($data as $item) {
+				$new_array = array_merge( array_slice($array, 0, $offset, true), (array) $item, array_slice($array, $offset, NULL, true) );  
+			}
+			
+			return $new_array;  
+		}
+		
+		
+		/**
+		 * Insert an array before the key of another array
+		 *
+		 * @param array  $array multidimensional array
+		 * @param string $key   field to check e.g. 'id', 'name', 'num' etc
+		 * @since 2.7.6
+		 *
+		 * @return array
+		 */
+		public static function unique_multidimensional_array($array, $key) {
+			$temp_array = array();
+			$i = 0;
+			$key_array = array();
+			
+			foreach($array as $val) {
+				if (!in_array($val[$key], $key_array)) {
+					$key_array[$i] = $val[$key];
+					$temp_array[$i] = $val;
+				}
+				$i++;
+			}
+			
+			return $temp_array;
+		}
+		
+		
+		/**
+		 * Remove target tab fields to avoid before adding modified fields
+		 * after custom field insertion is completed
+		 *
+		 * @param array $options    options
+		 * @param array $tab_fields tab option fields
+		 * @since 2.7.6
+		 *
+		 * @return array
+		 */
+		public static function remove_target_tab_fields($options, $tab_fields) {
+			
+			$tab_fields_ids = [];
+			
+			foreach ($tab_fields as $k => $v) {
+				$tab_fields_ids[] = $v['id'];
+			}
+			
+			foreach ($options as $key => $value) {
+				if (isset($val['id']) && in_array($value['id'], $tab_fields_ids)) {
+					unset($options[$key]);
+				}
+			}
+			
+			return $options;
+		}
+		
+		
+		/**
+		 * Get all fields within an options tab (both heading tabe and subheading tab)
+		 *
+		 * @param array  $options       all options array
+		 * @param string $option_tab_id option set id
+		 * @since 2.7.6
+		 *
+		 * @return array
+		 */
+		public static function get_tab_content($options, $option_tab_id) {
+			
+			$set_id = 0;
+			$tab_content = array();
+			
+			foreach ($options as $key => $val) {
+				
+				if (!isset($val['type'])) continue;
+				
+				/* remove panel attributes */
+				if ($val['type'] == 'panel-atts') continue;
+				
+				if (isset($val['type'])) {
+					if ($val['type'] == 'heading') {
+						if (isset($val['id'])) {
+							$set_id = sanitize_key($val['id']);
+						}
+					}
+				}
+				
+				if ($set_id == $option_tab_id) {
+					$tab_content['fields'][] = $val;
+				}
+			}
+			
+			return $tab_content;
+		}
+		
+		
+		/**
+		 * Add/Insert option field before a specific field
+		 *
+		 * @param array  $options         all options array
+		 * @param string $option_tab_id   target options set id
+		 * @param string $target_field_id target option field id
+		 * @param string $context         tabs or fields, default: fields
+		 * @param array  $insert_data     option fields to be inserted
+		 * @param string $insert_position 'before' or 'after'
+		 * @since 2.7.6
+		 *
+		 * @return array|void
+		 */
+		public static function insert_field($options, $option_tab_id, $target_field_id, $insert_data, $insert_position) {
+			
+			$tab_content = self::get_tab_content($options, $option_tab_id);
+			
+			/* bail if fields are not found */
+			if (!isset($tab_content['fields'])) return;
+			
+			$tab_fields = $tab_content['fields'];
+			
+			/* remove all fields of the targeted tab from options
+			 * because they will added back after custom field(s) is(are) appended 
+			 */
+			$options = self::remove_target_tab_fields($options, $tab_fields);
+			
+			/* get array key position */
+			$key_offset = isset($tab_fields) ? self::find_array_key_by_value($tab_fields, 'id', $target_field_id) : '';
+			
+			/* new array after another array has been inserted  */
+			$new_array_modified = isset($tab_fields) ? self::insert_array_adjacent_to_key($tab_fields, array($insert_data), $key_offset, $insert_position) : $options;
+			
+			/* merge the new array with the entire panel options array */
+			$new_meta_boxes = ($new_array_modified != false) ? array_merge($options, $new_array_modified) : $options;
+			
+			return $new_meta_boxes;
+		}
+		
 	}
 	
 	new DilazPanelFunctions;
