@@ -214,7 +214,18 @@ var DilazPanelScript = new function() {
 				$thisUrl       = $this.attr('href'),
 				$thisHashIndex = $thisUrl.indexOf('#'),
 				$thisHash      = $thisUrl.substring($thisHashIndex, $thisUrl.length),
-				$trigger       = $('.dilaz-panel-menu').find('.trigger');
+				$trigger       = $('.dilaz-panel-menu').find('.trigger'),
+				$thisUrlObj    = new URL($thisUrl),
+				$thisUrlParams = new URLSearchParams($thisUrlObj.search),
+				$thisUrlPage   = $thisUrlParams.get('page'),
+				$winUrlParams  = new URLSearchParams(window.location.search),
+				$winUrlPage    = $winUrlParams.get('page');
+				
+			/* if not on the same page, lets bail and move to the clicked page */
+			if ($thisUrlPage !== $winUrlPage) {
+				window.location = $thisUrl;
+				return false;
+			}
 			
 			/* add the admin bar menu hash to page URL */
 			window.location.hash = $thisHash;
