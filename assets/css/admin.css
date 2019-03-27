@@ -116,7 +116,7 @@
 	height: 100%;
 	background: #f1f1f1;
 	border-right: 1px solid #dfdfdf;
-	z-index: 0
+	z-index: 1
 }
 .dilaz-panel-menu ul {
 	margin: 0;
@@ -125,7 +125,8 @@
 }
 .dilaz-panel-menu ul li {
 	position: relative;
-	margin: 0
+	margin: 0;
+	z-index: 2
 }
 .dilaz-panel-menu ul li .trigger {
 	position: relative;
@@ -321,6 +322,9 @@
 .dilaz-panel-fields-preloader .mdi-spin:before {
   -webkit-animation: mdi-spin 1.3s infinite linear;
   animation: mdi-spin 1.3s infinite linear;
+}
+[data-do-action="show"] {
+  background-color: #fafafa;
 }
 
 /*--------------------------------------------------------------*/

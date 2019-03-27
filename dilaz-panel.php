@@ -1040,12 +1040,14 @@ if (!class_exists('DilazPanel')) {
 				$parameters = $saved_options['panel-atts']['params'];
 				
 				# include default options file
-				if (is_file($saved_options['panel-atts']['files'][0]))
+				if (is_file($saved_options['panel-atts']['files'][0]) && $this->_params['default_options']) {
 					include $saved_options['panel-atts']['files'][0];
+				}
 				
 				# include custom options file
-				if (is_file($saved_options['panel-atts']['files'][1]))
+				if (is_file($saved_options['panel-atts']['files'][1]) && $this->_params['custom_options']) {
 					include $saved_options['panel-atts']['files'][1];
+				}
 				
 				# include main options file
 				if (is_file($saved_options['panel-atts']['files'][2]))
@@ -1128,6 +1130,7 @@ if (!class_exists('DilazPanel')) {
 				if (!isset($option['id']) || !isset($option['type'])) continue;
 				if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
 				if ($option['type'] == 'export' || $option['type'] == 'import') continue;
+				if ($option['type'] == 'info') continue;
 				
 				$id = sanitize_key($option['id']);
 				
@@ -1271,16 +1274,17 @@ if (!class_exists('DilazPanel')) {
 					if (!isset($option['id']) || !isset($option['type'])) continue;
 					if ($option['type'] == 'heading' || $option['type'] == 'subheading') continue;
 					if ($option['type'] == 'export' || $option['type'] == 'import') continue;
+					if ($option['type'] == 'info') continue;
 					
 					$id = sanitize_key($option['id']);
 					
 					# Set checkbox to FALSE if not set
-					if ('checkbox' == $option['type'] && isset($form_data[$id])) {
+					if ('checkbox' == $option['type'] && !isset($form_data[$id])) {
 						$form_data[$id] = FALSE;
 					}
 					
 					# Set all checbox fields to FALSE if not set
-					if ('multicheck' == $option['type'] && isset($form_data[$id])) {
+					if ('multicheck' == $option['type'] && !isset($form_data[$id])) {
 						foreach ($option['options'] as $key => $value) {
 							$form_data[$id][$key] = FALSE;
 						}
