@@ -1492,13 +1492,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multicolor':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = sanitize_hex_color($v);
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'font':
