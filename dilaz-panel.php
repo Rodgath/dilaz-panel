@@ -1452,13 +1452,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multiselect':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$v]) || $set_option) {
 							$output[] = $v;
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'checkbox':
