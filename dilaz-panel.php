@@ -1532,11 +1532,11 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'upload':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
-					return is_array($output) ? array_unique($output) : $output;
+					return is_array($output) ? array_unique($output) : '';
 					break;
 					
 				case 'panel-atts':
