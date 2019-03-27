@@ -1444,11 +1444,11 @@ if (!class_exists('DilazPanel')) {
 					
 				case 'queryselect':
 				case 'range':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						$output[$k] = absint($v);
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'multiselect':
