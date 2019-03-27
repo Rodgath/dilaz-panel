@@ -1402,13 +1402,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multitext':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = $v;
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'email':
