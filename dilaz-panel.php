@@ -1478,13 +1478,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'repeatable':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $key => $value) {
 						foreach ($value as $k => $v) {
 							$output[$key][$k] = sanitize_text_field($v);
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'color':
