@@ -62,7 +62,7 @@
 	margin-left: 0;
 	border-bottom: 1px solid #e0e0e0;
 	border-left: 0;
-	z-index: 1
+	z-index: 2
 }
 .dilaz-panel-top .subsubsub {
 	position: relative;
@@ -259,6 +259,9 @@
 	margin: 0;
 	border-top: 1px solid #ebebeb;
 	padding: 25px 25px;
+}
+.dilaz-panel-field .dilaz-panel-section:first-of-type {
+	border-top: 0
 }
 .dilaz-panel-field .dilaz-panel-section.half {
 	width: 250px;
