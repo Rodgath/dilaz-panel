@@ -1,6 +1,66 @@
 # CHANGELOG
 
 ## Version 2
+##### v2.7.7
+```
+= FIXED - 'multitext' field sanitize option bug
+= FIXED - 'queryselect' field sanitize option bug
+= FIXED - 'range' field sanitize option bug
+= FIXED - 'multiselect' field sanitize option bug
+= FIXED - 'repeatable' field sanitize option bug
+= FIXED - 'multicolor' field sanitize option bug
+```
+##### v2.7.6
+```
+= IMPROVED - saveOptions() method; don't save default options on live site when 'default_options' parameter is set to FALSE
+= ADDED - new method 'find_array_key_by_value' to 'DilazPanelFunctions' object
+= ADDED - new method 'insert_array_adjacent_to_key' to 'DilazPanelFunctions' object
+= ADDED - new method 'unique_multidimensional_array' to 'DilazPanelFunctions' object
+= ADDED - new method 'remove_target_tab_fields' to 'DilazPanelFunctions' object
+= ADDED - new method 'get_tab_content' to 'DilazPanelFunctions' object
+= ADDED - new method 'insert_field' to 'DilazPanelFunctions' object
+```
+#### v2.7.5
+```
+= FIXED - info box field display issue
+```
+#### v2.7.4
+```
+= ADDED - Sidebar submenu using add_submenu_page()
+```
+#### v2.7.3
+```
+= REMOVED - Font Awesome webfont icons for tab icons
+= ADDED - Material Design webfont icons for tab icons
+= ADDED - Tab content preloader effect
+```
+#### v2.7.2
+```
+= CHANGED - Renamed DilazPanelScript method from $t.tabMenuOpenFirst to $t.tabMenuOpenHashed 
+= ADDED - Added $t.adminBarTabMenu method in DilazPanelScript in admin.js
+= ADDED - Panel tabs added to admin bar menu drop down in adminBar() method in DilazPanel class
+```
+#### v2.7.1
+```
+= FIXED - Export settings not working
+= FIXED - Description 2 layout
+= IMPROVED - Scripts and styles version caching
+```
+#### v2.7.0
+```
+= ADDED - compatibility with WordPress version 5.x
+= REMOVED - reset query argument ?reset=true
+= FIXED - reset button and the reset AJAX process
+= FIXED - Google fonts undefined error
+```
+#### v2.6.8
+```
+= ADDED - Google fonts integration
+```
+#### v2.6.7
+```
+= FIXED - Multiple file upload not working
+```
 #### v2.6.6
 ```
 = ADDED - Font preview background color change based on font text color
@@ -67,3 +127,6 @@
 = Removed unnecessary functional methods and variables from DilazPanel class
 ```
 ## Version 1
+#### v1.0
+```
+Initial release.
