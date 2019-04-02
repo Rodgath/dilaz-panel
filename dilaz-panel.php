@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.6
+ * Version:     2.7.7
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.6
+|| @version     2.7.7
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
@@ -1402,13 +1402,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multitext':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = $v;
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'email':
@@ -1444,21 +1444,21 @@ if (!class_exists('DilazPanel')) {
 					
 				case 'queryselect':
 				case 'range':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						$output[$k] = absint($v);
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'multiselect':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$v]) || $set_option) {
 							$output[] = $v;
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'checkbox':
@@ -1474,17 +1474,17 @@ if (!class_exists('DilazPanel')) {
 							$output[$k] = FALSE;
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'repeatable':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $key => $value) {
 						foreach ($value as $k => $v) {
 							$output[$key][$k] = sanitize_text_field($v);
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'color':
@@ -1492,13 +1492,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multicolor':
-					$output = '';
+					$output = [];
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = sanitize_hex_color($v);
 						}
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'font':
@@ -1512,7 +1512,7 @@ if (!class_exists('DilazPanel')) {
 							$output[$k] = sanitize_text_field($v);
 						} 
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'background':
