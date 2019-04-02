@@ -91,7 +91,7 @@
 ```
 = ADDED - refresh options page after resetting options
 ```
-###### v2.6
+###### v2.6.0
 ```
 = added new field - WP Editor
 ```
