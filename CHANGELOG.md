@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## Version 2
-#### v2.1
+##### v2.1
 ```
 = added $option_args as the only parameter in DilazPanel class
 = added panel attributes (panel-atts) to options in DB
