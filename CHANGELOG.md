@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## Version 2
+
 ###### v2.7.7
 ```
 = FIXED - 'multitext' field sanitize option bug
