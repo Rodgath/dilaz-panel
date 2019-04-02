@@ -1402,13 +1402,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multitext':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = $v;
 						}
 					}
-					return !empty($output) ? $output : '';
+					return $output;
 					break;
 					
 				case 'email':
@@ -1444,21 +1444,21 @@ if (!class_exists('DilazPanel')) {
 					
 				case 'queryselect':
 				case 'range':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $k => $v) {
 						$output[$k] = absint($v);
 					}
-					return !empty($output) ? $output : '';
+					return $output;
 					break;
 					
 				case 'multiselect':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$v]) || $set_option) {
 							$output[] = $v;
 						}
 					}
-					return !empty($output) ? $output : '';
+					return $output;
 					break;
 					
 				case 'checkbox':
@@ -1478,13 +1478,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'repeatable':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $key => $value) {
 						foreach ($value as $k => $v) {
 							$output[$key][$k] = sanitize_text_field($v);
 						}
 					}
-					return !empty($output) ? $output : '';
+					return $output;
 					break;
 					
 				case 'color':
@@ -1492,13 +1492,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'multicolor':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $k => $v) {
 						if (isset($option['options'][$k]) || $set_option) {
 							$output[$k] = sanitize_hex_color($v);
 						}
 					}
-					return !empty($output) ? $output : '';
+					return $output;
 					break;
 					
 				case 'font':
@@ -1532,11 +1532,11 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'upload':
-					$output = [];
+					$output = '';
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
-					return is_array($output) ? array_unique($output) : '';
+					return is_array($output) ? array_unique($output) : $output;
 					break;
 					
 				case 'panel-atts':
