@@ -17,7 +17,7 @@ Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme)
 * __Reliability__ - Full operational under stated WP conditions. No surprises.
 * __Maintainability__ - Easy to maintain, update, correct defects or repair faulty parts.
 * __Easy updating__ - Your settings will not be part of core files. 
-* __AddOns availability__ - AddOns created by WebDilaz Team and other software developers.
+* __AddOns availability__ - AddOns created by other software developers.
 * __Both Plugins & Themes__ - Can be used with any WordPress theme or plugin.
 
 ## Metabox Fields
