@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.7
+ * Version:     2.7.8
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.7
+|| @version     2.7.8
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
@@ -265,8 +265,10 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Add Admin Menu
 		 *
-		 * @since  1.0
-		 * @since  2.5 added add_submenu_page
+		 * @since 1.0
+		 * @since 2.5   added add_submenu_page method
+		 * @since 2.7.8 added multiple capabilities check
+		 * 
 		 * @access public
 		 * @return void
 		 */
@@ -277,75 +279,88 @@ if (!class_exists('DilazPanel')) {
 			# bail if parameters are not set
 			if (!isset($params)) return;
 			
-			# clean up params
-			// $params = array_map('sanitize_text_field', $params);
-			
 			# bail if page and menu parameters are not set
 			if (
 				!isset($params['page_title']) || 
 				!isset($params['menu_title']) || 
-				!isset($params['options_cap']) || 
+				!isset($params['options_view_cap']) || 
 				!isset($params['page_slug'])
 			) return;
 			
-			# Add submenu page if 'parent_slug' is set
-			if (isset($params['parent_slug']) && trim($params['parent_slug']) != '') {
-				
-				# Menu page
-				$panel_page = add_submenu_page(
-					$params['parent_slug'], 
-					$params['page_title'], 
-					$params['menu_title'], 
-					$params['options_cap'], 
-					$params['page_slug'], 
-					array($this, 'page')
-				);
+			# At first, no menu is added
+			$menu_added = FALSE;
 			
-			# Add a top-level menu page if 'parent_slug' is not set
-			} else {
+			foreach ($params['options_view_cap'] as $cap_key => $cap) {
 				
-				# bail if 'menu_icon' or 'menu_position' parameters are not set
-				if (!isset($params['menu_icon']) || !array_key_exists('menu_position', $params)) return;
+				# bail if current user doesn't have capability
+				if (!current_user_can($cap)) continue;
 				
-				# Menu page
-				$panel_page = add_menu_page(
-					$params['page_title'], 
-					$params['menu_title'], 
-					$params['options_cap'], 
-					$params['page_slug'], 
-					array($this, 'page'), 
-					$params['menu_icon'],
-					$params['menu_position']
-				);
+				# Add menu only if there's none
+				if (FALSE == $menu_added) {
 				
-				# add Dilaz Panel submenu dropdown in admin bar
-				# @since Dilaz Panel 2.7.4
-				$menu_items = $this->menuArray();
-				$count_items = 0;
-				if ( !empty($menu_items) ) {
-					foreach ( $menu_items as $key => $val ) {
+					# Add submenu page if 'parent_slug' is set
+					if (isset($params['parent_slug']) && trim($params['parent_slug']) != '') {
 						
-						$count_items++;
-						
-						$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
-						
-						$sub_menu_page_slug = $count_items > 1 ? $params['page_slug'] .'#'. $parent_target : $params['page_slug'];
-						add_submenu_page(
+						# Menu page
+						$panel_page = add_submenu_page(
+							$params['parent_slug'], 
+							$params['page_title'], 
+							$params['menu_title'], 
+							$cap, 
 							$params['page_slug'], 
-							esc_html($val['name']), 
-							esc_html($val['name']), 
-							$params['options_cap'], 
-							$sub_menu_page_slug, 
 							array($this, 'page')
 						);
+					
+					# Add a top-level menu page if 'parent_slug' is not set
+					} else {
 						
+						# bail if 'menu_icon' or 'menu_position' parameters are not set
+						if (!isset($params['menu_icon']) || !array_key_exists('menu_position', $params)) return;
+						
+						# Menu page
+						$panel_page = add_menu_page(
+							$params['page_title'], 
+							$params['menu_title'], 
+							$cap, 
+							$params['page_slug'], 
+							array($this, 'page'), 
+							$params['menu_icon'],
+							$params['menu_position']
+						);
+						
+						# add Dilaz Panel submenu dropdown in admin bar
+						# @since Dilaz Panel 2.7.4
+						$menu_items = $this->menuArray();
+						$count_items = 0;
+						if (!empty($menu_items)) {
+							foreach ($menu_items as $key => $val) {
+								
+								$count_items++;
+								
+								$parent_target = (isset($val['target']) && $val['target'] != '') ? $val['target'] : '';
+								
+								$sub_menu_page_slug = $count_items > 1 ? $params['page_slug'] .'#'. $parent_target : $params['page_slug'];
+								add_submenu_page(
+									$params['page_slug'], 
+									esc_html($val['name']), 
+									esc_html($val['name']), 
+									$cap, 
+									$sub_menu_page_slug, 
+									array($this, 'page')
+								);
+								
+							}
+						}
 					}
+					
+					# Enqueue scripts and styles
+					add_action('admin_print_styles-'. $panel_page, array($this, 'enqueueStyles'));
+					add_action('admin_print_scripts-'. $panel_page, array($this, 'enqueueScripts'));
+					
+					# If menu is added, then declare it to avoid same menu multiple additions
+					$menu_added = ($panel_page) ? TRUE : FALSE;
 				}
 			}
-			
-			# Enqueue scripts and styles
-			add_action('admin_print_styles-'. $panel_page, array($this, 'enqueueStyles'));
-			add_action('admin_print_scripts-'. $panel_page, array($this, 'enqueueScripts'));
 		}
 		
 		
@@ -421,6 +436,9 @@ if (!class_exists('DilazPanel')) {
 		 * Sanitize parameters
 		 *
 		 * @since  2.5
+		 * @since  2.7.8 - deprecated 'options_cap' sanitizations
+		 * @since  2.7.8 - sanitize 'options_view_cap' and 'options_save_cap' sanitizations
+		 * 
 		 * @access public
 		 * @return void
 		 */
@@ -443,6 +461,14 @@ if (!class_exists('DilazPanel')) {
 					case 'item_name':
 					case 'item_version':
 						$params[$key] = sanitize_text_field($val);
+						break;
+					
+					case 'options_view_cap':
+					case 'options_save_cap':
+						foreach ((array)$val as $k => $v) {
+							$val[$k] = sanitize_text_field($v);
+						}
+						$params[$key] = $val;
 						break;
 						
 					case 'admin_bar_menu':
@@ -1239,14 +1265,17 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Save all options
 		 *
-		 * @since  1.0
+		 * @since 1.0
+		 * @since 2.7.8 added user capability check before saving options
 		 *
-		 * @param  string $option_name option name as used in wp_options table
+		 * @param string $option_name option name as used in wp_options table
 		 *
 		 * @access public
 		 * @return json
 		 */
 		public function saveOptions() {
+			
+			$params = $this->_params;
 			
 			$response = array();
 			
@@ -1258,6 +1287,17 @@ if (!class_exists('DilazPanel')) {
 				
 				# set option name
 				$option_name = isset($form_data['option_name']) ? sanitize_text_field($form_data['option_name']) : '';
+				
+				/* 
+				 * VERY IMPORTANT!
+				 * 
+				 * @since 2.7.8
+				 * 
+				 * There might be use of Dilaz Panel on different plugins or themes,
+				 * so we need to check the current panel instance and ignore all the 
+				 * other instances whose form is not being saved.
+				 */
+				if ($this->_optionName != $option_name) return false;
 				
 				# remove options that should not be saved
 				if (isset($form_data['security'])) unset($form_data['security']);
@@ -1319,10 +1359,38 @@ if (!class_exists('DilazPanel')) {
 					}
 				}
 				
-				update_option($option_name, $merged_options);
+				# At first, options are not yet saved
+				$options_saved = FALSE;
 				
-				$response['success'] = 1;
-				$response['message'] = esc_html__('Options saved successfully.', 'dilaz-panel');
+				# Check capability parameter
+				if (isset($params['options_save_cap']) && is_array($params['options_save_cap'])) {
+					
+					# Iterate through the allowed capabilities
+					foreach ($params['options_save_cap'] as $cap_key => $cap) {
+						
+						# Check user capability for saving options
+						if (current_user_can($cap)) {
+							
+							# Proceed only if options haven't been saved
+							if (FALSE == $options_saved) {
+									update_option($option_name, $merged_options);
+									
+									$options_saved = TRUE;
+								
+									$response['success'] = 1;
+									$response['message'] = esc_html__('Options saved successfully.', 'dilaz-panel');
+							}
+							
+						} else {
+							$response['success'] = 0;
+							$response['message'] = esc_html__('Not saved! No permission.', 'dilaz-panel');
+						}
+					}
+					
+				} else {
+					$response['success'] = 0;
+					$response['message'] = esc_html__('Invalid "options_save_cap".', 'dilaz-panel');
+				}
 				
 			} else {
 				$response['success'] = 0;

@@ -791,7 +791,7 @@ var DilazPanelScript = new function() {
 				},
 				success : function(response) {
 					
-					if (response.success) {
+					if (response) {
 						$spinner.delay(1800).hide(290);
 						$progress.delay(1800).hide(290);
 					}
