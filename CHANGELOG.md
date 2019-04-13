@@ -4,8 +4,8 @@
 
 ###### v2.7.8
 ```
-= ADDED 'options_view_cap' capability check to panel display
-= ADDED 'options_save_cap' capability check while saving options
+= ADDED - 'options_view_cap' capability check to panel display
+= ADDED - 'options_save_cap' capability check while saving options
 ```
 ###### v2.7.7
 ```
@@ -99,19 +99,19 @@
 ```
 ###### v2.6.0
 ```
-= added new field - WP Editor
+= ADDED - new field - WP Editor
 ```
 ###### v2.5
 ```
-= added sanitizeParams() method to clean up admin parameters
-= added add_submenu_page() support to allow adding admin menu under a top level parent menu
+= ADDED - sanitizeParams() method to clean up admin parameters
+= ADDED - add_submenu_page() support to allow adding admin menu under a top level parent menu
 ```
 ###### v2.4
 ```
-= fixed multitext field input sanitization
-= fixed getOptionsFromFile() method errors
-= fixed saveOptions() method default options saving
-= fixed _multitext() method errors
+= FIXED - multitext field input sanitization
+= FIXED - getOptionsFromFile() method errors
+= FIXED - saveOptions() method default options saving
+= FIXED - _multitext() method errors
 ```
 ###### v2.3
 ```
@@ -124,13 +124,13 @@
 ```
 ###### v2.1
 ```
-= added $option_args as the only parameter in DilazPanel class
-= added panel attributes (panel-atts) to options in DB
-= Improved ajax save to include panel-atts
-= Improved ajax reset to include panel-atts
-= Updated ajax export
-= Updated ajax import
-= Removed unnecessary functional methods and variables from DilazPanel class
+= ADDED - $option_args as the only parameter in DilazPanel class
+= ADDED - panel attributes (panel-atts) to options in DB
+= IMPROVED - ajax save to include panel-atts
+= IMPROVED - ajax reset to include panel-atts
+= UPDATED - ajax export
+= UPDATED - ajax import
+= REMOVED - unnecessary functional methods and variables from DilazPanel class
 ```
 ## Version 1
 ###### v1.0
