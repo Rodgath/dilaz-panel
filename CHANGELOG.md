@@ -2,6 +2,11 @@
 
 ## Version 2
 
+###### v2.7.8
+```
+= ADDED 'options_view_cap' capability check to panel display
+= ADDED 'options_save_cap' capability check while saving options
+```
 ###### v2.7.7
 ```
 = FIXED - 'multitext' field sanitize option bug
