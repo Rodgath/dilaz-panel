@@ -2,6 +2,10 @@
 
 ## Version 2
 
+###### v2.7.9
+```
+= FIXED - 'info' field can now be used as child field of any conditional field
+```
 ###### v2.7.8
 ```
 = ADDED - 'options_view_cap' capability check to panel display
