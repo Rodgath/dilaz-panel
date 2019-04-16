@@ -329,15 +329,20 @@
 [data-do-action="show"] {
   background-color: #fafafa;
 }
+.dilaz-panel-field .dilaz-panel-section.info-wrap {
+	border-top: 0
+}
 
 /*--------------------------------------------------------------*/
 /* Info
 /*--------------------------------------------------------------*/
+#dilaz-panel .info-wrap {
+	padding: 25px 25px 0;
+}
 #dilaz-panel .info {
 	background: #d7f2ff;
 	padding: 20px 20px 10px;
 	border: 1px solid #acd4e6;
-	margin: 25px 25px 0;
 	color: #1e6e91;
 }
 #dilaz-panel .info h4 {

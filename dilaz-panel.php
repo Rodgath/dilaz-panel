@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.8
+ * Version:     2.7.9
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.8
+|| @version     2.7.9
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
@@ -436,8 +436,8 @@ if (!class_exists('DilazPanel')) {
 		 * Sanitize parameters
 		 *
 		 * @since  2.5
-		 * @since  2.7.8 - deprecated 'options_cap' sanitizations
-		 * @since  2.7.8 - sanitize 'options_view_cap' and 'options_save_cap' sanitizations
+		 * @since  2.7.8 - deprecated 'options_cap'
+		 * @since  2.7.8 - sanitize 'options_view_cap' and 'options_save_cap'
 		 * 
 		 * @access public
 		 * @return void
@@ -465,16 +465,21 @@ if (!class_exists('DilazPanel')) {
 					
 					case 'options_view_cap':
 					case 'options_save_cap':
-						foreach ((array)$val as $k => $v) {
-							$val[$k] = sanitize_text_field($v);
+						if (is_array($val)) {
+							foreach ($val as $k => $v) {
+								$val[$k] = sanitize_text_field($v);
+							}
+							$params[$key] = $val;
+						} else {
+							$params[$key] = sanitize_text_field($val);
 						}
-						$params[$key] = $val;
 						break;
 						
+					case 'default_options':
+					case 'custom_options':
 					case 'admin_bar_menu':
 					case 'import_export':
-					case 'use_type_error':
-						$params[$key] = ($val == '') ? FALSE : (bool)$val;
+						$params[$key] = ($val == '') ? FALSE : filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 						break;
 						
 					case 'menu_position':
@@ -898,6 +903,8 @@ if (!class_exists('DilazPanel')) {
 						
 						$output .= '<div class="option clearfix">' ."\n";
 						
+					} else if ($field['type'] == 'info') {
+						$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. $cond_fields .'>' . "\n";
 					}
 					
 					# Field types
@@ -943,6 +950,8 @@ if (!class_exists('DilazPanel')) {
 						}
 						$output .= '</div><!-- .option -->'; # .option
 						$output .= '</div><!-- .section_class -->'; # .$section_class
+					} else if ($field['type'] == 'info') {
+						$output .= '</div>' . "\n"; # .info-wrap
 					}
 				}
 				

@@ -87,7 +87,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output .= '<div class="info">';
 			$output .= $name != '' ? '<h4>'. $name .'</h4>' : '';
-			$output .= $desc != '' ? '<p>'. $desc .'</p>' : '';
+			$output .= $desc != '' ? '<p>'. wp_kses_post($desc) .'</p>' : '';
 			$output .= '</div>';
 			
 			return $output;

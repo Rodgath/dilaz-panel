@@ -69,7 +69,7 @@ var DilazPanelScript = new function() {
 	$t.infoBoxBorderFix = function () {
 
 		var $field    = $('.dilaz-panel-field'),
-			$info     = $field.find('.info'),
+			$info     = $field.find('.info-wrap'),
 			$infoNext = $info.next(),
 			$infoPrev = $info.prev();
 
