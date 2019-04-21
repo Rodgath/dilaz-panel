@@ -6,7 +6,7 @@
  * Author:      WebDilaz Team
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.9
+ * Version:     2.7.10
  * Author URI:  http://webdilaz.com/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.9
+|| @version     2.7.10
 || @since       Dilaz Panel 1.0
 || @author      WebDilaz Team, http://webdilaz.com
 || @copyright   Copyright (C) 2017, WebDilaz LTD
@@ -1764,3 +1764,14 @@ if (!class_exists('DilazPanel')) {
 		
 	} // end class
 }
+
+/* Add update checker */
+require 'includes/update-checker/plugin-update-checker.php';
+
+$dilazPanelUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/Rodgath/Dilaz-Panel-Plugin/',
+	__FILE__,
+	'dilaz-panel'
+);
+
+$dilazPanelUpdateChecker->setBranch('master');
