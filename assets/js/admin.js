@@ -90,7 +90,10 @@ var DilazPanelScript = new function() {
 	 * Open hashed menu tab when page is loaded
 	 * @since Dilaz Panel 2.7.2
 	 */
-	$t.tabMenuOpenHashed = function (trigger = '.trigger') {
+	$t.tabMenuOpenHashed = function (trigger) {
+		
+		/* Set 'trigger' default parameter */
+		if (!trigger) trigger = '.trigger';
 
 		var $trigger = $('.dilaz-panel-menu').find(trigger),
 			$currentTab = window.location.hash;
@@ -269,7 +272,10 @@ var DilazPanelScript = new function() {
 	 * Update active link on sidebar menu
 	 * @since Dilaz Panel 2.7.4
 	 */
-	$t.sideBarMenuUpdate = function($currentHash = '') {
+	$t.sideBarMenuUpdate = function($currentHash) {
+		
+		/* Set '$currentHash' default parameter */
+		if (!$currentHash) $currentHash = '';
 		
 		/* update current sidebar active link */
 		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').each(function() {
@@ -1375,7 +1381,10 @@ var DilazPanelScript = new function() {
 	 * 
 	 * @return Object|String
 	 */
-	$t.hexToRgba = function(hex, opacity = 1) {
+	$t.hexToRgba = function(hex, opacity) {
+		
+		/* Set 'opacity' default parameter */
+		if (!opacity) opacity = 1;
 		
 		if ($t.checkColor(hex) != 'hex') return null; 
 		
