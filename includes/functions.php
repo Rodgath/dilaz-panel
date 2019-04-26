@@ -270,7 +270,7 @@ if (!class_exists('DilazPanelFunctions')) {
 			}
 			
 			foreach ($options as $key => $value) {
-				if (isset($val['id']) && in_array($value['id'], $tab_fields_ids)) {
+				if (isset($value['id']) && in_array($value['id'], $tab_fields_ids)) {
 					unset($options[$key]);
 				}
 			}
