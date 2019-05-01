@@ -972,7 +972,7 @@ if (!class_exists('DilazPanelFields')) {
 							
 							$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
 							
-							$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><i class="fa fa-close"></i></a>';
+							$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><span class="mdi mdi-window-close"></span></a>';
 							
 							switch ($file_type) {
 								
@@ -1086,7 +1086,7 @@ if (!class_exists('DilazPanelFields')) {
 							
 							$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
 							
-							$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><i class="fa fa-close"></i></a>';					
+							$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><span class="mdi mdi-window-close"></span></a>';					
 							
 							switch ($file_type) {
 								
