@@ -391,7 +391,7 @@ var DilazPanelScript = new function() {
 						}
 						$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
 						$fileOutput += '<span class="sort ui-sortable-handle"></span>';
-						$fileOutput += '<a href="#" class="remove" title="Remove"><i class="fa fa-close"></i></a>';
+						$fileOutput += '<a href="#" class="remove" title="Remove"><span class="mdi mdi-window-close"></span></a>';
 						
 						switch ( $type ) {
 							case 'image':
