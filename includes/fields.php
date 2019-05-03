@@ -1206,7 +1206,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
-			$default_editor_settings = apply_filters('dilaz_field_editor_settings', array(
+			$default_editor_settings = array(
 				'media_buttons' => FALSE,
 				'textarea_name' => esc_attr($id),
 				'textarea_rows' => 20,
@@ -1218,7 +1218,7 @@ if (!class_exists('DilazPanelFields')) {
 					'plugins'               => 'wordpress, wpautoresize',
 					'body_class'            => 'dilaz-mce-editor'
 				)
-			));
+			);
 			$editor_settings = [];
 			$editor_settings = wp_parse_args($args['editor'], $default_editor_settings);
 			ob_start();
