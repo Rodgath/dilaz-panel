@@ -4,13 +4,13 @@
 || Admin Panel Fields
 || --------------------------------------------------------------------------------------------
 ||
-|| @package		Dilaz Panel
-|| @subpackage	Fields
-|| @since		Dilaz Panel 1.0
-|| @author		WebDilaz Team, http://webdilaz.com
-|| @copyright	Copyright (C) 2017, WebDilaz LTD
-|| @link		http://webdilaz.com/panel
-|| @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+|| @package    Dilaz Panel
+|| @subpackage Fields
+|| @since      Dilaz Panel 1.0
+|| @author     WebDilaz Team, http://webdilaz.com
+|| @copyright  Copyright (C) 2017, WebDilaz LTD
+|| @link       http://webdilaz.com/panel
+|| @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 || 
 */
 
@@ -1206,14 +1206,19 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
-			$default_editor_settings = array(
+			$default_editor_settings = apply_filters('dilaz_field_editor_settings', array(
 				'media_buttons' => FALSE,
 				'textarea_name' => esc_attr($id),
 				'textarea_rows' => 20,
-				'editor_class'  => $class,
-				'teeny'         => TRUE,
-				'tinymce'       => array('plugins' => 'wordpress')
-			);
+				'editor_class'  => 'dilaz-wp-editor '. esc_attr($class),
+				'teeny'         => FALSE,
+				'tinymce'       => array(
+					'autoresize_min_height' => 100,
+					'wp_autoresize_on'      => true,
+					'plugins'               => 'wordpress, wpautoresize',
+					'body_class'            => 'dilaz-mce-editor'
+				)
+			));
 			$editor_settings = [];
 			$editor_settings = wp_parse_args($args['editor'], $default_editor_settings);
 			ob_start();
