@@ -239,6 +239,9 @@ if (!class_exists('DilazPanel')) {
 				}
 			}
 			
+			# Add WP editor styles
+			$this->editorStyles();
+			
 			do_action('dilaz_panel_after_init');
 		}
 		
@@ -429,6 +432,19 @@ if (!class_exists('DilazPanel')) {
 					'confirm_reset'      => __('Are you sure? All settings will be lost and replaced with default settings!', 'dilaz-panel'),
 				)
 			);
+		}
+		
+		
+		/**
+		 * WP Editor custom styles
+		 *
+		 * @since  2.7.11
+		 * 
+		 * @access public
+		 * @return void
+		 */
+		public function editorStyles() {
+			add_editor_style( DILAZ_PANEL_URL .'assets/css/custom-editor-styles.css' );
 		}
 		
 		
