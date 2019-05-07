@@ -1,13 +1,13 @@
 <?php
 /*
  * Plugin Name: Dilaz Panel
- * Plugin URI:  http://webdilaz.com/plugins/dilaz-panel/
+ * Plugin URI:  https://github.com/Rodgath/Dilaz-Panel-Plugin
  * Description: Simple options panel for WordPress themes and plugins.
- * Author:      WebDilaz Team
+ * Author:      Rodgath
  * Text Domain: dilaz-panel
  * Domain Path: /languages
  * Version:     2.7.10
- * Author URI:  http://webdilaz.com/
+ * Author URI:  https://github.com/Rodgath
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,9 +19,9 @@
 || @subpackage  Panel
 || @version     2.7.10
 || @since       Dilaz Panel 1.0
-|| @author      WebDilaz Team, http://webdilaz.com
-|| @copyright   Copyright (C) 2017, WebDilaz LTD
-|| @link        http://webdilaz.com/panel
+|| @author      Rodgath, https://github.com/Rodgath
+|| @copyright   Copyright (C) 2017, Rodgath LTD
+|| @link        https://github.com/Rodgath/Dilaz-Panel-Plugin
 || @License     GPL-2.0+
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
 || 

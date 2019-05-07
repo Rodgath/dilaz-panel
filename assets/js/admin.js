@@ -6,9 +6,9 @@
 || @package    Dilaz Panel
 || @subpackage Panel
 || @since      Dilaz Panel 2.6.4
-|| @author     WebDilaz Team, http://webdilaz.com, http://themedilaz.com, http://codedilaz.com
-|| @copyright  Copyright (C) 2018, WebDilaz LTD
-|| @link       http://webdilaz.com/panel
+|| @author     Rodgath, https://github.com/Rodgath
+|| @copyright  Copyright (C) 2018, Rodgath LTD
+|| @link       https://github.com/Rodgath/Dilaz-Panel-Plugin
 || @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 || 
 */
