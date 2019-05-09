@@ -1784,6 +1784,7 @@ if (!class_exists('DilazPanel')) {
 /* Add update checker */
 require 'includes/update-checker/plugin-update-checker.php';
 
+/* Build the update checker */
 $dilazPanelUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/Rodgath/Dilaz-Panel-Plugin/',
 	__FILE__,
