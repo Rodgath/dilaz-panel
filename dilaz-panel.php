@@ -1790,4 +1790,5 @@ $dilazPanelUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'dilaz-panel'
 );
 
+/* Update from the "master" branch */
 $dilazPanelUpdateChecker->setBranch('master');
