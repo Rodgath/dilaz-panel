@@ -544,61 +544,76 @@ if (!class_exists('DilazPanel')) {
 			
 			# show if enabled
 			if ( isset($params['admin_bar_menu']) && $params['admin_bar_menu'] == TRUE ) {
+			
+				# At first, no menu is added
+				$menu_bar_added = FALSE;
 				
-				global $wp_admin_bar;
-				
-				$menu_id = $params['page_slug'] .'_node';
-				
-				# add Dilaz Panel menu node in admin bar
-				$wp_admin_bar->add_node(array(
-					'id'    => $menu_id,
-					'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. $params['menu_title'] .'</span>',
-					'href'  => admin_url('admin.php?page='. $params['page_slug']),
-					'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
-				));
-				
-				# add Dilaz Panel submenu dropdown in admin bar
-				# @since Dilaz Panel 2.7.2
-				$menu_items = $this->menuArray();
-				
-				if ( !empty($menu_items) ) {
-					foreach ( $menu_items as $key => $val ) {
+				foreach ($params['options_view_cap'] as $cap_key => $cap) {
+					
+					# bail if current user doesn't have capability
+					if (!current_user_can($cap)) continue;
+					
+					# Add menu only if there's none
+					if (FALSE == $menu_bar_added) {
 						
-						$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
+						global $wp_admin_bar;
 						
-						if ( isset($val['icon']) && ($val['icon'] != '') ) {
-							$menu_icon = '<span class="mdi '. $val['icon'] .'" style="font-family:Material Design Icons;margin-right:5px"></span>';
-						} else {
-							$menu_icon = '<span class="mdi mdi-settings" style="font-family:Material Design Icons;margin-right:5px"></span>';
-						}
+						$menu_id = $params['page_slug'] .'_node';
 						
-						# drop down level 1
-						$drop_down_parent_id = $menu_id .'_'. $parent_target;
+						# add Dilaz Panel menu node in admin bar
 						$wp_admin_bar->add_node(array(
-							'parent' => $menu_id,
-							'title'  => $menu_icon . esc_html($val['name']),
-							'id'     => $drop_down_parent_id,
-							'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $parent_target),
-							'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l1')
+							'id'    => $menu_id,
+							'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. $params['menu_title'] .'</span>',
+							'href'  => admin_url('admin.php?page='. $params['page_slug']),
+							'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
 						));
 						
-						# drop down level 2
-						if (isset($val['children']) && sizeof($val['children']) > 0) {
-							foreach ($val['children'] as $child) {
-								$child_target = $child['target'];
-								$wp_admin_bar->add_node(array(
-									'parent' => $drop_down_parent_id,
-									'title'  => esc_html($child['name']),
-									'id'     => $menu_id .'_'. $child_target,
-									'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $child_target),
-									'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l2')
-								));
-							}
-						}
+						# add Dilaz Panel submenu dropdown in admin bar
+						# @since Dilaz Panel 2.7.2
+						$menu_items = $this->menuArray();
 						
+						if ( !empty($menu_items) ) {
+							foreach ( $menu_items as $key => $val ) {
+								
+								$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
+								
+								if ( isset($val['icon']) && ($val['icon'] != '') ) {
+									$menu_icon = '<span class="mdi '. $val['icon'] .'" style="font-family:Material Design Icons;margin-right:5px"></span>';
+								} else {
+									$menu_icon = '<span class="mdi mdi-settings" style="font-family:Material Design Icons;margin-right:5px"></span>';
+								}
+								
+								# drop down level 1
+								$drop_down_parent_id = $menu_id .'_'. $parent_target;
+								$wp_admin_bar->add_node(array(
+									'parent' => $menu_id,
+									'title'  => $menu_icon . esc_html($val['name']),
+									'id'     => $drop_down_parent_id,
+									'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $parent_target),
+									'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l1')
+								));
+								
+								# drop down level 2
+								if (isset($val['children']) && sizeof($val['children']) > 0) {
+									foreach ($val['children'] as $child) {
+										$child_target = $child['target'];
+										$wp_admin_bar->add_node(array(
+											'parent' => $drop_down_parent_id,
+											'title'  => esc_html($child['name']),
+											'id'     => $menu_id .'_'. $child_target,
+											'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $child_target),
+											'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l2')
+										));
+									}
+								}
+								
+							}
+					
+							# If menu is added, then declare it to avoid same menu multiple additions
+							$menu_bar_added = TRUE;
+						}
 					}
 				}
-				
 			}
 		}
 		
