@@ -2,6 +2,12 @@
 
 ## Version 2
 
+###### v2.7.11
+```
+= ADDED - editorStyles() method for custom WP editor styles
+= ADDED - permissions to 'view' capability for admin bar menu dropdown
+= FIXED - IE Method default parameter bug. Its a feature in ES6 not supported by IE, so I converted code to ES5.
+```
 ###### v2.7.10
 ```
 = ADDED - Update checker
