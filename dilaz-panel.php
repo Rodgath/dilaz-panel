@@ -1644,7 +1644,7 @@ if (!class_exists('DilazPanel')) {
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
-					return is_array($output) ? array_unique($output) : $output;
+					return is_array($output) && sizeof($output) > 0 ? array_unique($output) : $output;
 					break;
 					
 				case 'panel-atts':
