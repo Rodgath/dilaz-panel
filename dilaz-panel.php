@@ -1644,7 +1644,7 @@ if (!class_exists('DilazPanel')) {
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
-					return sizeof($output) > 1 ? array_filter(array_unique($output)) : $output;
+					return sizeof($output) > 1 ? array_filter(array_unique($output)) : $output; // 'array_filter' used to remove zero-value entries
 					break;
 					
 				case 'panel-atts':
