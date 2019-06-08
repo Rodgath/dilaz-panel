@@ -946,7 +946,7 @@ if (!class_exists('DilazPanelFields')) {
 				
 				$output .= '<div class="dilaz-panel-file-wrapper" data-file-id="'. esc_attr($id) .'" '. $data_file_multiple .'>';
 				
-				$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel"" />';
+				$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel="" />';
 				
 				if ($value != '') {
 					foreach ($value as $key => $attachment_id) {
