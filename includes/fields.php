@@ -1073,7 +1073,7 @@ if (!class_exists('DilazPanelFields')) {
 							$output .= '<div class="dilaz-panel-media-file image '. ($saved_bg_image != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
 							
 							$output .= '<input type="hidden" name="'. esc_attr($id) .'[image]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. 
-							$saved_bg_image .'" size="30" rel"" />';
+							$saved_bg_image .'" size="30" rel="" />';
 							
 							$output .= is_array($saved_bg_image) && sizeof($saved_bg_image) > 1 ? '<span class="sort"></span>' : '';
 							
