@@ -945,8 +945,8 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. sprintf(__('Upload %s', 'dilaz-panel'), $file_type) .'" '. $data_file_type.' '. $data_file_specific .' '. $data_file_multiple .' '. $data_frame_title .' '. $data_frame_b_txt .' />';
 				
 				$output .= '<div class="dilaz-panel-file-wrapper" data-file-id="'. esc_attr($id) .'" '. $data_file_multiple .'>';
-
-					$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel"" />';
+				
+				$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel"" />';
 				
 				if ($value != '') {
 					foreach ($value as $key => $attachment_id) {
@@ -959,7 +959,7 @@ if (!class_exists('DilazPanelFields')) {
 							$output .= '<div class="dilaz-panel-media-file '. $file_type .' '. ($attachment_id != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
 							
 							$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. 
-							$attachment_id .'" size="30" rel"" />';
+							$attachment_id .'" size="30" rel="" />';
 							
 							$output .= sizeof($value) > 1 ? '<span class="sort"></span>' : '';
 							
