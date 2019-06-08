@@ -434,11 +434,11 @@ var DilazPanelScript = new function() {
 						
 						$fileOutput += '</div>';
 						
-						if ($fileMultiple == true) {
+						// if ($fileMultiple == true) {
 							$fileWrapper.append($fileOutput);
-						} else {
-							$fileWrapper.html($fileOutput);
-						}
+						// } else {
+							// $fileWrapper.html($fileOutput);
+						// }
 						
 					});
 				});
