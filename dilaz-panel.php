@@ -1640,7 +1640,7 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'upload':
-					$output = '';
+					$output = array();
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
