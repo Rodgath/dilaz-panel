@@ -39,7 +39,7 @@ var DilazPanelScript = new function() {
 	/**
 	 * Global Variables
 	 */
-	var $t   = this,
+	var	$t   = this,
 		$    = jQuery.noConflict(),
 		$doc = $(document);
 	
@@ -68,10 +68,10 @@ var DilazPanelScript = new function() {
 	 */
 	$t.infoBoxBorderFix = function () {
 
-		var $field    = $('.dilaz-panel-field'),
-		    $info     = $field.find('.info-wrap'),
-		    $infoNext = $info.next(),
-		   $infoPrev = $info.prev();
+		var	$field    = $('.dilaz-panel-field'),
+			$info     = $field.find('.info-wrap'),
+			$infoNext = $info.next(),
+			$infoPrev = $info.prev();
 
 		if ($infoNext.hasClass('dilaz-panel-section')) {
 			$infoNext.css({
@@ -154,7 +154,7 @@ var DilazPanelScript = new function() {
 			
 			e.preventDefault();
 			
-			var $this        = $(this),
+			var	$this        = $(this),
 				$parent      = $this.parent(),
 				$tabsNav     = $this.closest('.dilaz-panel-menu'),
 				$tabTarget   = $this.attr('href'),
@@ -167,7 +167,7 @@ var DilazPanelScript = new function() {
 			/* toggle submenu */
 			if ($parent.hasClass('has_children')) {
 				
-				var $subMenu        = $parent.find('.submenu'),
+				var	$subMenu        = $parent.find('.submenu'),
 					$subMenuFirst   = $subMenu.children('li:first'),
 					$subMenuTrigger = $subMenuFirst.find('.trigger'),
 					$tabTarget      = $subMenuTrigger.attr('href');
@@ -213,7 +213,7 @@ var DilazPanelScript = new function() {
 			
 			e.preventDefault();
 			
-			var $this          = $(this),
+			var	$this          = $(this),
 				$thisUrl       = $this.attr('href'),
 				$thisHashIndex = $thisUrl.indexOf('#'),
 				$thisHash      = $thisUrl.substring($thisHashIndex, $thisUrl.length),
@@ -251,7 +251,7 @@ var DilazPanelScript = new function() {
 			
 			e.preventDefault();
 			
-			var $this          = $(this),
+			var	$this          = $(this),
 				$thisUrl       = $this.attr('href'),
 				$thisHashIndex = $thisUrl.indexOf('#'),
 				$trigger       = $('.dilaz-panel-menu').find('.trigger'),
@@ -280,7 +280,7 @@ var DilazPanelScript = new function() {
 		/* update current sidebar active link */
 		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').each(function() {
 			
-			var $sbLink_a    = $(this),
+			var	$sbLink_a    = $(this),
 				$sbLink_li   = $sbLink_a.parent(),
 				$sbUrl       = $sbLink_a.attr('href'),
 				$sbHashIndex = $sbUrl.indexOf('#'),
@@ -316,7 +316,7 @@ var DilazPanelScript = new function() {
 				
 				var options, attachment;
 				
-				var $self              = $(event.target),
+				var	$self              = $(event.target),
 					$fileUpload        = $self.closest('.dilaz-panel-file-upload'),
 					$fileWrapper       = $fileUpload.find('.dilaz-panel-file-wrapper'),
 					$fileWrapperParent = $fileUpload.parent(),
@@ -375,7 +375,7 @@ var DilazPanelScript = new function() {
 						}
 						
 						/* attachment data */
-						var $src     = attachment.attributes.url,
+						var	$src     = attachment.attributes.url,
 							$id      = attachment.id,
 							$title   = attachment.attributes.title,
 							$caption = attachment.attributes.caption;
@@ -494,7 +494,7 @@ var DilazPanelScript = new function() {
 	$t.uiSlider = function() {
 		$('.dilaz-panel-slider').each(function() {
 			
-			var $this = $(this),
+			var	$this = $(this),
 				$min  = parseInt($this.data('min')),
 				$max  = parseInt($this.data('max')),
 				$step = parseInt($this.data('step')),
@@ -525,7 +525,7 @@ var DilazPanelScript = new function() {
 	$t.uiRange = function() {
 		$('.dilaz-panel-range').each(function() {
 			
-			var $this      = $(this),
+			var	$this      = $(this),
 				$minVal    = parseInt($this.data('min-val')),
 				$maxVal    = parseInt($this.data('max-val')),
 				$min       = parseInt($this.data('min')),
@@ -688,7 +688,7 @@ var DilazPanelScript = new function() {
 			
 			if (confirm(dilaz_panel_lang.confirm_reset)) {
 			
-				var $resetButton = $(this),
+				var	$resetButton = $(this),
 					$panelForm   = $resetButton.closest('#dilaz-panel-form'),
 					$security    = $('input[name="security"]', $panelForm).val(),
 					$optionName  = $panelForm.data('option-name'),
@@ -748,20 +748,20 @@ var DilazPanelScript = new function() {
 			
 			/* Autosave tinyMCE wp_editor() because we are using ajax */
 			$.each($('.dilaz-panel-section'), function($key, $data) {
-				var $id          = $data.id,
+				var	$id          = $data.id,
 					$idHashed    = $('#'+$id),
 					$fieldId     = $id.replace('dilaz-panel-section-', ''),
 					$isEditor    = $($idHashed).find('.wp-editor-wrap'),
 					$editorField = $($idHashed).find('#'+$fieldId);
 					
 				if ($isEditor.length) {
-					var $wpEditorFrame  = $('#'+$fieldId+'_ifr'),
+					var	$wpEditorFrame  = $('#'+$fieldId+'_ifr'),
 						$editorContents = $('#tinymce', $wpEditorFrame.contents())[0].innerHTML;
 						
 					$editorField.html($editorContents);
 				}
 			});
-			var $saveButton = $(this),
+			var	$saveButton = $(this),
 				$panelForm   = $saveButton.closest('#dilaz-panel-form'),
 				$submitButton = $('input[name="update"]', $panelForm),
 				$spinner      = $submitButton.siblings('.spinner'),
