@@ -819,7 +819,7 @@ var DilazPanelScript = new function() {
 	$t.exportOptions = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-export', function() {
 			
-			var $exportButton = $(this),
+			var	$exportButton = $(this),
 				$spinner      = $exportButton.siblings('.spinner'),
 				$progress     = $exportButton.siblings('.progress'),
 				$finished     = $exportButton.siblings('.finished'),
@@ -877,7 +877,7 @@ var DilazPanelScript = new function() {
 	$t.importOptions = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-import', function() {
 			
-			var $importButton = $(this),
+			var	$importButton = $(this),
 				$spinner      = $importButton.siblings('.spinner'),
 				$progress     = $importButton.siblings('.progress'),
 				$finished     = $importButton.siblings('.finished'),
@@ -991,7 +991,7 @@ var DilazPanelScript = new function() {
 	 */
 	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
 	
-		var $linkId    = sectionId+'-'+fontFamily.replace(/ /g, '-').toLowerCase(),
+		var	$linkId    = sectionId+'-'+fontFamily.replace(/ /g, '-').toLowerCase(),
 			$links     = document.getElementsByTagName('link'),
 			fontURLarr = [],
 			fontURL    = '';
@@ -1017,7 +1017,7 @@ var DilazPanelScript = new function() {
 			/* Check if its a Google font selected */
 			if (jasonData[fontFamily] !== undefined) {
 				
-				var fontVariants    = jasonData[fontFamily].variants,
+				var	fontVariants    = jasonData[fontFamily].variants,
 					checkFontStyle  = JSON.stringify(fontVariants).indexOf(fontStyle) > -1,
 					checkFontWeight = JSON.stringify(fontVariants).indexOf(fontWeight) > -1,
 					fontSubsets     = jasonData[fontFamily].subsets,
@@ -1063,7 +1063,7 @@ var DilazPanelScript = new function() {
 	$t.fontPreview = function() {
 		$('.dilaz-panel-section-font').each(function() {
 			
-			var $this        = $(this),
+			var	$this        = $(this),
 				$fFamily     = $this.find('.family'),
 				$fSubset     = $this.find('.subset'),
 				$fWeight     = $this.find('.weight'),
@@ -1154,7 +1154,7 @@ var DilazPanelScript = new function() {
 	$t.backgroundPreview = function() {
 		$('.dilaz-panel-section-background').each(function(){
 			
-			var $this         = $(this),
+			var	$this         = $(this),
 				$bgRepeat     = $this.find('.repeat'),
 				$bgSize       = $this.find('.size'),
 				$bgPosition   = $this.find('.position'),
@@ -1256,7 +1256,7 @@ var DilazPanelScript = new function() {
 	 */
 	$t.addRepeatableField = function() {
 		$('.dilaz-panel-add-repeatable-item').on('click', function() {
-			var $this     = $(this),
+			var	$this     = $(this),
 				sorter    = '<span class="sort-repeatable"><i class="dashicons dashicons-move"></i></span>',
 				remover   = '<span class="repeatable-remove button"><i class="dashicons dashicons-no-alt"></i></span>',
 				rList     = $this.prev('.dilaz-panel-repeatable'),
@@ -1307,7 +1307,7 @@ var DilazPanelScript = new function() {
 		$doc.on('click', '.repeatable-remove', function(e) {
 			e.preventDefault();
 			
-			var $this = $(this),
+			var	$this = $(this),
 				$parent = $this.parent();
 			
 			/* one item should always remain */
@@ -1410,7 +1410,7 @@ var DilazPanelScript = new function() {
 	 */
 	$t.bgColorBasedOnTextColor = function(textColor, lightColor, darkColor) {
 		
-		var checkColor = $t.checkColor(textColor),
+		var	checkColor = $t.checkColor(textColor),
 			rgb = null;
 			
 		if (checkColor == 'hex') {
