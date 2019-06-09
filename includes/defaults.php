@@ -177,8 +177,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_family() {
-		$font_family = wp_parse_args(DilazPanelDefaults::_googleFonts(), array(
+	public static function _font_family_defaults() {
+		$font_family = array(
 			''          => '',
 			'arial'     => 'Arial',
 			'verdana'   => 'Verdana, Geneva',
@@ -188,7 +188,22 @@ class DilazPanelDefaults {
 			'tahoma'    => 'Tahoma, Geneva',
 			'palatino'  => 'Palatino',
 			'helvetica' => 'Helvetica',
-		));
+		);
+		$font_family = apply_filters('dilaz_panel_font_family_defaults', $font_family);
+		$font_family = array_map('sanitize_text_field', $font_family);
+		return $font_family;
+	}
+	
+	
+	/**
+	 * Font family all
+	 *
+	 * @since 1.0
+	 *
+	 * @return array
+	 */
+	public static function _font_family() {
+		$font_family = wp_parse_args(DilazPanelDefaults::_googleFonts(), DilazPanelDefaults::_font_family_defaults());
 		$font_family = apply_filters('dilaz_panel_font_family', $font_family);
 		$font_family = array_map('sanitize_text_field', $font_family);
 		return $font_family;
