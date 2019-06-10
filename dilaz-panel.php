@@ -1792,6 +1792,24 @@ if (!class_exists('DilazPanel')) {
 			$families = array();
 			$subsets  = array();
 			
+			foreach ($this->savedGFonts as $key => $font) {
+				
+				if (isset($font['family']) && $font['family'] != '') {
+					$weights  = array();
+					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900'])) {
+						$weights[] = $font['weight'];
+					}
+					
+					$font_family = str_replace(' ', '+', $font['family']);
+					
+					$families[] = $font_family . ':' . implode(',', array_values($weights));
+					
+					if (isset($font['subset']) && $font['subset'] != '') {
+						$subsets[] = $font['subset'];
+					}
+				}
+			}
+			
 		}
 		
 		
