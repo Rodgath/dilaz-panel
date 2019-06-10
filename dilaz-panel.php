@@ -1789,6 +1789,9 @@ if (!class_exists('DilazPanel')) {
 			
 			if (empty($this->savedGFonts)) return FALSE;
 			
+			$families = array();
+			$subsets  = array();
+			
 		}
 		
 		
