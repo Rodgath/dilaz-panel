@@ -181,7 +181,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Initialize
 		 *
-		 * @since  1.0
+		 * @since  2.7.12
 		 * @access public
 		 * @return array
 		 */
