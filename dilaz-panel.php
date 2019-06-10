@@ -1810,6 +1810,19 @@ if (!class_exists('DilazPanel')) {
 				}
 			}
 			
+			if (!empty($families)) {
+				$query_args = array(
+					'family'  => implode( '|', $families ),
+					'display' => 'swap',
+				);
+				
+				if (!empty($subsets)) {
+					$query_args = array_merge($query_args, array('subset' => implode(',', array_values($subsets))));
+				}
+
+				$font_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
+			}
+			
 		}
 		
 		
