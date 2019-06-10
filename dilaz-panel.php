@@ -80,6 +80,16 @@ if (!class_exists('DilazPanel')) {
 		
 		
 		/**
+		 * Saved Google Fonts
+		 *
+		 * @since  2.7.12
+		 * @var    array
+		 * @access protected
+		 */
+		protected $savedGFonts;
+		
+		
+		/**
 		 * The single instance of the class
 		 *
 		 * @var    string
