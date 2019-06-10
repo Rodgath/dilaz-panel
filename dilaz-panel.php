@@ -158,6 +158,8 @@ if (!class_exists('DilazPanel')) {
 			$this->_options    = $this->args[1];
 			$this->_optionName = $this->_params['option_name'];
 			$this->_panelAtts  = $this->_options[0];
+			$saved_options     = $this->getOptions($this->_optionName);
+			$this->savedGFonts = isset($saved_options['saved_google_fonts']) ? $saved_options['saved_google_fonts'] : array();
 			
 			# Load constants
 			$this->constants();
