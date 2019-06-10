@@ -528,6 +528,8 @@ if (!class_exists('DilazPanel')) {
 		 * Add Admin Bar Menu
 		 *
 		 * @since  1.0
+		 * @since  2.7.11 added 'options_view_cap' capability check
+		 * 
 		 * @access public
 		 * @global string $wp_admin_bar
 		 * @return void
@@ -1377,6 +1379,15 @@ if (!class_exists('DilazPanel')) {
 						$sanitized_options[$id] = $this->sanitizeOption($option['type'], $saved_options[$id], $option);
 					} else {
 						$sanitized_options[$id] = $this->sanitizeOption($option['type'], '', $option);
+					}
+					
+					# Set any saved Google fonts to be loaded
+					if ('font' == $option['type']) {
+						if (isset($sanitized_options[$id]['family']) && $sanitized_options[$id]['family'] != '') {
+							if (!array_key_exists($sanitized_options[$id]['family'], DilazPanelDefaults::_font_family_defaults())) {
+								$google_fonts['saved_google_fonts'][] = $sanitized_options[$id];
+							}
+						}
 					}
 					
 				}
