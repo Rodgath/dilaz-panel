@@ -165,8 +165,8 @@ if (!class_exists('DilazPanel')) {
 			$this->constants();
 			
 			# Actions
-			add_action('init', array($this, 'parameters'));
-			add_action('admin_init', array($this, 'init'));
+			add_action('init', array($this, 'init'));
+			add_action('admin_init', array($this, 'adminInit'));
 			add_action('admin_menu', array($this, 'registerMenu'));
 			add_action('wp_before_admin_bar_render', array($this, 'adminBar'));
 			add_action('wp_ajax_dilaz_panel_save_options', array($this, 'saveOptions'));
