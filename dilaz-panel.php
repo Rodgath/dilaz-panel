@@ -1410,6 +1410,11 @@ if (!class_exists('DilazPanel')) {
 					}
 				}
 				
+				# Lets add Google fonts if any have been saved
+				if (!empty($google_fonts)) {
+					$merged_options = array_merge($merged_options, $google_fonts);
+				}
+				
 				# At first, options are not yet saved
 				$options_saved = FALSE;
 				
