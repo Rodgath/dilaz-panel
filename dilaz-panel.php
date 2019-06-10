@@ -242,7 +242,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function init() {
+		public function adminInit() {
 
 			do_action('dilaz_panel_before_init');
 			
