@@ -179,6 +179,23 @@ if (!class_exists('DilazPanel')) {
 		
 		
 		/**
+		 * Initialize
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return array
+		 */
+		public function init() {
+			add_action('wp_head', array($this, 'loadGoogleFonts'));
+			
+			require_once DILAZ_PANEL_DIR .'includes/functions.php';
+			
+			# Load parameters
+			$this->parameters();
+		}
+		
+		
+		/**
 		 * Options parameters
 		 *
 		 * @since  1.0
