@@ -1787,6 +1787,8 @@ if (!class_exists('DilazPanel')) {
 		 */
 		public function loadGoogleFonts() {
 			
+			if (empty($this->savedGFonts)) return FALSE;
+			
 		}
 		
 		
