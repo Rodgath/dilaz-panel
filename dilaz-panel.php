@@ -30,11 +30,6 @@
 defined('ABSPATH') || exit;
 
 /**
- * Dilaz Panel functions
- */
-// require_once plugin_dir_path(__FILE__) .'includes/functions.php';
-
-/**
  * Dilaz Panel main class
  */
 if (!class_exists('DilazPanel')) {
@@ -158,12 +153,8 @@ if (!class_exists('DilazPanel')) {
 			$this->_options    = $this->args[1];
 			$this->_optionName = $this->_params['option_name'];
 			$this->_panelAtts  = $this->_options[0];
-			
-			// var_dump($this->_options); exit;
 			$saved_options     = $this->getOptions($this->_optionName);
 			$this->savedGFonts = isset($saved_options['saved_google_fonts']) ? $saved_options['saved_google_fonts'] : array();
-			
-			// var_dump($this->savedGFonts); exit;
 			
 			# Load constants
 			$this->constants();
@@ -190,7 +181,6 @@ if (!class_exists('DilazPanel')) {
 		 * @return array
 		 */
 		public function init() {
-			
 			add_action('wp_head', array($this, 'loadGoogleFonts'));
 			
 			require_once DILAZ_PANEL_DIR .'includes/functions.php';
@@ -1343,7 +1333,6 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @since 1.0
 		 * @since 2.7.8 added user capability check before saving options
-		 * @since 2.7.12 saving of all used Google fonts
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
@@ -1382,7 +1371,6 @@ if (!class_exists('DilazPanel')) {
 				$sanitized_options = array();
 				$defined_options   = $this->getOptionsFromFile($option_name);
 				$saved_options     = $this->getOptions($option_name);
-				$google_fonts      = array();
 				
 				# get all options from files and those added via filter and then remove duplicates
 				$all_options = DilazPanelFunctions::unique_multidimensional_array(array_merge($this->_options, $defined_options), 'id');
