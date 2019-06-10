@@ -1780,6 +1780,17 @@ if (!class_exists('DilazPanel')) {
 		
 		
 		/**
+		 * Load Google fonts in frontend
+		 * 
+		 * @since 2.7.12
+		 * @return mixed Google fonts head tag code
+		 */
+		public function loadGoogleFonts() {
+			
+		}
+		
+		
+		/**
 		 * Initialize Filesystem object and read file
 		 *
 		 * @see http://www.webdesignerdepot.com/2012/08/wordpress-filesystem-api-the-right-way-to-operate-with-local-files/
