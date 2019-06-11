@@ -1833,11 +1833,13 @@ if (!class_exists('DilazPanel')) {
 						$subsets[] = $font['subset'];
 					}
 				}
+				
 			}
 			
 			if (!empty($families)) {
+				
 				$query_args = array(
-					'family'  => implode( '|', $families ),
+					'family'  => implode('|', $families),
 					'display' => 'swap',
 				);
 				
@@ -1846,19 +1848,19 @@ if (!class_exists('DilazPanel')) {
 				}
 
 				$font_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
+			
+				?>
+				
+				<!-- Code snippet to speed up Google Fonts rendering: googlefonts.3perf.com --> 
+				<link rel="dns-prefetch" href="https://fonts.gstatic.com"> 
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"> 
+				<link rel="preload" href="<?php echo $font_url; ?>" as="fetch" crossorigin="anonymous">
+				<script type="text/javascript"> !function(e,n,t){"use strict";var o="<?php echo $font_url; ?>",r="__3perf_googleFonts_<?php echo 'dilaz'; ?>";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage); 
+				</script> 
+				<!-- End of code snippet for Google Fonts -->
+				
+				<?php
 			}
-			?>
-			
-			<!-- Code snippet to speed up Google Fonts rendering: googlefonts.3perf.com --> 
-			<link rel="dns-prefetch" href="https://fonts.gstatic.com"> 
-			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"> 
-			<link rel="preload" href="<?php echo $font_url; ?>" as="fetch" crossorigin="anonymous">
-			<script type="text/javascript"> !function(e,n,t){"use strict";var o="<?php echo $font_url; ?>",r="__3perf_googleFonts_<?php echo 'dilaz'; ?>";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage); 
-			</script> 
-			<!-- End of code snippet for Google Fonts -->
-			
-			<?php
-			
 		}
 		
 		
