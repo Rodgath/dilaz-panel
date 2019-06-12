@@ -148,7 +148,7 @@ if (!class_exists('DilazPanel')) {
 
 			do_action('dilaz_panel_before_load');
 			
-			$this->args        = $option_args;
+			$this->args        = is_array($option_args) ? $option_args : array();
 			$this->_params     = $this->sanitizeParams($this->args[0]);
 			$this->_options    = $this->args[1];
 			$this->_optionName = $this->_params['option_name'];
