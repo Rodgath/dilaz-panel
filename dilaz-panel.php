@@ -152,7 +152,7 @@ if (!class_exists('DilazPanel')) {
 			$this->_params     = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
 			$this->_options    = !empty($this->args) ? $this->args[1] : array();
 			$this->_optionName = isset($this->_params['option_name']) ? $this->_params['option_name'] : '';
-			$this->_panelAtts  = $this->_options[0];
+			$this->_panelAtts  = !empty($this->_options) ? $this->_options[0] : array();
 			$saved_options     = $this->getOptions($this->_optionName);
 			$this->savedGFonts = isset($saved_options['saved_google_fonts']) ? $saved_options['saved_google_fonts'] : array();
 			
