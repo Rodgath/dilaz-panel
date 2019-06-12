@@ -150,7 +150,7 @@ if (!class_exists('DilazPanel')) {
 			
 			$this->args        = is_array($option_args) ? $option_args : array();
 			$this->_params     = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
-			$this->_options    = $this->args[1];
+			$this->_options    = !empty($this->args) ? $this->args[1] : array();
 			$this->_optionName = $this->_params['option_name'];
 			$this->_panelAtts  = $this->_options[0];
 			$saved_options     = $this->getOptions($this->_optionName);
