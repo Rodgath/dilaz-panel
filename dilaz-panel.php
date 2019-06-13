@@ -1833,7 +1833,7 @@ if (!class_exists('DilazPanel')) {
 					
 					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900'])) {
 						$font_style = (isset($font['style']) && $font['style'] != '') ? ($font['style'] == 'italic' ? 'i' : '') : '';
-						$weights[] = $font['weight'];
+						$font_array[$font['family']]['weights'][] = $font['weight'] . $font_style;
 					}
 					
 					$font_family = str_replace(' ', '+', $font['family']);
