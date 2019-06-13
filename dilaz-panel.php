@@ -1839,6 +1839,7 @@ if (!class_exists('DilazPanel')) {
 					$font_family = str_replace(' ', '+', $font_array[$font['family']]['family']);
 					
 					if (isset($font_array[$font['family']]['weights'])) {
+						$families[$font_array[$font['family']]['family']] = $font_family . ':' . implode(',', array_values($font_array[$font['family']]['weights']));
 					}
 					
 					if (isset($font['subset']) && $font['subset'] != '') {
