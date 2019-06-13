@@ -1571,7 +1571,14 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'editor':
-					return $input;
+					if (current_user_can('unfiltered_html')) {
+						$output = $input;
+					} else {
+						global $allowedtags;
+						$output = wpautop(wp_kses($input, $allowedtags));
+					}
+					return $output;
+					break;
 					break;
 					
 				case 'number':
