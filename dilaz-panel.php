@@ -1334,7 +1334,7 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @since 1.0
 		 * @since 2.7.8 added user capability check before saving options
-		 * @since 2.7.12 saving of all used Google fonts
+		 * @since 2.7.12 separately saving of all used Google fonts
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
