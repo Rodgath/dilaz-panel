@@ -1823,7 +1823,7 @@ if (!class_exists('DilazPanel')) {
 			$subsets    = array();
 			$font_array = array();
 			
-			foreach ($this->savedGFonts as $key => $font) {
+			foreach ($savedGoogleFonts as $key => $font) {
 				
 				if (isset($font['family']) && $font['family'] != '') {
 					$weights  = array();
