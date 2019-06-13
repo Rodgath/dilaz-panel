@@ -1817,6 +1817,8 @@ if (!class_exists('DilazPanel')) {
 			
 			$savedGoogleFonts = $savedGoogleFonts != '' ? $savedGoogleFonts : $this->savedGFonts;
 			
+			if (empty($savedGoogleFonts)) return FALSE;
+			
 			$families = array();
 			$subsets  = array();
 			
