@@ -1843,7 +1843,7 @@ if (!class_exists('DilazPanel')) {
 						$families[$font_array[$font['family']]['family']] = $font_family . ':' . implode(',', array_unique(array_values($font_array[$font['family']]['weights'])));
 					}
 					
-					if (isset($font['subset']) && $font['subset'] != '') {
+					if (isset($font['subset']) && $font['subset'] != '' && is_array($font['subset'])) {
 						$subsets[] = $font['subset'];
 					}
 				}
