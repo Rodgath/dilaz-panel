@@ -1813,7 +1813,7 @@ if (!class_exists('DilazPanel')) {
 		 * @since 2.7.12
 		 * @return mixed Google fonts head tag code
 		 */
-		public function loadGoogleFonts() {
+		public function loadGoogleFonts($savedGoogleFonts = array()) {
 			
 			if (empty($this->savedGFonts)) return FALSE;
 			
