@@ -1826,7 +1826,11 @@ if (!class_exists('DilazPanel')) {
 			foreach ($savedGoogleFonts as $key => $font) {
 				
 				if (isset($font['family']) && $font['family'] != '') {
+					
+					$font_array[$font['family']]['family'] = $font['family'];
+					
 					$weights  = array();
+					
 					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900'])) {
 						$weights[] = $font['weight'];
 					}
