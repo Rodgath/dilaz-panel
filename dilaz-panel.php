@@ -144,7 +144,7 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @since 1.0
 		 */
-		function __construct($option_args) {
+		function __construct($option_args = '') {
 
 			do_action('dilaz_panel_before_load');
 			
@@ -181,6 +181,7 @@ if (!class_exists('DilazPanel')) {
 		 * @return array
 		 */
 		public function init() {
+			
 			add_action('wp_head', array($this, 'loadGoogleFonts'));
 			
 			require_once DILAZ_PANEL_DIR .'includes/functions.php';
