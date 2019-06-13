@@ -1831,7 +1831,7 @@ if (!class_exists('DilazPanel')) {
 					
 					$weights  = array();
 					
-					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900'])) {
+					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900', '100i', '200i', '300i', '400i', '500i', '600i', '700i', '800i', '900i'])) {
 						$font_style = (isset($font['style']) && $font['style'] != '') ? ($font['style'] == 'italic' ? 'i' : '') : '';
 						$font_array[$font['family']]['weights'][] = $font['weight'] . $font_style;
 					}
