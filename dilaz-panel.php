@@ -1844,7 +1844,7 @@ if (!class_exists('DilazPanel')) {
 					}
 					
 					if (isset($font['subset']) && $font['subset'] != '' && is_array($font['subset'])) {
-						$subsets[] = $font['subset'];
+						$subsets = array_merge($subsets, $font['subset']);
 					}
 				}
 				
