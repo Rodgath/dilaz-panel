@@ -1659,7 +1659,7 @@ if (!class_exists('DilazPanel')) {
 						} else if (isset($option['options'][$k]) && $k == 'color') {
 							$output[$k] = sanitize_hex_color($v);
 						} else if (isset($option['options'][$k]) && $k == 'subset') {
-							$output[$k] = $v;
+							$output[$k] = array_map('sanitize_text_field', $v);
 						} else {
 							$output[$k] = sanitize_text_field($v);
 						} 
