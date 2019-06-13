@@ -1836,7 +1836,7 @@ if (!class_exists('DilazPanel')) {
 						$font_array[$font['family']]['weights'][] = $font['weight'] . $font_style;
 					}
 					
-					$font_family = str_replace(' ', '+', $font['family']);
+					$font_family = str_replace(' ', '+', $font_array[$font['family']]['family']);
 					
 					$families[] = $font_family . ':' . implode(',', array_values($weights));
 					
