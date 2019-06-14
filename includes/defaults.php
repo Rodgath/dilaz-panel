@@ -171,6 +171,34 @@ class DilazPanelDefaults {
 	
 	
 	/**
+	 * Stacks for font family defaults 
+	 *
+	 * @since 2.7.12
+	 *
+	 * @return array
+	 */
+	public static function _font_family_defaults_stacks() {
+		$font_family_stacks = array(
+			'arial'           => 'Arial, Helvetica Neue, Helvetica, sans-serif',
+			'calibri'         => 'Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif',
+			'consolas'        => 'Consolas, monaco, monospace',
+			'courier-new'     => 'Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace',
+			'georgia'         => 'Georgia, Times, Times New Roman, serif',
+			'helvetica'       => 'Helvetica Neue, Helvetica, Arial, sans-serif',
+			'lucida-grande'   => 'Lucida Grande, Lucida Sans Unicode, Lucida Sans, Geneva, Verdana, sans-serif',
+			'palatino'        => 'Palatino, Palatino Linotype, Palatino LT STD, Book Antiqua, Georgia, serif',
+			'tahoma'          => 'Tahoma, Verdana, Segoe, sans-serif',
+			'times-new-roman' => 'TimesNewRoman, Times New Roman, Times, Baskerville, Georgia, serif',
+			'trebuchet'       => 'Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif',
+			'verdana'         => 'Verdana, Geneva, sans-serif;',
+		);
+		$font_family_stacks = apply_filters('dilaz_panel_font_family_defaults_stacks', $font_family_stacks);
+		$font_family_stacks = array_map('sanitize_text_field', $font_family_stacks);
+		return $font_family_stacks;
+	}
+	
+	
+	/**
 	 * Font family defaults
 	 *
 	 * @since 1.0
