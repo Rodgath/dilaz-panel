@@ -734,29 +734,11 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '</div>';
 			}
 			
-			/* font subset */
-			if (isset($options['subset']) && $options['subset'] !== FALSE) {
-				$output .= '<div class="dilaz-panel-font">';
-					$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
-					$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset]" class="subset select2single" data-width="200px">';
-					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::_font_subset();						
-					foreach ($font_subsets as $key => $font_subset) {
-						if (isset($saved_fonts['subset']) && !empty($saved_fonts['subset']) && $saved_fonts['subset'] !== FALSE) {
-							$selected_subset = selected(strtolower($saved_fonts['subset']), strtolower($key), FALSE);
-						} else {
-							$selected_subset = isset($std['subset']) && stripos($key, $std['subset']) !== FALSE ? selected(strtolower($std['subset']), strtolower($key), FALSE) : '';
-						}
-						$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
-					}
-					$output .= '</select>';
-				$output .= '</div>';
-			}
-			
 			/* font weight */
 			if (isset($options['weight']) && $options['weight'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Weight', 'dilaz-panel') .'</strong><br />';
-					$output .= '<select id="'. esc_attr($id) .'-weight" name="'. esc_attr($id) .'[weight]" class="weight select2single" data-width="160px">';
+					$output .= '<select id="'. esc_attr($id) .'-weight" name="'. esc_attr($id) .'[weight]" class="weight select2single" data-width="130px">';
 					$font_weights = is_array($options['weight']) ? $options['weight'] : DilazPanelDefaults::_font_weights();
 					foreach ($font_weights as $key => $font_weight) {
 						if (isset($saved_fonts['weight']) && !empty($saved_fonts['weight']) && $saved_fonts['weight'] !== FALSE) {
@@ -774,7 +756,7 @@ if (!class_exists('DilazPanelFields')) {
 			if (isset($options['style']) && $options['style'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Style', 'dilaz-panel') .'</strong><br />';
-					$output .= '<select id="'. esc_attr($id) .'-style" name="'. esc_attr($id) .'[style]" class="style select2single" data-width="160px">';
+					$output .= '<select id="'. esc_attr($id) .'-style" name="'. esc_attr($id) .'[style]" class="style select2single" data-width="110px">';
 					$font_styles = is_array($options['style']) ? $options['style'] : DilazPanelDefaults::_font_styles();
 					foreach ($font_styles as $key => $font_style) {
 						if (isset($saved_fonts['style']) && !empty($saved_fonts['style']) && $saved_fonts['style'] !== FALSE) {
@@ -792,7 +774,7 @@ if (!class_exists('DilazPanelFields')) {
 			if (isset($options['case']) && $options['case'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Case', 'dilaz-panel') .'</strong><br />';
-					$output .= '<select id="'. esc_attr($id) .'-case" name="'. esc_attr($id) .'[case]" class="case select2single" data-width="130px">';
+					$output .= '<select id="'. esc_attr($id) .'-case" name="'. esc_attr($id) .'[case]" class="case select2single" data-width="110px">';
 					$font_cases = is_array($options['case']) ? $options['case'] : DilazPanelDefaults::_font_cases();
 					foreach ($font_cases as $key => $font_case) {
 						if (isset($saved_fonts['case']) && !empty($saved_fonts['case']) && $saved_fonts['case'] !== FALSE) {
@@ -804,6 +786,10 @@ if (!class_exists('DilazPanelFields')) {
 					}
 					$output .= '</select>';
 				$output .= '</div>';
+			}
+			
+			/* font subset */
+			if (isset($options['subset']) && $options['subset'] !== FALSE) {
 			}
 			
 			/* font size */
