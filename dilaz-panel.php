@@ -1579,7 +1579,6 @@ if (!class_exists('DilazPanel')) {
 					}
 					return $output;
 					break;
-					break;
 					
 				case 'number':
 				case 'integer':
