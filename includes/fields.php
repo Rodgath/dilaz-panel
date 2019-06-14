@@ -1213,7 +1213,7 @@ if (!class_exists('DilazPanelFields')) {
 				'tinymce'       => array(
 					'autoresize_min_height' => 100,
 					'wp_autoresize_on'      => true,
-					'plugins'               => 'wordpress, wpautoresize',
+					'plugins'               => 'charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview',
 					'body_class'            => 'dilaz-mce-editor'
 				)
 			);
