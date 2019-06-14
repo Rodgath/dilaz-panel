@@ -790,6 +790,21 @@ if (!class_exists('DilazPanelFields')) {
 			
 			/* font subset */
 			if (isset($options['subset']) && $options['subset'] !== FALSE) {
+				$output .= '<div class="dilaz-panel-font">';
+					$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
+					$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset][]" class="subset select2multiple" data-width="320px" multiple="multiple">';
+					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::_font_subset();						
+					foreach ($font_subsets as $key => $font_subset) {
+						if (isset($saved_fonts['subset']) && !empty($saved_fonts['subset']) && $saved_fonts['subset'] !== FALSE) {
+							$selected_subset = selected(strtolower($saved_fonts['subset']), strtolower($key), FALSE);
+						} else {
+							$selected_subset = isset($std['subset']) && stripos($key, $std['subset']) !== FALSE ? selected(strtolower($std['subset']), strtolower($key), FALSE) : '';
+						}
+						
+						$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
+					}
+					$output .= '</select>';
+				$output .= '</div>';
 			}
 			
 			/* font size */
