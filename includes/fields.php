@@ -1204,6 +1204,27 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
+			$tinyMCE_plugins = array(
+				'charmap',
+				'colorpicker',
+				'hr',
+				'lists',
+				'media',
+				'paste',
+				'tabfocus',
+				'textcolor',
+				'fullscreen',
+				'wordpress',
+				'wpautoresize',
+				'wpeditimage',
+				'wpemoji',
+				'wpgallery',
+				'wplink',
+				'wpdialogs',
+				'wptextpattern',
+				'wpview',
+			);
+			
 			$default_editor_settings = array(
 				'media_buttons' => FALSE,
 				'textarea_name' => esc_attr($id),
