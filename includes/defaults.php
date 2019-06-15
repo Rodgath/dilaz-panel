@@ -4,13 +4,13 @@
 || Admin Panel Defaults
 || --------------------------------------------------------------------------------------------
 ||
-|| @package    Dilaz Panel
-|| @subpackage Defaults
-|| @since      Dilaz Panel 2.0
-|| @author     Rodgath, https://github.com/Rodgath
-|| @copyright  Copyright (C) 2017, Rodgath LTD
-|| @link       https://github.com/Rodgath/Dilaz-Panel-Plugin
-|| @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+|| @package		Dilaz Panel
+|| @subpackage	Defaults
+|| @since		Dilaz Panel 2.0
+|| @author		Rodgath, https://github.com/Rodgath
+|| @copyright	Copyright (C) 2017, Rodgath LTD
+|| @link		https://github.com/Rodgath/Dilaz-Panel-Plugin
+|| @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 || 
 */
 
@@ -113,7 +113,7 @@ class DilazPanelDefaults {
 		if ($get_g_fonts !== false && !empty($get_g_fonts)) {
 			$g_fonts_array = json_decode($get_g_fonts, true);
 			foreach ((array)$g_fonts_array as $font => &$atts) {
-				foreach ($atts['variants'] as $ke => &$val) {
+				foreach ($atts['variants'] as $key => &$val) {
 					foreach ($val as $k => &$v) {
 						if (isset($v['url']))
 							unset($v['url']);
@@ -207,15 +207,19 @@ class DilazPanelDefaults {
 	 */
 	public static function _font_family_defaults() {
 		$font_family = array(
-			''          => '',
-			'arial'     => 'Arial',
-			'verdana'   => 'Verdana, Geneva',
-			'trebuchet' => 'Trebuchet',
-			'georgia'   => 'Georgia',
-			'times'     => 'Times New Roman',
-			'tahoma'    => 'Tahoma, Geneva',
-			'palatino'  => 'Palatino',
-			'helvetica' => 'Helvetica',
+			''                => '',
+			'arial'           => 'Arial',
+			'calibri'         => 'Calibri',
+			'consolas'        => 'Consolas',
+			'courier-new'     => 'Courier New',
+			'georgia'         => 'Georgia',
+			'helvetica'       => 'Helvetica',
+			'lucida-grande'   => 'Lucida Grande',
+			'palatino'        => 'Palatino',
+			'tahoma'          => 'Tahoma',
+			'times-new-roman' => 'Times New Roman',
+			'trebuchet'       => 'Trebuchet',
+			'verdana'         => 'Verdana',
 		);
 		$font_family = apply_filters('dilaz_panel_font_family_defaults', $font_family);
 		$font_family = array_map('sanitize_text_field', $font_family);
@@ -247,29 +251,28 @@ class DilazPanelDefaults {
 	 */
 	public static function _font_subset() {
 		$font_subset = array(
-			''      => '',
-			'arabic' => 'arabic',
-			'bengali' => 'bengali',
-			'cyrillic' => 'cyrillic',
+			'arabic'       => 'arabic',
+			'bengali'      => 'bengali',
+			'cyrillic'     => 'cyrillic',
 			'cyrillic-ext' => 'cyrillic-ext',
-			'devanagari' => 'devanagari',
-			'greek' => 'greek',
-			'greek-ext' => 'greek-ext',
-			'gujarati' => 'gujarati',
-			'gurmukhi' => 'gurmukhi',
-			'hebrew' => 'hebrew',
-			'kannada' => 'kannada',
-			'khmer' => 'khmer',
-			'latin' => 'latin',
-			'latin-ext' => 'latin-ext',
-			'malayalam' => 'malayalam',
-			'myanmar' => 'myanmar',
-			'oriya' => 'oriya',
-			'sinhala' => 'sinhala',
-			'tamil' => 'tamil',
-			'telugu' => 'telugu',
-			'thai' => 'thai',
-			'vietnamese' => 'vietnamese',
+			'devanagari'   => 'devanagari',
+			'greek'        => 'greek',
+			'greek-ext'    => 'greek-ext',
+			'gujarati'     => 'gujarati',
+			'gurmukhi'     => 'gurmukhi',
+			'hebrew'       => 'hebrew',
+			'kannada'      => 'kannada',
+			'khmer'        => 'khmer',
+			'latin'        => 'latin',
+			'latin-ext'    => 'latin-ext',
+			'malayalam'    => 'malayalam',
+			'myanmar'      => 'myanmar',
+			'oriya'        => 'oriya',
+			'sinhala'      => 'sinhala',
+			'tamil'        => 'tamil',
+			'telugu'       => 'telugu',
+			'thai'         => 'thai',
+			'vietnamese'   => 'vietnamese',
 		);
 		$font_subset = apply_filters('dilaz_panel_font_subset', $font_subset);
 		$font_subset = array_map('sanitize_text_field', $font_subset);
