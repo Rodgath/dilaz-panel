@@ -832,7 +832,6 @@ if (!class_exists('DilazPanel')) {
 			$option_fields = $this->_options;
 			
 			$counter = 0;
-			$output = '';
 			
 			if (is_array($option_fields)) {
 				
@@ -949,53 +948,53 @@ if (!class_exists('DilazPanel')) {
 						$section_id    = 'dilaz-panel-section-'. sanitize_key($field['id']);
 						$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
 						
-						$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
 						
 						if ($field['name']) { 
-							$output .= '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
+							echo '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
 						}
 						
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc'] != '') {
-							$output .= '<div class="description">'.wp_kses_post($field['desc']).'</div>';
+							echo '<div class="description">'.wp_kses_post($field['desc']).'</div>';
 						}
 						
-						$output .= '<div class="option clearfix">' ."\n";
+						echo '<div class="option clearfix">' ."\n";
 						
 					} else if ($field['type'] == 'info') {
-						$output .= '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. $cond_fields .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. $cond_fields .'>' . "\n";
 					}
 					
 					# Field types
 					switch ($field['type']):
 					
-						case 'heading'     : $output .= DilazPanelFields::fieldHeading($field); break;
-						case 'subheading'  : $output .= DilazPanelFields::fieldSubheading($field); break;
-						case 'info'        : $output .= DilazPanelFields::fieldInfo($field); break;
-						case 'text'        : $output .= DilazPanelFields::fieldText($field); break;
-						case 'multitext'   : $output .= DilazPanelFields::fieldMultitext($field); break;
-						case 'password'    : $output .= DilazPanelFields::fieldPassword($field); break;
-						case 'email'       : $output .= DilazPanelFields::fieldEmail($field); break;
-						case 'textarea'    : $output .= DilazPanelFields::fieldTextarea($field); break;
-						case 'select'      : $output .= DilazPanelFields::fieldSelect($field); break;
-						case 'repeatable'  : $output .= DilazPanelFields::fieldRepeatable($field); break;
-						case 'multiselect' : $output .= DilazPanelFields::fieldMultiselect($field); break;
-						case 'queryselect' : $output .= DilazPanelFields::fieldQueryselect($field); break;
-						case 'radio'       : $output .= DilazPanelFields::fieldRadio($field); break;
-						case 'radioimage'  : $output .= DilazPanelFields::fieldRadioimage($field); break;
-						case 'buttonset'   : $output .= DilazPanelFields::fieldButtonset($field); break;
-						case 'switch'      : $output .= DilazPanelFields::fieldSwitch($field); break;
-						case 'checkbox'    : $output .= DilazPanelFields::fieldCheckbox($field); break;
-						case 'multicheck'  : $output .= DilazPanelFields::fieldMulticheck($field); break;
-						case 'slider'      : $output .= DilazPanelFields::fieldSlider($field); break;
-						case 'range'       : $output .= DilazPanelFields::fieldRange($field); break;
-						case 'color'       : $output .= DilazPanelFields::fieldColor($field); break;
-						case 'multicolor'  : $output .= DilazPanelFields::fieldMulticolor($field); break;
-						case 'font'        : $output .= DilazPanelFields::fieldFont($field); break;
-						case 'upload'      : $output .= DilazPanelFields::fieldUpload($field); break;
-						case 'background'  : $output .= DilazPanelFields::fieldBackground($field); break;
-						case 'editor'      : $output .= DilazPanelFields::fieldEditor($field); break;
-						case 'export'      : $output .= DilazPanelFields::fieldExport($field); break;
-						case 'import'      : $output .= DilazPanelFields::fieldImport($field); break;
+						case 'heading'     : DilazPanelFields::fieldHeading($field); break;
+						case 'subheading'  : DilazPanelFields::fieldSubheading($field); break;
+						case 'info'        : DilazPanelFields::fieldInfo($field); break;
+						case 'text'        : DilazPanelFields::fieldText($field); break;
+						case 'multitext'   : DilazPanelFields::fieldMultitext($field); break;
+						case 'password'    : DilazPanelFields::fieldPassword($field); break;
+						case 'email'       : DilazPanelFields::fieldEmail($field); break;
+						case 'textarea'    : DilazPanelFields::fieldTextarea($field); break;
+						case 'select'      : DilazPanelFields::fieldSelect($field); break;
+						case 'repeatable'  : DilazPanelFields::fieldRepeatable($field); break;
+						case 'multiselect' : DilazPanelFields::fieldMultiselect($field); break;
+						case 'queryselect' : DilazPanelFields::fieldQueryselect($field); break;
+						case 'radio'       : DilazPanelFields::fieldRadio($field); break;
+						case 'radioimage'  : DilazPanelFields::fieldRadioimage($field); break;
+						case 'buttonset'   : DilazPanelFields::fieldButtonset($field); break;
+						case 'switch'      : DilazPanelFields::fieldSwitch($field); break;
+						case 'checkbox'    : DilazPanelFields::fieldCheckbox($field); break;
+						case 'multicheck'  : DilazPanelFields::fieldMulticheck($field); break;
+						case 'slider'      : DilazPanelFields::fieldSlider($field); break;
+						case 'range'       : DilazPanelFields::fieldRange($field); break;
+						case 'color'       : DilazPanelFields::fieldColor($field); break;
+						case 'multicolor'  : DilazPanelFields::fieldMulticolor($field); break;
+						case 'font'        : DilazPanelFields::fieldFont($field); break;
+						case 'upload'      : DilazPanelFields::fieldUpload($field); break;
+						case 'background'  : DilazPanelFields::fieldBackground($field); break;
+						case 'editor'      : DilazPanelFields::fieldEditor($field); break;
+						case 'export'      : DilazPanelFields::fieldExport($field); break;
+						case 'import'      : DilazPanelFields::fieldImport($field); break;
 						
 						# add custom field types via this hook - 'dilaz_panel_FIELD_TYPE_action'
 						case $field['type'] : do_action('dilaz_panel_field_'. $field['type'] .'_hook', $field); break;
@@ -1004,19 +1003,17 @@ if (!class_exists('DilazPanel')) {
 					
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc2'] != '') {
-							$output .= '<div class="description desc2">'.wp_kses_post($field['desc2']).'</div>';
+							echo '<div class="description desc2">'.wp_kses_post($field['desc2']).'</div>';
 						}
-						$output .= '</div><!-- .option -->'; # .option
-						$output .= '</div><!-- .section_class -->'; # .$section_class
+						echo '</div><!-- .option -->'; # .option
+						echo '</div><!-- .section_class -->'; # .$section_class
 					} else if ($field['type'] == 'info') {
-						$output .= '</div>' . "\n"; # .info-wrap
+						echo '</div>' . "\n"; # .info-wrap
 					}
 				}
 				
-				$output .= '</div><!-- tab -->';
+				echo '</div><!-- tab -->';
 			}
-			
-			return $output;
 		}
 		
 		
@@ -1373,6 +1370,7 @@ if (!class_exists('DilazPanel')) {
 				$sanitized_options = array();
 				$defined_options   = $this->getOptionsFromFile($option_name);
 				$saved_options     = $this->getOptions($option_name);
+				$google_fonts      = array();
 				
 				# get all options from files and those added via filter and then remove duplicates
 				$all_options = DilazPanelFunctions::unique_multidimensional_array(array_merge($this->_options, $defined_options), 'id');
@@ -1834,8 +1832,6 @@ if (!class_exists('DilazPanel')) {
 				if (isset($font['family']) && $font['family'] != '') {
 					
 					$font_array[$font['family']]['family'] = $font['family'];
-					
-					$weights  = array();
 					
 					if (isset($font['weight']) && in_array($font['weight'], ['100', '200', '300', '400', '500', '600', '700', '800', '900', '100i', '200i', '300i', '400i', '500i', '600i', '700i', '800i', '900i'])) {
 						$font_style = (isset($font['style']) && $font['style'] != '') ? ($font['style'] == 'italic' ? 'i' : '') : '';
