@@ -17,7 +17,7 @@
 defined('ABSPATH') || exit;
 
 if (!class_exists('DilazPanelFields')) {
-		
+	
 	/**
 	 * DilazPanelFields class
 	 *
