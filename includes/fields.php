@@ -17,6 +17,14 @@
 defined('ABSPATH') || exit;
 
 if (!class_exists('DilazPanelFields')) {
+		
+	/**
+	 * DilazPanelFields class
+	 *
+	 * @since 1.0
+	 * @since 2.7.12 - changed to use 'echo' instead of 'return'
+	 * 
+	 */
 	class DilazPanelFields {
 		
 		/**
@@ -43,7 +51,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output .= '<div class="dilaz-panel-field" id="'. esc_attr($target) .'" data-tab-content="'. esc_attr($target) .'">';
 			$output .= '<h3>'. esc_html($name) .'</h3>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -67,7 +75,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output .= '<div class="dilaz-panel-field" id="'. esc_attr(sanitize_key($name)) .'">';
 			$output .= '<h3>'. esc_html($name) .'</h3>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -90,7 +98,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output .= $desc != '' ? '<p>'. wp_kses_post($desc) .'</p>' : '';
 			$output .= '</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -106,7 +114,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			extract($field);
 			
-			return '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
+			echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
 			
 		}
 		
@@ -152,7 +160,7 @@ if (!class_exists('DilazPanelFields')) {
 				}
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -171,7 +179,7 @@ if (!class_exists('DilazPanelFields')) {
 			$cols = isset($args['cols']) && is_numeric($args['cols']) ? intval($args['cols']) : '50';
 			$rows = isset($args['rows']) && is_numeric($args['rows']) ? intval($args['rows']) : '5';
 			
-			return '<textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-textarea" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea>';
+			echo '<textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-textarea" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea>';
 			
 		}
 		
@@ -188,7 +196,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			extract($field);
 			
-			return '<input type="password" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-password" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" size="46" />';
+			echo '<input type="password" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-password" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" size="46" />';
 			
 		}
 		
@@ -205,7 +213,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			extract($field);
 			
-			return '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
+			echo '<input type="text" id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-email" name="'. esc_attr($id) .'" value="'. esc_attr($value) .'" />';
 			
 		}
 		
@@ -234,7 +242,7 @@ if (!class_exists('DilazPanelFields')) {
 				}
 			$output .= '</select>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -312,7 +320,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<span class="dilaz-panel-add-repeatable-item button">'.$add_text.'</span>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -341,7 +349,7 @@ if (!class_exists('DilazPanelFields')) {
 				}
 			$output .= '</select>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -407,7 +415,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output .= '</select>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -439,7 +447,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-option '. esc_attr($inline) .'"  style="'. esc_attr($cols) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-radio '. esc_attr($state) .'" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. checked($value, $key, FALSE) .' /><span class="radio"></span><span>'. esc_html($option) .'</span></label>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -468,7 +476,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<label for="'. esc_attr($id .'-'. $key) .'"><input type="radio" id="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-input dilaz-panel-radio-image" name="'. esc_attr($id) .'" value="'. esc_attr($key) .'" '. $checked .' /><img src="'. $option .'" alt="" class="dilaz-panel-radio-image-img '. esc_attr($selected) .'" /></label>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -497,7 +505,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-button-set-button '. esc_attr($selected) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-button-set" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -529,7 +537,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<label for="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-switch-button '. esc_attr($selected) .' '. esc_attr($state) .'"><input type="radio" class="dilaz-panel-input dilaz-panel-switch" name="'. esc_attr($id) .'" id="'. esc_attr($id .'-'. $key) .'" value="'. esc_attr($key) .'" '. $checked .' /><span>'. esc_html($option) .'</span></label>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -550,7 +558,7 @@ if (!class_exists('DilazPanelFields')) {
 			$state = checked($value, TRUE, FALSE) ? 'focus' : '';
 			$output .= '<label for="'. esc_attr($id) .'" class="dilaz-option"><input id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .'" type="checkbox" name="'. esc_attr($id) .'" '. checked($value, TRUE, FALSE) .' /><span class="checkbox"></span><span>'. wp_kses_post($desc) .'</span></label><div class="clear"></div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -588,7 +596,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<label for="'. esc_attr($id.'-'.$key) .'" class="dilaz-option '. esc_attr($inline) .'" style="'. esc_attr($cols) .'"><input type="checkbox" id="'. esc_attr($id.'-'.$key) .'" class="dilaz-panel-input dilaz-panel-checkbox '. esc_attr($state) .' '. $class .'" name="'. esc_attr($id .'['. $key .']') .'" '. $checked .' /><span class="checkbox"></span><span>'. esc_html($option) .'</span></label>';
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -615,7 +623,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output .= '<div class="dilaz-panel-slider" data-val="'. esc_attr($value) .'" data-min="'. esc_attr($min) .'" data-max="'. esc_attr($max) .'" data-step="'. esc_attr($step) .'"></div>';
 			$output .= '<div class="dilaz-panel-slider-val"><span>'. esc_attr($value) .'</span>'. $suffix .'</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -654,7 +662,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-max-val"><span class="max">'. $maxName .'</span>'. $prefix .'<span class="val">'. esc_attr($max_val) .'</span>'. $suffix .'</div>';
 			$output .= '</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -675,7 +683,7 @@ if (!class_exists('DilazPanelFields')) {
 			$default_color = isset($std) ? $std : '';
 			$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'. $value .'" data-default-color="'. esc_attr($default_color) .'" />';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -711,7 +719,7 @@ if (!class_exists('DilazPanelFields')) {
 				}
 			}
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -882,7 +890,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="content">1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z</div>';
 			$output .= '</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -1038,7 +1046,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="clear"></div>';
 			$output .= '</div><!-- .dilaz-panel-file-upload -->'; // end .dilaz-panel-file-upload
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -1205,7 +1213,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="content"></div>';
 			$output .= '</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -1261,7 +1269,7 @@ if (!class_exists('DilazPanelFields')) {
 			$editor_settings = wp_parse_args($args['editor'], $default_editor_settings);
 			ob_start();
 			wp_editor($value, $id, $editor_settings);
-			return ob_get_clean();
+			echo ob_get_clean();
 		}
 		
 		/**
@@ -1286,7 +1294,7 @@ if (!class_exists('DilazPanelFields')) {
 				<span class="finished">'. __('Export finished successfully.', 'dilaz-panel') .'</span>
 			</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 		/**
@@ -1317,7 +1325,7 @@ if (!class_exists('DilazPanelFields')) {
 				<span class="finished"></span>
 			</div>';
 			
-			return $output;
+			echo $output;
 		}
 		
 	}
