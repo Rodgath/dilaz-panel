@@ -2,6 +2,22 @@
 
 ## Version 2
 
+###### v2.7.12
+```
+= FIXED - Repeatable field error
+= FIXED - WP custom editor sanitization when saving
+= FIXED - media upload field display bugs
+= UPDATED - fieldEditor method in DilazPanelFields class
+= IMPROVED - fieldFonts with multiple selector for font subsets
+= MOVED - DilazPanelFunctions class into DilazPanel init()
+= ADDED - code field
+= ADDED - new init() method for DilazPanel class
+= ADDED - Ability to load Google fonts in frontend using loadGoogleFonts() method
+= ADDED - $savedGFonts parameter
+= ADDED - Google fonts preload helper script: googlefonts.3perf.com
+= ADDED - separately saving of all used Google fonts in saveOptions() method
+= ADDED - Stacks for font family defaults using _font_family_defaults_stacks() method in DilazPanelDefaults class
+```
 ###### v2.7.11
 ```
 = ADDED - editorStyles() method for custom WP editor styles
