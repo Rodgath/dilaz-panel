@@ -975,6 +975,7 @@ if (!class_exists('DilazPanel')) {
 						case 'password'    : DilazPanelFields::fieldPassword($field); break;
 						case 'email'       : DilazPanelFields::fieldEmail($field); break;
 						case 'textarea'    : DilazPanelFields::fieldTextarea($field); break;
+						case 'code'        : DilazPanelFields::fieldCode($field); break;
 						case 'select'      : DilazPanelFields::fieldSelect($field); break;
 						case 'repeatable'  : DilazPanelFields::fieldRepeatable($field); break;
 						case 'multiselect' : DilazPanelFields::fieldMultiselect($field); break;
