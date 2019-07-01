@@ -1570,7 +1570,13 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'code':
-					return sanitize_textarea_field($input);
+					if (current_user_can('unfiltered_html')) {
+						$output = $input;
+					} else {
+						global $allowedtags;
+						$output = wp_kses($input, $allowedtags);
+					}
+					return $output;
 					break;
 					
 				case 'editor':
