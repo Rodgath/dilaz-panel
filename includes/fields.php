@@ -184,6 +184,26 @@ if (!class_exists('DilazPanelFields')) {
 		}
 		
 		/**
+		 * Code
+		 *
+		 * @since  2.7.12
+		 * @access public
+		 *
+		 * @param  array $field Field arguments
+		 * @return html  $output
+		 */
+		public static function fieldCode($field) {
+			
+			extract($field);
+			
+			$cols = isset($args['cols']) && is_numeric($args['cols']) ? intval($args['cols']) : '50';
+			$rows = isset($args['rows']) && is_numeric($args['rows']) ? intval($args['rows']) : '5';
+			
+			echo '<textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-code" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea>';
+			
+		}
+		
+		/**
 		 * Password
 		 *
 		 * @since  2.6.5
