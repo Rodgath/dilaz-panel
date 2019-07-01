@@ -372,7 +372,8 @@
 .dilaz-panel-section.half .dilaz-panel-text {
 	width: 100%;
 }
-.dilaz-panel-textarea {
+.dilaz-panel-textarea,
+.dilaz-panel-code {
 	width: 100%;
 	height: auto;
 	overflow: auto;
