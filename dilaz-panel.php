@@ -1692,7 +1692,11 @@ if (!class_exists('DilazPanel')) {
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
-					return sizeof($output) > 1 ? array_filter(array_unique($output)) : $output; // 'array_filter' used to remove zero-value entries
+					/**
+					 * 'array_filter' used to remove zero-value entries
+					 * 'array_values' used to reindex the array and start from zero
+					 */
+					return sizeof($output) > 1 ? array_values(array_filter(array_unique($output))) : $output; 
 					break;
 					
 				case 'panel-atts':

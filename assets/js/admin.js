@@ -988,6 +988,7 @@ var DilazPanelScript = new function() {
 	/**
 	 * Get Google fonts from JSON file
 	 * @since Dilaz Panel 2.6.8
+	 * @since Dilaz Panel 2.7.12 - added Google fonts preload helper script: googlefonts.3perf.com
 	 */
 	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
 	
