@@ -1569,6 +1569,10 @@ if (!class_exists('DilazPanel')) {
 					return sanitize_textarea_field($input);
 					break;
 					
+				case 'code':
+					return sanitize_textarea_field($input);
+					break;
+					
 				case 'editor':
 					if (current_user_can('unfiltered_html')) {
 						$output = $input;
