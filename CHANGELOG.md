@@ -2,6 +2,15 @@
 
 ## Version 2
 
+###### v2.7.13
+```
+= FIXED - js AJAX error on saveoptions caused by WP Editor frame with empty content
+= FIXED - font subset sanitization error
+= FIXED - radioimage field - image width extends beyond panel layout
+= UPDATED - section 'id' bug fix for info section
+= UPDATED - section 'class' bug fix for info section
+= IMPROVED - radioimage field - we can now use 'alt' and 'src' attributes separately
+```
 ###### v2.7.12
 ```
 = FIXED - Repeatable field error
