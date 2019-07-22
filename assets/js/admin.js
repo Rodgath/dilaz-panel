@@ -756,7 +756,8 @@ var DilazPanelScript = new function() {
 					
 				if ($isEditor.length) {
 					var	$wpEditorFrame  = $('#'+$fieldId+'_ifr'),
-						$editorContents = $('#tinymce', $wpEditorFrame.contents())[0].innerHTML;
+						$editorTinyMce = $('#tinymce', $wpEditorFrame.contents()),
+						$editorContents = null !== $editorTinyMce[0] && undefined !== $editorTinyMce[0] ? $editorTinyMce[0].innerHTML : '';
 						
 					$editorField.html($editorContents);
 				}
