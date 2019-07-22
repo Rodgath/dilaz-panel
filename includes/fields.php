@@ -484,16 +484,25 @@ if (!class_exists('DilazPanelFields')) {
 			extract($field);
 			
 			$output = '';
+			$is_tiled_bg = isset($args['tiled_bg']) && $args['tiled_bg'] == TRUE ? TRUE : FALSE;
 			
 			$value = isset($value) ? $value : '';
 			foreach ($options as $key => $option) {
+				$option_src = is_array($option) && isset($option['src']) ? $option['src'] : $option;
+				$option_alt = is_array($option) && isset($option['alt']) ? $option['alt'] : '';
 				$checked  = '';
 				$selected = '';
 				if (null != checked($value, $key, FALSE)) {
 					$checked  = checked($value, $key, FALSE);
 					$selected = 'selected';  
 				}
-				$output .= '<label for="'. esc_attr($id .'-'. $key) .'"><input type="radio" id="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-input dilaz-panel-radio-image" name="'. esc_attr($id) .'" value="'. esc_attr($key) .'" '. $checked .' /><img src="'. $option .'" alt="" class="dilaz-panel-radio-image-img '. esc_attr($selected) .'" /></label>';
+				$output .= '<label for="'. esc_attr($id .'-'. $key) .'"><input type="radio" id="'. esc_attr($id .'-'. $key) .'" class="dilaz-panel-input dilaz-panel-radio-image" name="'. esc_attr($id) .'" value="'. esc_attr($key) .'" '. $checked .' />';
+				if ($is_tiled_bg) {
+					$output .= '<div class="tiled-tooltip dilaz-panel-radio-image-img '. esc_attr($selected) .'" title="'. esc_attr($option_alt) .'" style="background-image: url('. $option_src .')"><span style="background-image: url('. $option_src .')"></span></div>';
+				} else {
+					$output .= '<img src="'. $option_src .'" title="'. esc_attr($option_alt) .'" alt="'. esc_attr($option_alt) .'" class="dilaz-panel-radio-image-img '. esc_attr($selected) .'" />';
+				}
+				$output .= '</label>';
 			}
 			
 			echo $output;
