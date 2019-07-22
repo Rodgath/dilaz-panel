@@ -283,7 +283,7 @@
 	line-height: 100%
 }
 .dilaz-panel-field .dilaz-panel-section .option {
-
+	position: relative;
 }
 .dilaz-panel-field .dilaz-panel-section.dilaz-panel-section-checkbox .option,
 .dilaz-panel-field .dilaz-panel-section.dilaz-panel-section-editor .option,
@@ -487,14 +487,58 @@
 	border: none
 }
 input.dilaz-panel-radio-image {
-	display: none
+	display: none;
 }
 .dilaz-panel-radio-image ~ .dilaz-panel-radio-image-img {
-	margin: 1px;
-	border: 5px solid #fff
+	position: relative;
+	margin: 0 5px 1px 0;
+	border: 5px solid #e4e4e4;
+	max-width: 100%;
 }
 .dilaz-panel-radio-image ~ .dilaz-panel-radio-image-img.selected {
-	border-color: #dedede
+	border-color: #fbc611
+}
+
+.tiled-tooltip {
+	display: inline-block;
+	outline:none;
+	width: 40px;
+	height: 40px;
+}
+.tiled-tooltip:hover { text-decoration:none; } 
+.tiled-tooltip span {
+	z-index:10;
+	display:none;
+	margin-top:0px;
+	margin-left:-55px;
+	width:150px;
+	height: 150px;
+	-webkit-transition: opacity 0.3s 0, visibility 0 0;
+	   -moz-transition: opacity 0.3s 0, visibility 0 0;
+			transition: opacity 0.3s 0, visibility 0 0;
+}
+.tiled-tooltip:hover span{
+	display:block; 
+	position:absolute; 
+	top: 50px;
+	border:4px solid #FFF;
+	color:#EEE;
+	background-color: #343434;
+	background-repeat: repeat;
+}
+.tiled-tooltip span {
+	border-radius:2px;        
+	box-shadow: 0px 0px 8px 4px #cecece;
+}
+.tiled-tooltip span::after {
+	content: "";
+	position: absolute;
+	border-width: 5px;
+	border-style: solid;
+	margin-left: -8px;
+	top: -14px;
+	left: 50%;
+	border-color: transparent transparent #fff transparent;
 }
 .dilaz-option {
 	position: relative;
