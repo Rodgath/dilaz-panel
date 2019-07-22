@@ -942,11 +942,14 @@ if (!class_exists('DilazPanel')) {
 					$field['option_data']  = $option_data;
 					$field['file_library'] = $file_library;
 					
+					# set the section 'id' attribute
+					$section_id = 'dilaz-panel-section-'. sanitize_key($field['id']);
+					
+					# set the section 'class' attribute
+					$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
+					
 					# Panel content
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
-						
-						$section_id    = 'dilaz-panel-section-'. sanitize_key($field['id']);
-						$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
 						
 						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
 						
@@ -1674,7 +1677,7 @@ if (!class_exists('DilazPanel')) {
 						} else if (isset($option['options'][$k]) && $k == 'color') {
 							$output[$k] = sanitize_hex_color($v);
 						} else if (isset($option['options'][$k]) && $k == 'subset') {
-							$output[$k] = array_map('sanitize_text_field', $v);
+							$output[$k] = is_array($v) ? array_map('sanitize_text_field', $v) : sanitize_text_field($v);
 						} else {
 							$output[$k] = sanitize_text_field($v);
 						} 
