@@ -1263,6 +1263,19 @@ if (!class_exists('DilazPanel')) {
 					}
 				}
 				
+				# Set all multicolor fields to standard value
+				if ('multicolor' == $option['type']) {
+					
+					# create an array
+					$option_std = [];
+					
+					foreach ($option['options'] as $key => $value) {
+						if (isset($option['options'][$key])) {
+							$option_std[$key] = isset($value['color']) ? $value['color'] : '';
+						}
+					}
+				}
+				
 				# Set all repeatable fields to standard value
 				if ('repeatable' == $option['type']) {
 					
