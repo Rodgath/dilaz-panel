@@ -179,6 +179,7 @@ class DilazPanelDefaults {
 	 */
 	public static function _font_family_defaults_stacks() {
 		$font_family_stacks = array(
+			''                => '',
 			'arial'           => 'Arial, Helvetica Neue, Helvetica, sans-serif',
 			'calibri'         => 'Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif',
 			'consolas'        => 'Consolas, monaco, monospace',
@@ -194,6 +195,12 @@ class DilazPanelDefaults {
 		);
 		$font_family_stacks = apply_filters('dilaz_panel_font_family_defaults_stacks', $font_family_stacks);
 		$font_family_stacks = array_map('sanitize_text_field', $font_family_stacks);
+		$font_family_stacks = array_unique($font_family_stacks);
+		foreach ($font_family_stacks as $key => $value) {
+			if (!empty($value)) {
+				$font_family_stacks[$value] = $value;
+			}
+		}
 		return $font_family_stacks;
 	}
 	
