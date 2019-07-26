@@ -1673,7 +1673,7 @@ if (!class_exists('DilazPanel')) {
 					$output = array();
 					foreach ((array)$input as $k => $v) {
 						if ( ( isset($option['options'][$k]) && ($k == 'size' || $k == 'height') ) || $set_option ) {
-							$output[$k] = absint($v);
+							$output[$k] = is_int($v) ? absint($v) : '';
 						} else if (isset($option['options'][$k]) && $k == 'color') {
 							$output[$k] = sanitize_hex_color($v);
 						} else if (isset($option['options'][$k]) && $k == 'subset') {
