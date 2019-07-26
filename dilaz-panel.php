@@ -1689,7 +1689,7 @@ if (!class_exists('DilazPanel')) {
 					$output = array();
 					foreach ((array)$input as $k => $v) {
 						if ( ( isset($option['options'][$k]) && $k == 'image' ) || $set_option ) {
-							$output[$k] = absint($v);
+							$output[$k] = is_int($v) ? absint($v) : '';
 						} else if ( ( isset($option['options'][$k]) && $k == 'color' ) || $set_option ) {
 							$output[$k] = sanitize_hex_color($v);
 						} else if ( ( isset($option['options'][$k]) && ($k == 'repeat' || $k == 'size' || $k == 'position' || $k == 'attachment' || $k == 'origin') ) || $set_option ) {
@@ -1698,7 +1698,7 @@ if (!class_exists('DilazPanel')) {
 							$output[$k] = sanitize_text_field($v);
 						} 
 					}
-					return $output;
+					return !empty($output) ? $output : '';
 					break;
 					
 				case 'upload':
