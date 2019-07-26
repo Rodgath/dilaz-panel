@@ -199,7 +199,7 @@ if (!class_exists('DilazPanelFields')) {
 			$cols = isset($args['cols']) && is_numeric($args['cols']) ? intval($args['cols']) : '50';
 			$rows = isset($args['rows']) && is_numeric($args['rows']) ? intval($args['rows']) : '5';
 			
-			echo '<textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-code" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea>';
+			echo '<pre><textarea id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-code" name="'. esc_attr($id) .'" cols="'. esc_attr($cols) .'" rows="'. esc_attr($rows) .'">'. esc_textarea($value) .'</textarea></pre>';
 			
 		}
 		
