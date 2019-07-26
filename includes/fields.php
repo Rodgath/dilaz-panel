@@ -844,15 +844,19 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '</div>';
 			}
 			
-			/* font subset */
-			if (isset($options['subset']) && $options['subset'] !== FALSE) {
+			/* font stack backup */
+			if (isset($options['backup']) && $options['backup'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-font">';
-					$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
-					$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset][]" class="subset select2multiple" data-width="320px" multiple="multiple">';
-					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::_font_subset();						
-					foreach ($font_subsets as $key => $font_subset) {
-						$selected_subset = is_array($saved_fonts['subset']) ? (isset($std['subset']) && in_array($key, $saved_fonts['subset']) ? 'selected="selected"' : '') : '';
-						$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
+					$output .= '<strong>'. __('Font Backup Stack', 'dilaz-panel') .'</strong><br />';
+					$output .= '<select id="'. esc_attr($id) .'-backup" name="'. esc_attr($id) .'[backup]" class="backup select2single" data-width="230px">';
+					$font_backups = is_array($options['backup']) ? $options['backup'] : DilazPanelDefaults::_font_family_defaults_stacks();						
+					foreach ($font_backups as $key => $font_backup) {
+						if (isset($saved_fonts['backup']) && !empty($saved_fonts['backup']) && $saved_fonts['backup'] !== FALSE) {
+							$selected_backup = selected($saved_fonts['backup'], $key, FALSE);
+						} else {
+							$selected_backup = isset($std['backup']) && stripos($key, $std['backup']) !== FALSE ? selected($std['backup'], $key, FALSE) : '';
+						}
+						$output .= '<option value="'. $key .'" '. $selected_backup .'>'. $font_backup .'</option>';
 					}
 					$output .= '</select>';
 				$output .= '</div>';
@@ -912,6 +916,20 @@ if (!class_exists('DilazPanelFields')) {
 						$font_color = '#333';
 					}
 					$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color color" type="text" value="'. $font_color .'" data-default-color="'. $font_color .'" />';
+				$output .= '</div>';
+			}
+			
+			/* font subset */
+			if (isset($options['subset']) && $options['subset'] !== FALSE) {
+				$output .= '<div class="dilaz-panel-font">';
+					$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
+					$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset][]" class="subset select2multiple" data-width="320px" multiple="multiple">';
+					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::_font_subset();						
+					foreach ($font_subsets as $key => $font_subset) {
+						$selected_subset = is_array($saved_fonts['subset']) ? (isset($std['subset']) && in_array($key, $saved_fonts['subset']) ? 'selected="selected"' : '') : '';
+						$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
+					}
+					$output .= '</select>';
 				$output .= '</div>';
 			}
 			
