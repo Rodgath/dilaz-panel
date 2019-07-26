@@ -1110,7 +1110,7 @@ if (!class_exists('DilazPanelFields')) {
 			$data_frame_b_txt = ($frame_button_text != '') ? 'data-frame-button-text="'. $frame_button_text .'"' : 'data-frame-button-text="'. __('Use Selected Image', 'dilaz-panel') .'"';
 			
 			/* BG image */
-			if (isset($options['image'])) {
+			if (isset($options['image']) && $options['image'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-file-upload">';
 				
 					$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. __('Upload image', 'dilaz-panel') .'" data-file-type="image" data-field-type="background" '. $data_frame_title .' '. $data_frame_b_txt .'/>';
@@ -1165,7 +1165,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG repeat */
-			if (isset($options['repeat'])) {
+			if (isset($options['repeat']) && $options['repeat'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background">';
 				$output .= '<strong>'. __('Repeat', 'dilaz-panel') .'</strong><br />';
 				$output .= '<select id="'. esc_attr($id) .'-repeat" name="'. esc_attr($id) .'[repeat]" class="repeat">';
@@ -1178,7 +1178,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG size */
-			if (isset($options['size'])) {
+			if (isset($options['size']) && $options['size'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background">';
 				$output .= '<strong>'. __('Size', 'dilaz-panel') .'</strong><br />';
 				$output .= '<select id="'. esc_attr($id) .'-size" name="'. esc_attr($id) .'[size]" class="size">';
@@ -1191,7 +1191,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG position */
-			if (isset($options['position'])) {
+			if (isset($options['position']) && $options['position'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background">';
 				$output .= '<strong>'. __('Position', 'dilaz-panel') .'</strong><br />';
 				$output .= '<select id="'. esc_attr($id) .'-position" name="'. esc_attr($id) .'[position]" class="position">';
@@ -1204,7 +1204,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG attachment */
-			if (isset($options['attachment'])) {
+			if (isset($options['attachment']) && $options['attachment'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background">';
 				$output .= '<strong>'. __('Attachment', 'dilaz-panel') .'</strong><br />';
 				$output .= '<select id="'. esc_attr($id) .'-attachment" name="'. esc_attr($id) .'[attachment]" class="attach">';
@@ -1217,7 +1217,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG origin */
-			if (isset($options['origin'])) {
+			if (isset($options['origin']) && $options['origin'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background">';
 				$output .= '<strong>'. __('Origin', 'dilaz-panel') .'</strong><br />';
 				$output .= '<select id="'. esc_attr($id) .'-origin" name="'. esc_attr($id) .'[origin]" class="origin">';
@@ -1230,7 +1230,7 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			/* BG color */
-			if (isset($options['color'])) {
+			if (isset($options['color']) && $options['color'] !== FALSE) {
 				$output .= '<div class="dilaz-panel-background color">';
 				$output .= '<strong>'. __('Color', 'dilaz-panel') .'</strong><br />';
 				$default_color = isset($std['color']) ? $std['color'] : '';
