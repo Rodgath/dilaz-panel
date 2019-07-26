@@ -157,7 +157,7 @@ class DilazPanelDefaults {
 		$font_defaults = array(
 			'family' => 'verdana', 
 			'subset' => '', 
-			'size'   => 'normal', 
+			'weight' => 'normal', 
 			'size'   => '14', 
 			'height' => '16', 
 			'style'  => '', 
