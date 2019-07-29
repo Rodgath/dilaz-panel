@@ -1028,8 +1028,7 @@ if (!class_exists('DilazPanelFields')) {
 							
 							$output .= '<div class="dilaz-panel-media-file '. $file_type .' '. ($attachment_id != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
 							
-							$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. 
-							$attachment_id .'" size="30" rel="" />';
+							$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. $attachment_id .'" size="30" rel="" />';
 							
 							$output .= sizeof($value) > 1 ? '<span class="sort"></span>' : '';
 							
