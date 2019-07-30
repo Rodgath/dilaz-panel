@@ -955,7 +955,8 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
-			$data_file_multiple = (isset($args['multiple']) && $args['multiple'] == TRUE) ? 'data-file-multiple="true"' : '';
+			$is_file_multiple   = isset($args['multiple']) && $args['multiple'] == TRUE ? TRUE : FALSE;
+			$data_file_multiple = $is_file_multiple ? 'data-file-multiple="true"' : '';
 			$file_type          = (isset($args['file_type']) && $args['file_type'] != '') ? strtolower($args['file_type']) : 'image';
 			$data_file_type     = $file_type != '' ? 'data-file-type="'. $file_type .'"' : 'data-file-type="image"';
 			$data_file_specific = (isset($args['file_specific']) && $args['file_specific'] == TRUE) ? 'data-file-specific="true"' : '';
