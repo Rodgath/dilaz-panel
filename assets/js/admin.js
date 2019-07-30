@@ -462,6 +462,10 @@ var DilazPanelScript = new function() {
 			
 			$this.siblings('input').attr('value', '');
 			$this.closest('.dilaz-panel-media-file').slideUp(500);
+			
+			/* Delete file source URL when file is removed */
+			$this.closest('.dilaz-panel-file-upload').find('.dilaz-panel-file-url').val('');
+			
 			setTimeout(function() {
 				$this.closest('.dilaz-panel-media-file').remove();
 			}, 1000);
