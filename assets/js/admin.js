@@ -379,6 +379,11 @@ var DilazPanelScript = new function() {
 							$id      = attachment.id,
 							$title   = attachment.attributes.title,
 							$caption = attachment.attributes.caption;
+						
+						/* Add file source URL when file is selected */
+						if (false == $fileMultiple) {
+							$fileUpload.find('.dilaz-panel-file-url').val($src);
+						}
 							
 						var $fileOutput = '';
 						
