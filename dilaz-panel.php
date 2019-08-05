@@ -1729,6 +1729,8 @@ if (!class_exists('DilazPanel')) {
 						$file_data[$k]['url'] = (empty($v['url']) && !empty($v['id'])) ? wp_get_attachment_url($v['id']) : esc_url($v['url']);
 					}
 					
+					$output = $file_data;
+					
 					/**
 					 * 'array_filter' used to remove zero-value entries
 					 * 'array_values' used to reindex the array and start from zero
