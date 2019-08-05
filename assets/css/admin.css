@@ -1262,6 +1262,18 @@ input.dilaz-panel-switch {
 	padding: 7px 10px;
 	border: 1px solid #e0e0e0;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    padding: 5px 5px 0;
+    width: 100%;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    margin-right: 5px;
+    margin-top: 0;
+    padding: 0 5px 3px 4px;
+}
+.select2-container .select2-selection--multiple {
+    min-height: 28px;
+}
 
 /*--------------------------------------------------------------*/
 /* Background
