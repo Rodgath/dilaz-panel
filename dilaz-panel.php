@@ -1740,16 +1740,10 @@ if (!class_exists('DilazPanel')) {
 						 * 'array_filter' used to remove zero-value entries
 						 * 'array_values' used to reindex the array and start from zero
 						 */
-						array_values(array_filter(array_unique($output)))
+						return array_values(array_filter($output));
 					} else {
 						return $output; 
 					}
-					
-					/**
-					 * 'array_filter' used to remove zero-value entries
-					 * 'array_values' used to reindex the array and start from zero
-					 */
-					return sizeof($output) > 1 ? array_values(array_filter(array_unique($output))) : $output; 
 					break;
 					
 				case 'panel-atts':
