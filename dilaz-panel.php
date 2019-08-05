@@ -1718,9 +1718,12 @@ if (!class_exists('DilazPanel')) {
 					$output = array();
 					$file_data = array();
 					
-					foreach ((array)$input as $k => $v) {
-						$output[] = absint($v);
+					foreach ((array)$input as $key => $value) {
+						foreach ((array)$value as $k => $v) {
+							$file_data[$k][$key] = $v;
+						}
 					}
+					
 					/**
 					 * 'array_filter' used to remove zero-value entries
 					 * 'array_values' used to reindex the array and start from zero
