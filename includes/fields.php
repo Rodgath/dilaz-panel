@@ -1014,80 +1014,88 @@ if (!class_exists('DilazPanelFields')) {
 			$output .= '<div class="dilaz-panel-file-upload">';
 			
 				$output .= '<input type="'. (!$is_file_multiple ? "text" : "hidden") .'" name="'. esc_attr($id) .'[url][]" id="file_url_'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text dilaz-panel-file-url upload" value="'. (!empty($value) && isset($value[0]['url']) ? $value[0]['url'] : '') .'" size="0" rel="" placeholder="Choose file" />';
-			
+				
 				$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. sprintf(__('Upload %s', 'dilaz-panel'), $file_type) .'" '. $data_file_type.' '. $data_file_specific .' '. $data_file_multiple .' '. $data_frame_title .' '. $data_frame_b_txt .' />';
 				
 				$output .= '<div class="dilaz-panel-file-wrapper" data-file-id="'. esc_attr($id) .'" '. $data_file_multiple .'>';
 				
-				$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel="" />';
+				$output .= '<input type="hidden" name="'. esc_attr($id) .'[id][]" id="file_id_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="" size="0" rel="" />';
 				
 				if ($value != '') {
-					foreach ($value as $key => $attachment_id) {
+					foreach ($value as $key => $file_data) {
 						
-						if ($attachment_id != '' && FALSE !== get_post_status($attachment_id)) {
+						if (isset($file_data['url']) && $file_data['url'] != '') {
 							
-							$file      = wp_get_attachment_image_src($attachment_id, 'thumbnail'); $file = $file[0];
-							$file_full = wp_get_attachment_image_src($attachment_id, 'full'); $file_full = $file_full[0];
+							$attachment_url = $file_data['url'];
+							$attachment_id  = isset($file_data['id']) && $file_data['id'] != '' ? attachment_url_to_postid($attachment_url) : '';
 							
-							$output .= '<div class="dilaz-panel-media-file '. $file_type .' '. ($attachment_id != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
-							
-							$output .= '<input type="hidden" name="'. esc_attr($id) .'[]" id="file_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. $attachment_id .'" size="30" rel="" />';
-							
-							$output .= sizeof($value) > 1 ? '<span class="sort"></span>' : '';
-							
-							/* get attachment data */
-							$attachment = get_post($attachment_id);
-							
-							/* get file extension */
-							$file_ext = pathinfo($attachment->guid, PATHINFO_EXTENSION);
-							
-							/* get file type */
-							$file_type = wp_ext2type($file_ext);
-							
-							$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
-							
-							$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><span class="mdi mdi-window-close"></span></a>';
-							
-							switch ($file_type) {
+							if ($attachment_id != '' && FALSE !== get_post_status($attachment_id)) {
 								
-								case ('image') :
-									$output .= ($file_ext) ? '<img src="'. $file .'" class="dilaz-panel-file-preview file-image" alt="" />'. $media_remove : '';
-									break;
+								$file      = wp_get_attachment_image_src($attachment_id, 'thumbnail'); $file = $file[0];
+								$file_full = wp_get_attachment_image_src($attachment_id, 'full'); $file_full = $file_full[0];
+								
+								$output .= '<div class="dilaz-panel-media-file '. $file_type .' '. ($attachment_id != '' ? '' : 'empty') .'" id="file-'. esc_attr($id) .'">';
+								
+								$output .= '<input type="hidden" name="'. esc_attr($id) .'[url][]" id="file_url_'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text dilaz-panel-file-url upload" value="'. $attachment_url .'" size="0" rel="" placeholder="Choose file" />';
+								
+								$output .= '<input type="hidden" name="'. esc_attr($id) .'[id][]" id="file_id_'. esc_attr($id) .'" class="dilaz-panel-file-id upload" value="'. $attachment_id .'" size="30" rel="" />';
+								
+								$output .= sizeof($value) > 1 ? '<span class="sort"></span>' : '';
+								
+								/* get attachment data */
+								$attachment = get_post($attachment_id);
+								
+								/* get file extension */
+								$file_ext = pathinfo($attachment->guid, PATHINFO_EXTENSION);
+								
+								/* get file type */
+								$file_type = wp_ext2type($file_ext);
+								
+								$output .= '<div class="filename '. $file_type .'">'. $attachment->post_title .'</div>';
+								
+								$media_remove = '<a href="#" class="remove" title="'. __('Remove', 'dilaz-panel') .'"><span class="mdi mdi-window-close"></span></a>';
+								
+								switch ($file_type) {
 									
-								case ('audio') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('video') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/video.png" class="dilaz-panel-file-preview file-video" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('document') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/document.png" class="dilaz-panel-file-preview file-document" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('spreadsheet') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('interactive') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('text') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/text.png" class="dilaz-panel-file-preview file-text" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('archive') :
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="" />'. $media_remove : '';
-									break;
-									
-								case ('code') :	
-									$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/code.png" class="dilaz-panel-file-preview file-code" alt="" />'. $media_remove : '';
-									break;
-									
+									case ('image') :
+										$output .= ($file_ext) ? '<img src="'. $file .'" class="dilaz-panel-file-preview file-image" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('audio') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('video') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/video.png" class="dilaz-panel-file-preview file-video" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('document') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/document.png" class="dilaz-panel-file-preview file-document" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('spreadsheet') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('interactive') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('text') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/text.png" class="dilaz-panel-file-preview file-text" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('archive') :
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="" />'. $media_remove : '';
+										break;
+										
+									case ('code') :	
+										$output .= ($file_ext) ? '<img src="'. DILAZ_PANEL_IMAGES .'media/code.png" class="dilaz-panel-file-preview file-code" alt="" />'. $media_remove : '';
+										break;
+										
+								}
+								$output .= '</div><!-- .dilaz-panel-media-file -->'; // .dilaz-panel-media-file
 							}
-							$output .= '</div><!-- .dilaz-panel-media-file -->'; // .dilaz-panel-media-file
 						}
 					}
 				}
