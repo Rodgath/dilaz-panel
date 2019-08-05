@@ -1732,6 +1732,10 @@ if (!class_exists('DilazPanel')) {
 					$output = $file_data;
 					
 					if (sizeof($output) > 1) {
+						
+						/* Lets delete the first item because its always empty for multiple files upload */
+						unset($output[0]); 
+						
 						/**
 						 * 'array_filter' used to remove zero-value entries
 						 * 'array_values' used to reindex the array and start from zero
