@@ -392,7 +392,8 @@ var DilazPanelScript = new function() {
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[image]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
 							$fileWrapperParent.find('.background-preview').find('.content').css({'background-image':'url('+ $imageSrc +')'});
 						} else {
-							$fileOutput += '<input type="hidden" name="'+ $fileId +'[]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
+							$fileOutput += '<input type="hidden" name="'+ $fileId +'[url][]" id="file_url_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $src +'">';
+							$fileOutput += '<input type="hidden" name="'+ $fileId +'[id][]" id="file_id_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
 						}
 						$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
 						$fileOutput += '<span class="sort ui-sortable-handle"></span>';
