@@ -1716,6 +1716,8 @@ if (!class_exists('DilazPanel')) {
 					
 				case 'upload':
 					$output = array();
+					$file_data = array();
+					
 					foreach ((array)$input as $k => $v) {
 						$output[] = absint($v);
 					}
