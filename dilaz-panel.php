@@ -1731,6 +1731,16 @@ if (!class_exists('DilazPanel')) {
 					
 					$output = $file_data;
 					
+					if (sizeof($output) > 1) {
+						/**
+						 * 'array_filter' used to remove zero-value entries
+						 * 'array_values' used to reindex the array and start from zero
+						 */
+						array_values(array_filter(array_unique($output)))
+					} else {
+						return $output; 
+					}
+					
 					/**
 					 * 'array_filter' used to remove zero-value entries
 					 * 'array_values' used to reindex the array and start from zero
