@@ -369,9 +369,9 @@ var DilazPanelScript = new function() {
 							/* if uploaded image is smaller than default thumbnail(250 by 250)
 							then get the full image url */
 							if (attachment.attributes.sizes.thumbnail !== undefined) {
-								var $imageSrc = attachment.attributes.sizes.thumbnail.url;
+								var $imageSrc = $fileThumb ? attachment.attributes.sizes.thumbnail.url : attachment.attributes.url;
 							} else {
-								var $imageSrc = attachment.attributes.url;
+								var $imageSrc = $fileThumb ? attachment.attributes.sizes.thumbnail.url : attachment.attributes.url;
 							}
 						}
 						
