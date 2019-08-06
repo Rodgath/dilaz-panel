@@ -969,6 +969,11 @@ input.dilaz-panel-switch {
 	overflow: hidden;
 	border-radius: 2px
 }
+[data-file-thumb="false"] + .dilaz-panel-file-wrapper .dilaz-panel-media-file {
+	padding: 8px;
+	width: auto;
+	height: auto;
+}
 .dilaz-panel-field .dilaz-panel-media-file.empty {
 	margin-top: 0;
 }
