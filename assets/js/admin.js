@@ -384,6 +384,7 @@ var DilazPanelScript = new function() {
 						/* Add file source URL when file is selected */
 						if (false == $fileMultiple) {
 							$fileUpload.find('.dilaz-panel-file-url').val($src);
+							$mediaPreview.remove();
 						}
 							
 						var $fileOutput = '';
