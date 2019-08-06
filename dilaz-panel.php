@@ -1719,32 +1719,39 @@ if (!class_exists('DilazPanel')) {
 					$output = array();
 					$file_data = array();
 					
-					foreach ((array)$input as $key => $value) {
-						foreach ((array)$value as $k => $v) {
-							$file_data[$k][$key] = $v;
+					if (is_array($input)) {
+						foreach ((array)$input as $key => $value) {
+							foreach ((array)$value as $k => $v) {
+								$file_data[$k][$key] = $v;
+							}
 						}
-					}
-					
-					foreach ($file_data as $k => $v) {
-						$file_data[$k]['id'] = (empty($v['id']) && !empty($v['url'])) ? attachment_url_to_postid($v['url']) : absint($v['id']);
-						$file_data[$k]['url'] = (empty($v['url']) && !empty($v['id'])) ? wp_get_attachment_url($v['id']) : esc_url($v['url']);
+						
+						foreach ($file_data as $k => $v) {
+							$file_data[$k]['id'] = (empty($v['id']) && !empty($v['url'])) ? attachment_url_to_postid($v['url']) : absint($v['id']);
+							$file_data[$k]['url'] = (empty($v['url']) && !empty($v['id'])) ? wp_get_attachment_url($v['id']) : esc_url($v['url']);
+						}
+						
+						if (sizeof($file_data) > 1) {
+							
+							/* Lets delete the first item because its always empty for multiple files upload */
+							unset($file_data[0]); 
+							
+							/**
+							 * 'array_filter' used to remove zero-value entries
+							 * 'array_values' used to reindex the array and start from zero
+							 */
+							$file_data = array_values(array_filter($file_data));
+						} else {
+							return $file_data; 
+						}
+						
+					} else if (!is_array($input)) {
+						$file_data[0]['id']  = !empty($input) ? attachment_url_to_postid($input) : '';
+						$file_data[0]['url'] = !empty($input) ? esc_url($input) : '';
 					}
 					
 					$output = $file_data;
-					
-					if (sizeof($output) > 1) {
-						
-						/* Lets delete the first item because its always empty for multiple files upload */
-						unset($output[0]); 
-						
-						/**
-						 * 'array_filter' used to remove zero-value entries
-						 * 'array_values' used to reindex the array and start from zero
-						 */
-						return array_values(array_filter($output));
-					} else {
-						return $output; 
-					}
+					return $output; 
 					break;
 					
 				case 'panel-atts':
