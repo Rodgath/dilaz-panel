@@ -1014,7 +1014,9 @@ if (!class_exists('DilazPanelFields')) {
 			}
 			
 			$output .= '<div class="dilaz-panel-file-upload">';
-			
+				
+				$the_file_url = !empty($value) ? (is_array($value) && isset($value[0]['url']) ? $value[0]['url'] : (!is_array($value) ? $value : '')) : '';
+				
 				$output .= '<input type="'. (!$is_file_multiple ? "text" : "hidden") .'" name="'. esc_attr($id) .'[url][]" id="file_url_'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-text dilaz-panel-file-url upload" value="'. (!empty($value) && isset($value[0]['url']) ? $value[0]['url'] : '') .'" size="0" rel="" placeholder="Choose file" />';
 				
 				$output .= '<input type="button" id="upload-'. esc_attr($id) .'" class="dilaz-panel-file-upload-button button" value="'. sprintf(__('Upload %s', 'dilaz-panel'), $file_type) .'" '. $data_file_type.' '. $data_file_specific .' '. $data_file_multiple .' '. $data_frame_title .' '. $data_frame_b_txt .' />';
