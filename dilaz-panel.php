@@ -535,6 +535,7 @@ if (!class_exists('DilazPanel')) {
 					case 'doc_url':
 					case 'support_url':
 					case 'dir_url':
+					case 'item_url':
 						$params[$key] = esc_url($val);
 						break;
 						
