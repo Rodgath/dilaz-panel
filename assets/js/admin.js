@@ -326,6 +326,7 @@ var DilazPanelScript = new function() {
 					$fileMime          = $self.data('file-mime') || '',
 					$fileSpecific      = $self.data('file-specific') || false,
 					$fileMultiple      = $self.data('file-multiple') || false,
+					$fileThumb         = $self.data('file-thumb') || false,
 					$fileType          = $self.data('file-type') || '',
 					$fieldType         = $self.data('field-type') || '',
 					$frameTitle        = $self.data('frame-title') || '',
