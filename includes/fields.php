@@ -955,6 +955,8 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output = '';
 			
+			$show_thumb         = isset($args['show_thumb']) && $args['show_thumb'] == FALSE ? 'false' : 'true';
+			$data_file_thumb    = 'data-file-thumb="'. $show_thumb .'"';
 			$is_file_multiple   = isset($args['multiple']) && $args['multiple'] == TRUE ? TRUE : FALSE;
 			$data_file_multiple = $is_file_multiple ? 'data-file-multiple="true"' : '';
 			$file_type          = (isset($args['file_type']) && $args['file_type'] != '') ? strtolower($args['file_type']) : 'image';
