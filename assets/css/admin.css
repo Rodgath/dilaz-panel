@@ -403,6 +403,9 @@
 	padding: 0 8px;
 	vertical-align: middle
 }
+.dilaz-panel-file-upload .button {
+	margin: 2px !important;
+}
 
 
 /*--------------------------------------------------------------*/
@@ -967,10 +970,11 @@ input.dilaz-panel-switch {
 	width: 100px;
 	height: 100px;
 	overflow: hidden;
-	border-radius: 2px
+	border-radius: 2px;
+	background-color: #f7f7f7
 }
 [data-file-thumb="false"] + .dilaz-panel-file-wrapper .dilaz-panel-media-file {
-	padding: 8px;
+	padding: 10px;
 	width: auto;
 	height: auto;
 }
@@ -981,6 +985,10 @@ input.dilaz-panel-switch {
 	min-width: 100px;
 	max-width: 100%;
 	float: left;
+}
+[data-file-thumb="false"] + .dilaz-panel-file-wrapper .dilaz-panel-media-file img {
+	min-width: auto;
+	min-height: auto;
 }
 .dilaz-panel-media-file:not(.image) {
 	background: #f5f5f5
@@ -996,13 +1004,11 @@ input.dilaz-panel-switch {
 	top: 50%;
 }
 .dilaz-panel-field .dilaz-panel-media-file .remove {
-	width: 18px;
-	height: 18px;
-	line-height: 16px;
+	width: 16px;
+	height: 16px;
 	position: absolute;
-	top: 5px;
-	left: 5px;
-	display: block;
+	top: -1px;
+	left: -1px;
 	text-align: center;
 	background: #db0700;
 	color: #fff;
@@ -1016,6 +1022,13 @@ input.dilaz-panel-switch {
 	     -o-transition: all 0.3s;
 	        transition: all 0.3s;
 	z-index: 2;
+}
+.dilaz-panel-field .dilaz-panel-media-file .remove .mdi {
+  font-size: 12px;
+  vertical-align: middle;
+	position: absolute;
+	left: 0.21em;
+	top: -0.06em;
 }
 .dilaz-panel-field .dilaz-panel-media-file .sort {
 	position: absolute;
@@ -1288,6 +1301,7 @@ input.dilaz-panel-switch {
 	margin-bottom: 5px;
 	margin-right: 10px;
 }
+.dilaz-panel-background .image,
 .dilaz-panel-background .repeat,
 .dilaz-panel-background .size,
 .dilaz-panel-background .position,

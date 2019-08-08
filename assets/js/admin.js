@@ -386,58 +386,63 @@ var DilazPanelScript = new function() {
 							$fileUpload.find('.dilaz-panel-file-url').val($src);
 							$mediaPreview.remove();
 						}
-							
+						
 						var $fileOutput = '';
 						
-						$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +'  '+ ($id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
 						if ($fieldType == 'background') {
-							$fileOutput += '<input type="hidden" name="'+ $fileId +'[image]" id="file_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
-							$fileWrapperParent.find('.background-preview').find('.content').css({'background-image':'url('+ $imageSrc +')'});
+							
+							$fileWrapperParent.siblings('.background-preview').find('.content').css({'background-image':'url('+ $imageSrc +')'});
+							$self.addClass('hidden');
+							$self.siblings('.remove').removeClass('hidden');
+							
 						} else {
+						
+							$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +' '+ ($id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[url][]" id="file_url_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $src +'">';
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[id][]" id="file_id_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
-						}
-						$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
-						$fileOutput += '<span class="sort ui-sortable-handle"></span>';
-						$fileOutput += '<a href="#" class="remove" title="Remove"><span class="mdi mdi-window-close"></span></a>';
-						
-						switch ( $type ) {
-							case 'image':
-								$fileOutput += '<img src="'+ $imageSrc +'" class="dilaz-panel-file-preview file-image" alt="">';
-								break;
-								
-							case 'audio':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="">';
-								break;
-								
-							case 'video':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/video.png" class="dilaz-panel-file-preview file-video" alt="">';
-								break;
-								
-							case 'document':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/document.png" class="dilaz-panel-file-preview file-document" alt="">';
-								break;
-								
-							case 'spreadsheet':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="">';
-								break;
-								
-							case 'interactive':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="">';
-								break;
-								
-							case 'text':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/text.png" class="dilaz-panel-file-preview file-text" alt="">';
-								break;
-								
-							case 'archive':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="">';
-								break;
-								
-							case 'code':
-								$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/code.png" class="dilaz-panel-file-preview file-code" alt="">';
-								break;
-								
+							
+							$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
+							$fileOutput += '<span class="sort ui-sortable-handle"></span>';
+							$fileOutput += '<a href="#" class="remove" title="Remove"><span class="mdi mdi-window-close"></span></a>';
+							
+							switch ( $type ) {
+								case 'image':
+									$fileOutput += '<img src="'+ $imageSrc +'" class="dilaz-panel-file-preview file-image" alt="">';
+									break;
+									
+								case 'audio':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="">';
+									break;
+									
+								case 'video':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/video.png" class="dilaz-panel-file-preview file-video" alt="">';
+									break;
+									
+								case 'document':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/document.png" class="dilaz-panel-file-preview file-document" alt="">';
+									break;
+									
+								case 'spreadsheet':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="">';
+									break;
+									
+								case 'interactive':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="">';
+									break;
+									
+								case 'text':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/text.png" class="dilaz-panel-file-preview file-text" alt="">';
+									break;
+									
+								case 'archive':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="">';
+									break;
+									
+								case 'code':
+									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/code.png" class="dilaz-panel-file-preview file-code" alt="">';
+									break;
+									
+							}
 						}
 						
 						$fileOutput += '</div>';
@@ -463,11 +468,17 @@ var DilazPanelScript = new function() {
 			
 			var $this = $(this);
 			
-			$this.siblings('input').attr('value', '');
+			$this.siblings('input:not(.dilaz-panel-file-upload-button)').attr('value', '');
 			$this.closest('.dilaz-panel-media-file').slideUp(500);
 			
 			/* Delete file source URL when file is removed */
 			$this.closest('.dilaz-panel-file-upload').find('.dilaz-panel-file-url').val('');
+			
+			/* This is for the background field */
+			if ($this.hasClass('remove-image')) {
+				$this.addClass('hidden');
+				$this.siblings('.dilaz-panel-file-upload-button').removeClass('hidden');
+			}
 			
 			setTimeout(function() {
 				$this.closest('.dilaz-panel-media-file').remove();
