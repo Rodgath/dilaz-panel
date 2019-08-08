@@ -2,6 +2,12 @@
 
 ## Version 2
 
+###### v2.7.14
+```
+= IMPROVED - upload field saving error
+= IMPROVED - background field error
+= ADDED - 'item_url' integration in panel parameters
+```
 ###### v2.7.13
 ```
 = FIXED - js AJAX error on saveoptions caused by WP Editor frame with empty content
