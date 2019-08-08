@@ -6,7 +6,7 @@
  * Author:      Rodgath
  * Text Domain: dilaz-panel
  * Domain Path: /languages
- * Version:     2.7.13
+ * Version:     2.7.14
  * Author URI:  https://github.com/Rodgath
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -17,7 +17,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.13
+|| @version     2.7.14
 || @since       Dilaz Panel 1.0
 || @author      Rodgath, https://github.com/Rodgath
 || @copyright   Copyright (C) 2017, Rodgath LTD
@@ -477,8 +477,9 @@ if (!class_exists('DilazPanel')) {
 		 * Sanitize parameters
 		 *
 		 * @since  2.5
-		 * @since  2.7.8 - deprecated 'options_cap'
-		 * @since  2.7.8 - sanitize 'options_view_cap' and 'options_save_cap'
+		 * @since  2.7.8  - deprecated 'options_cap'
+		 * @since  2.7.8  - sanitize 'options_view_cap' and 'options_save_cap'
+		 * @since  2.7.14 - sanitize 'item_url'
 		 * 
 		 * @access public
 		 * @return void
@@ -1703,7 +1704,7 @@ if (!class_exists('DilazPanel')) {
 					$output = array();
 					foreach ((array)$input as $k => $v) {
 						if ( ( isset($option['options'][$k]) && $k == 'image' ) || $set_option ) {
-							$output[$k] = is_int($v) ? absint($v) : '';
+							$output[$k] = !empty($v) ? esc_url($v) : '';
 						} else if ( ( isset($option['options'][$k]) && $k == 'color' ) || $set_option ) {
 							$output[$k] = sanitize_hex_color($v);
 						} else if ( ( isset($option['options'][$k]) && ($k == 'repeat' || $k == 'size' || $k == 'position' || $k == 'attachment' || $k == 'origin') ) || $set_option ) {
