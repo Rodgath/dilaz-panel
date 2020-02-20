@@ -3,7 +3,7 @@ Simple WordPress options panel for themes and plugins.
 
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
-![alt text](https://github.com/Rodgath/DilazResources/blob/master/Dilaz-Panel-Plugin/main.jpg "Demo Screenshot")
+![alt text](https://github.com/Rodgath/DilazResources/blob/master/Dilaz-Panel-Plugin/main-dilaz-panel.jpg "Demo Screenshot")
 
 ## How to use
 1. Download and install [Dilaz Panel](https://github.com/Rodgath/Dilaz-Panel-Plugin/archive/master.zip) plugin.
