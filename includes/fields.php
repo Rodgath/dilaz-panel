@@ -25,7 +25,8 @@ if (!class_exists('DilazPanelFields')) {
 	 * @since 2.7.12 - changed to use 'echo' instead of 'return'
 	 * 
 	 */
-	class DilazPanelFields {
+	class DilazPanelFields
+	{
 		
 		/**
 		 * Heading
@@ -36,7 +37,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldHeading($field) {
+		public static function fieldHeading($field)
+		{
 			
 			extract($field);
 			
@@ -63,7 +65,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldSubheading($field) {
+		public static function fieldSubheading($field)
+		{
 			
 			extract($field);
 			
@@ -87,7 +90,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldInfo($field) {
+		public static function fieldInfo($field)
+		{
 			
 			extract($field);
 			
@@ -110,7 +114,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldText($field) {
+		public static function fieldText($field)
+		{
 			
 			extract($field);
 			
@@ -127,7 +132,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldMultitext($field) {
+		public static function fieldMultitext($field)
+		{
 			
 			extract($field);
 			
@@ -172,7 +178,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldTextarea($field) {
+		public static function fieldTextarea($field)
+		{
 			
 			extract($field);
 			
@@ -192,7 +199,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldCode($field) {
+		public static function fieldCode($field)
+		{
 			
 			extract($field);
 			
@@ -212,7 +220,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldPassword($field) {
+		public static function fieldPassword($field)
+		{
 			
 			extract($field);
 			
@@ -229,7 +238,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldEmail($field) {
+		public static function fieldEmail($field)
+		{
 			
 			extract($field);
 			
@@ -246,7 +256,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldSelect($field) {
+		public static function fieldSelect($field)
+		{
 			
 			extract($field);
 			
@@ -274,7 +285,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldRepeatable($field) {
+		public static function fieldRepeatable($field)
+		{
 			
 			extract($field);
 			
@@ -352,7 +364,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldMultiselect($field) {
+		public static function fieldMultiselect($field)
+		{
 			
 			extract($field);
 			
@@ -381,7 +394,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldQueryselect($field) {
+		public static function fieldQueryselect($field)
+		{
 			
 			extract($field);
 			
@@ -447,7 +461,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldRadio($field) {
+		public static function fieldRadio($field)
+		{
 			
 			extract($field);
 			
@@ -479,7 +494,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldRadioimage($field) {
+		public static function fieldRadioimage($field)
+		{
 			
 			extract($field);
 			
@@ -517,7 +533,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldButtonset($field) {
+		public static function fieldButtonset($field)
+		{
 			
 			extract($field);
 			
@@ -546,7 +563,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldSwitch($field) {
+		public static function fieldSwitch($field)
+		{
 			
 			extract($field);
 			
@@ -578,7 +596,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldCheckbox($field) {
+		public static function fieldCheckbox($field)
+		{
 			
 			extract($field);
 			
@@ -599,7 +618,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldMulticheck($field) {
+		public static function fieldMulticheck($field)
+		{
 			
 			extract($field);
 			
@@ -637,7 +657,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldSlider($field) {
+		public static function fieldSlider($field)
+		{
 			
 			extract($field);
 			
@@ -664,7 +685,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldRange($field) {
+		public static function fieldRange($field)
+		{
 			
 			extract($field);
 			
@@ -703,7 +725,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldColor($field) {
+		public static function fieldColor($field)
+		{
 			
 			extract($field);
 			
@@ -724,13 +747,14 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldMulticolor($field) {
+		public static function fieldMulticolor($field)
+		{
 			
 			extract($field);
 			
 			$output = '';
 			
-			$multicolor_defaults = DilazPanelDefaults::_multicolor();
+			$multicolor_defaults = DilazPanelDefaults::multicolor();
 			$saved_colors = wp_parse_args($value, $multicolor_defaults);
 			
 			if (isset($options)) {
@@ -760,13 +784,14 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldFont($field) {
+		public static function fieldFont($field)
+		{
 			
 			extract($field);
 			
 			$output = '';
 			
-			$font_defaults = DilazPanelDefaults::_font();
+			$font_defaults = DilazPanelDefaults::font();
 			$saved_fonts   = wp_parse_args($value, $font_defaults);
 			
 			$fontUnit = isset($args['unit']) ? (string)$args['unit'] : 'px';
@@ -777,7 +802,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Family', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-family" name="'. esc_attr($id) .'[family]" class="family select2single" data-width="230px">';
-					$font_families = is_array($options['family']) ? $options['family'] : DilazPanelDefaults::_font_family();						
+					$font_families = is_array($options['family']) ? $options['family'] : DilazPanelDefaults::fontFamily();						
 					foreach ($font_families as $key => $font_family) {
 						if (isset($saved_fonts['family']) && !empty($saved_fonts['family']) && $saved_fonts['family'] !== FALSE) {
 							$selected_family = selected(strtolower($saved_fonts['family']), strtolower($key), FALSE);
@@ -795,7 +820,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Weight', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-weight" name="'. esc_attr($id) .'[weight]" class="weight select2single" data-width="130px">';
-					$font_weights = is_array($options['weight']) ? $options['weight'] : DilazPanelDefaults::_font_weights();
+					$font_weights = is_array($options['weight']) ? $options['weight'] : DilazPanelDefaults::fontWeights();
 					foreach ($font_weights as $key => $font_weight) {
 						if (isset($saved_fonts['weight']) && !empty($saved_fonts['weight']) && $saved_fonts['weight'] !== FALSE) {
 							$selected_weight = selected(strtolower($saved_fonts['weight']), strtolower($key), FALSE);
@@ -813,7 +838,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Style', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-style" name="'. esc_attr($id) .'[style]" class="style select2single" data-width="110px">';
-					$font_styles = is_array($options['style']) ? $options['style'] : DilazPanelDefaults::_font_styles();
+					$font_styles = is_array($options['style']) ? $options['style'] : DilazPanelDefaults::fontStyles();
 					foreach ($font_styles as $key => $font_style) {
 						if (isset($saved_fonts['style']) && !empty($saved_fonts['style']) && $saved_fonts['style'] !== FALSE) {
 							$selected_style = selected(strtolower($saved_fonts['style']), strtolower($key), FALSE);
@@ -831,7 +856,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Case', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-case" name="'. esc_attr($id) .'[case]" class="case select2single" data-width="110px">';
-					$font_cases = is_array($options['case']) ? $options['case'] : DilazPanelDefaults::_font_cases();
+					$font_cases = is_array($options['case']) ? $options['case'] : DilazPanelDefaults::fontCases();
 					foreach ($font_cases as $key => $font_case) {
 						if (isset($saved_fonts['case']) && !empty($saved_fonts['case']) && $saved_fonts['case'] !== FALSE) {
 							$selected_case = selected(strtolower($saved_fonts['case']), strtolower($key), FALSE);
@@ -849,7 +874,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Backup Stack', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-backup" name="'. esc_attr($id) .'[backup]" class="backup select2single" data-width="230px">';
-					$font_backups = is_array($options['backup']) ? $options['backup'] : DilazPanelDefaults::_font_family_defaults_stacks();						
+					$font_backups = is_array($options['backup']) ? $options['backup'] : DilazPanelDefaults::fontFamilyDefaultsStacks();						
 					foreach ($font_backups as $key => $font_backup) {
 						if (isset($saved_fonts['backup']) && !empty($saved_fonts['backup']) && $saved_fonts['backup'] !== FALSE) {
 							$selected_backup = selected($saved_fonts['backup'], $key, FALSE);
@@ -924,7 +949,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-font">';
 					$output .= '<strong>'. __('Font Subset', 'dilaz-panel') .'</strong><br />';
 					$output .= '<select id="'. esc_attr($id) .'-subset" name="'. esc_attr($id) .'[subset][]" class="subset select2multiple" data-width="320px" multiple="multiple">';
-					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::_font_subset();						
+					$font_subsets = is_array($options['subset']) ? $options['subset'] : DilazPanelDefaults::fontSubset();						
 					foreach ($font_subsets as $key => $font_subset) {
 						$selected_subset = is_array($saved_fonts['subset']) ? (isset($std['subset']) && in_array($key, $saved_fonts['subset']) ? 'selected="selected"' : '') : '';
 						$output .= '<option value="'. $key .'" '. $selected_subset .'>'. $font_subset .'</option>';
@@ -949,7 +974,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldUpload($field) {
+		public static function fieldUpload($field)
+		{
 
 			extract($field);
 			
@@ -1136,13 +1162,14 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldBackground($field) {
+		public static function fieldBackground($field)
+		{
 			
 			extract($field);
 			
 			$output = '';
 			
-			$bg_defaults = DilazPanelDefaults::_bg();
+			$bg_defaults = DilazPanelDefaults::bg();
 			$saved_bg = isset($value) ? $value : $std;
 			
 			$saved_bg_image      = isset($saved_bg['image']) ? $saved_bg['image'] : '';
@@ -1265,7 +1292,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldEditor($field) {
+		public static function fieldEditor($field)
+		{
 			
 			extract($field);
 			
@@ -1321,7 +1349,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldExport($field) {
+		public static function fieldExport($field)
+		{
 			
 			extract($field);
 			
@@ -1346,7 +1375,8 @@ if (!class_exists('DilazPanelFields')) {
 		 * @param  array $field Field arguments
 		 * @return html  $output
 		 */
-		public static function fieldImport($field) {
+		public static function fieldImport($field)
+		{
 			
 			extract($field);
 			
