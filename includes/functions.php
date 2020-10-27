@@ -19,13 +19,12 @@ defined('ABSPATH') || exit;
 if (!class_exists('DilazPanelFunctions')) {
 	class DilazPanelFunctions {
 		
-		
-		function __construct() {
+		function __construct()
+		{
 			add_action('wp_ajax_dilaz_panel_query_select', array(&$this, 'querySelect'), 2);
 			add_action('wp_ajax_dilaz_panel_get_post_titles', array(&$this, 'getPostTitles'));
 		}
-		
-		
+
 		/**
 		 * Query select function
 		 *
@@ -40,7 +39,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return json.data
 		 */
-		function querySelect() {
+		function querySelect()
+		{
 			
 			global $wpdb;
 			
@@ -137,7 +137,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			die();
 		}
 		
-		
 		/**
 		 * Get post titles
 		 *
@@ -147,7 +146,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return json.data
 		 */
-		function getPostTitles() {
+		function getPostTitles()
+		{
 			
 			$result = array();
 			
@@ -174,7 +174,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			die;
 		}
 		
-		
 		/**
 		 * Find position of array using its key and value
 		 *
@@ -185,7 +184,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return integer|bool
 		 */
-		public static function find_array_key_by_value($array, $field, $value) {
+		public static function findArrayKeyByValue($array, $field, $value)
+		{
 			foreach ($array as $key => $array_item) {
 				if ($array_item[$field] === $value)
 					return $key;
@@ -193,7 +193,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			
 			return false;
 		}
-		
 		
 		/**
 		 * Insert an array before the key of another array
@@ -206,7 +205,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return array|bool
 		 */
-		public static function insert_array_adjacent_to_key($array, $data, $key_offset, $insert_position = 'before') {
+		public static function insertArrayAdjacentToKey($array, $data, $key_offset, $insert_position = 'before')
+		{
 			
 			if (!is_array($data)) return false;
 			
@@ -224,7 +224,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			return $new_array;  
 		}
 		
-		
 		/**
 		 * Insert an array before the key of another array
 		 *
@@ -234,13 +233,14 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return array
 		 */
-		public static function unique_multidimensional_array($array, $key) {
+		public static function uniqueMultidimensionalArray($array, $key)
+		{
 			$temp_array = array();
 			$i = 0;
 			$key_array = array();
 			
 			foreach($array as $val) {
-				if (!in_array($val[$key], $key_array)) {
+				if (isset($val[$key]) && !in_array($val[$key], $key_array)) {
 					$key_array[$i] = $val[$key];
 					$temp_array[$i] = $val;
 				}
@@ -249,7 +249,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			
 			return $temp_array;
 		}
-		
 		
 		/**
 		 * Remove target tab fields to avoid before adding modified fields
@@ -261,7 +260,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return array
 		 */
-		public static function remove_target_tab_fields($options, $tab_fields) {
+		public static function removeTargetTabFields($options, $tab_fields)
+		{
 			
 			$tab_fields_ids = [];
 			
@@ -278,7 +278,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			return $options;
 		}
 		
-		
 		/**
 		 * Get all fields within an options tab (both heading tabe and subheading tab)
 		 *
@@ -288,7 +287,8 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return array
 		 */
-		public static function get_tab_content($options, $option_tab_id) {
+		public static function getTabContent($options, $option_tab_id)
+		{
 			
 			$set_id = 0;
 			$tab_content = array();
@@ -316,7 +316,6 @@ if (!class_exists('DilazPanelFunctions')) {
 			return $tab_content;
 		}
 		
-		
 		/**
 		 * Add/Insert option field before a specific field
 		 *
@@ -330,9 +329,10 @@ if (!class_exists('DilazPanelFunctions')) {
 		 *
 		 * @return array|void
 		 */
-		public static function insert_field($options, $option_tab_id, $target_field_id, $insert_data, $insert_position) {
+		public static function insertField($options, $option_tab_id, $target_field_id, $insert_data, $insert_position)
+		{
 			
-			$tab_content = self::get_tab_content($options, $option_tab_id);
+			$tab_content = self::getTabContent($options, $option_tab_id);
 			
 			/* bail if fields are not found */
 			if (!isset($tab_content['fields'])) return;
@@ -342,20 +342,19 @@ if (!class_exists('DilazPanelFunctions')) {
 			/* remove all fields of the targeted tab from options
 			 * because they will added back after custom field(s) is(are) appended 
 			 */
-			$options = self::remove_target_tab_fields($options, $tab_fields);
+			$options = self::removeTargetTabFields($options, $tab_fields);
 			
 			/* get array key position */
-			$key_offset = isset($tab_fields) ? self::find_array_key_by_value($tab_fields, 'id', $target_field_id) : '';
+			$key_offset = isset($tab_fields) ? self::findArrayKeyByValue($tab_fields, 'id', $target_field_id) : '';
 			
 			/* new array after another array has been inserted  */
-			$new_array_modified = isset($tab_fields) ? self::insert_array_adjacent_to_key($tab_fields, array($insert_data), $key_offset, $insert_position) : $options;
+			$new_array_modified = isset($tab_fields) ? self::insertArrayAdjacentToKey($tab_fields, array($insert_data), $key_offset, $insert_position) : $options;
 			
 			/* merge the new array with the entire panel options array */
 			$new_meta_boxes = ($new_array_modified != false) ? array_merge($options, $new_array_modified) : $options;
 			
 			return $new_meta_boxes;
 		}
-		
 	}
 	
 	new DilazPanelFunctions;
