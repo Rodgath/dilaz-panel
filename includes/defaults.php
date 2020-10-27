@@ -16,9 +16,11 @@
 
 defined('ABSPATH') || exit;
 
-class DilazPanelDefaults {
+class DilazPanelDefaults
+{
 	
-	function __construct() {
+	public function __construct()
+	{
 		
 	}
 	
@@ -29,7 +31,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _bg() {
+	public static function bg()
+	{
 		
 		$bg_defaults = array(
 			'image'  => '', 
@@ -83,7 +86,6 @@ class DilazPanelDefaults {
 		return $bg_defaults;
 	}
 	
-	
 	/**
 	 * Multicolor defaults
 	 *
@@ -91,13 +93,13 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _multicolor() {
+	public static function multicolor()
+	{
 		$multicolor_defaults = array();
 		$multicolor_defaults = apply_filters('dilaz_panel_multicolor_defaults', $multicolor_defaults);
 		$multicolor_defaults = array_map('sanitize_hex_color', $multicolor_defaults);
 		return $multicolor_defaults;
 	}
-	
 	
 	/**
 	 * Get Google Fonts
@@ -106,10 +108,11 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _getGoogleFonts() {
+	public static function getGoogleFonts()
+	{
 		
 		$g_fonts_array = array();
-		$get_g_fonts = file_get_contents(dirname(__FILE__).'/google-fonts.json');
+		$get_g_fonts = file_get_contents(dirname(__FILE__).'/google-fonts-min.json');
 		if ($get_g_fonts !== false && !empty($get_g_fonts)) {
 			$g_fonts_array = json_decode($get_g_fonts, true);
 			foreach ((array)$g_fonts_array as $font => &$atts) {
@@ -125,7 +128,6 @@ class DilazPanelDefaults {
 		return apply_filters('dilaz_panel_get_google_fonts', $g_fonts_array);
 	}
 	
-	
 	/**
 	 * Google Fonts
 	 *
@@ -133,9 +135,10 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _googleFonts() {
+	public static function googleFonts()
+	{
 		
-		$g_fonts = DilazPanelDefaults::_getGoogleFonts();
+		$g_fonts = DilazPanelDefaults::getGoogleFonts();
 		$g_font_names = [];
 		
 		foreach ((array)$g_fonts as $font_name => &$atts) {
@@ -145,7 +148,6 @@ class DilazPanelDefaults {
 		return apply_filters('dilaz_panel_google_fonts', $g_font_names);
 	}
 	
-	
 	/**
 	 * Font defaults
 	 *
@@ -153,7 +155,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font() {
+	public static function font()
+	{
 		$font_defaults = array(
 			'family' => 'verdana', 
 			'subset' => '', 
@@ -169,7 +172,6 @@ class DilazPanelDefaults {
 		return $font_defaults;
 	}
 	
-	
 	/**
 	 * Stacks for font family defaults 
 	 *
@@ -177,7 +179,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_family_defaults_stacks() {
+	public static function fontFamilyDefaultsStacks()
+	{
 		$font_family_stacks = array(
 			''                => '',
 			'arial'           => 'Arial, Helvetica Neue, Helvetica, sans-serif',
@@ -204,7 +207,6 @@ class DilazPanelDefaults {
 		return $font_family_stacks;
 	}
 	
-	
 	/**
 	 * Font family defaults
 	 *
@@ -212,7 +214,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_family_defaults() {
+	public static function fontFamilyDefaults()
+	{
 		$font_family = array(
 			''          => '',
 			'arial'     => 'Arial',
@@ -229,7 +232,6 @@ class DilazPanelDefaults {
 		return $font_family;
 	}
 	
-	
 	/**
 	 * Font family all
 	 *
@@ -237,13 +239,13 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_family() {
-		$font_family = wp_parse_args(DilazPanelDefaults::_googleFonts(), DilazPanelDefaults::_font_family_defaults());
+	public static function fontFamily()
+	{
+		$font_family = wp_parse_args(DilazPanelDefaults::googleFonts(), DilazPanelDefaults::fontFamilyDefaults());
 		$font_family = apply_filters('dilaz_panel_font_family', $font_family);
 		$font_family = array_map('sanitize_text_field', $font_family);
 		return $font_family;
 	}
-	
 	
 	/**
 	 * Font subset defaults
@@ -252,7 +254,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_subset() {
+	public static function fontSubset()
+	{
 		$font_subset = array(
 			''      => '',
 			'arabic' => 'arabic',
@@ -283,7 +286,6 @@ class DilazPanelDefaults {
 		return $font_subset;
 	}
 	
-	
 	/**
 	 * Font size defaults
 	 *
@@ -291,13 +293,13 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_sizes() {
+	public static function fontSizes()
+	{
 		$font_sizes = range(6, 100);
 		$font_sizes = apply_filters('dilaz_panel_font_sizes', $font_sizes);
 		$font_sizes = array_map('absint', $font_sizes);
 		return $font_sizes;
 	}
-	
 	
 	/**
 	 * Font height defaults
@@ -306,13 +308,13 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_heights() {
+	public static function fontHeights()
+	{
 		$font_heights = range(10, 70);
 		$font_heights = apply_filters('dilaz_panel_font_heights', $font_heights);
 		$font_heights = array_map('absint', $font_heights);
 		return $font_heights;
 	}
-	
 	
 	/**
 	 * Font weight defaults
@@ -321,7 +323,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_weights() {
+	public static function fontWeights()
+	{
 		$font_weights = array(
 			''        => '',
 			'100'     => 'Thin 100',
@@ -345,7 +348,6 @@ class DilazPanelDefaults {
 		return $font_weights;
 	}
 	
-	
 	/**
 	 * Font style defaults
 	 *
@@ -353,7 +355,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	public static function _font_styles() {
+	public static function fontStyles()
+	{
 		$font_styles = array(
 			''        => '',
 			'normal'  => 'Normal',
@@ -367,7 +370,6 @@ class DilazPanelDefaults {
 		return $font_styles;
 	}
 	
-	
 	/**
 	 * Font case defaults
 	 *
@@ -375,8 +377,8 @@ class DilazPanelDefaults {
 	 *
 	 * @return array
 	 */
-	 
-	public static function _font_cases() {
+	public static function fontCases()
+	{
 		$font_cases = array(
 			''           => '', 
 			'none'       => 'None', 
