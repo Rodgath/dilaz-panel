@@ -1,15 +1,17 @@
 <?php
 /*
- * Plugin Name: Dilaz Panel
- * Plugin URI:  https://github.com/Rodgath/Dilaz-Panel-Plugin
- * Description: Simple options panel for WordPress themes and plugins.
- * Author:      Rodgath
- * Text Domain: dilaz-panel
- * Domain Path: /languages
- * Version:     2.7.14
- * Author URI:  https://github.com/Rodgath
- * License:     GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Plugin Name:       Dilaz Panel
+ * Plugin URI:        https://github.com/Rodgath/Dilaz-Panel-Plugin
+ * Description:       Simple options panel for WordPress themes and plugins. 
+ * Requires at least: 4.5
+ * Requires PHP:      5.6
+ * Author:            Rodgath
+ * Author URI:        https://github.com/Rodgath
+ * Text Domain:       dilaz-panel
+ * Domain Path:       /languages
+ * Version:           2.7.15
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
 || --------------------------------------------------------------------------------------------
 || Admin Options Panel
@@ -17,10 +19,10 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.14
+|| @version     2.7.15
 || @since       Dilaz Panel 1.0
 || @author      Rodgath, https://github.com/Rodgath
-|| @copyright   Copyright (C) 2017, Rodgath LTD
+|| @copyright   Copyright (C) 2017, Rodgath
 || @link        https://github.com/Rodgath/Dilaz-Panel-Plugin
 || @License     GPL-2.0+
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
@@ -33,8 +35,8 @@ defined('ABSPATH') || exit;
  * Dilaz Panel main class
  */
 if (!class_exists('DilazPanel')) {
-	class DilazPanel {
-		
+	class DilazPanel 
+	{
 		
 		/**
 		 * Panel option name
@@ -43,8 +45,7 @@ if (!class_exists('DilazPanel')) {
 		 * @since  2.0
 		 * @access protected
 		 */
-		protected $_optionName;
-		
+		protected $optionName;
 		
 		/**
 		 * Panel parameters
@@ -52,8 +53,7 @@ if (!class_exists('DilazPanel')) {
 		 * @var    array
 		 * @access protected
 		 */
-		protected $_params;
-		
+		protected $params;
 		
 		/**
 		 * Panel options
@@ -61,8 +61,7 @@ if (!class_exists('DilazPanel')) {
 		 * @var    array
 		 * @access protected
 		 */
-		protected $_options;
-		
+		protected $options;
 		
 		/**
 		 * Panel attributes
@@ -71,8 +70,7 @@ if (!class_exists('DilazPanel')) {
 		 * @var    array
 		 * @access protected
 		 */
-		protected $_panelAtts;
-		
+		protected $panelAtts;
 		
 		/**
 		 * Saved Google Fonts
@@ -82,8 +80,7 @@ if (!class_exists('DilazPanel')) {
 		 * @access protected
 		 */
 		protected $savedGFonts;
-		
-		
+
 		/**
 		 * The single instance of the class
 		 *
@@ -92,7 +89,6 @@ if (!class_exists('DilazPanel')) {
 		 * @access protected
 		 */
 		protected static $_instance = NULL;
-		
 		
 		/**
 		 * Main DilazPanel instance
@@ -105,13 +101,13 @@ if (!class_exists('DilazPanel')) {
 		 * @see DilazPanel()
 		 * @return DilazPanel object - Main instance.
 		 */
-		public static function instance() {
+		public static function instance()
+		{
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
 			return self::$_instance;
 		}
-		
 		
 		/**
 		 * Cloning is forbidden
@@ -120,10 +116,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void 
 		 */
-		public function __clone() {
+		public function __clone()
+		{
 			_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'dilaz-panel'), '2.0');
 		}
-		
 		
 		/**
 		 * Unserializing instances of this class is forbidden
@@ -132,10 +128,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function __wakeup() {
+		public function __wakeup()
+		{
 			_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'dilaz-panel'), '2.0');
 		}
-		
 		
 		/**
 		 * Contructor method
@@ -144,16 +140,17 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @since 1.0
 		 */
-		function __construct($option_args = '') {
+		function __construct($option_args = '')
+		{
 
 			do_action('dilaz_panel_before_load');
 			
 			$this->args        = is_array($option_args) ? $option_args : array();
-			$this->_params     = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
-			$this->_options    = !empty($this->args) ? $this->args[1] : array();
-			$this->_optionName = isset($this->_params['option_name']) ? $this->_params['option_name'] : '';
-			$this->_panelAtts  = !empty($this->_options) ? $this->_options[0] : array();
-			$saved_options     = $this->getOptions($this->_optionName);
+			$this->params     = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
+			$this->options    = !empty($this->args) ? $this->args[1] : array();
+			$this->optionName = isset($this->params['option_name']) ? $this->params['option_name'] : '';
+			$this->panelAtts  = !empty($this->options) ? $this->options[0] : array();
+			$saved_options     = $this->getOptions($this->optionName);
 			$this->savedGFonts = isset($saved_options['saved_google_fonts']) ? $saved_options['saved_google_fonts'] : array();
 			
 			# Load constants
@@ -172,7 +169,6 @@ if (!class_exists('DilazPanel')) {
 			do_action( 'dilaz_panel_after_load' );
 		}
 		
-		
 		/**
 		 * Initialize
 		 *
@@ -180,7 +176,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return array
 		 */
-		public function init() {
+		public function init()
+		{
 			
 			add_action('wp_head', array($this, 'loadGoogleFonts'));
 			
@@ -190,7 +187,6 @@ if (!class_exists('DilazPanel')) {
 			$this->parameters();
 		}
 		
-		
 		/**
 		 * Options parameters
 		 *
@@ -198,10 +194,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return array
 		 */
-		public function parameters() {
-			return $this->_params;
+		public function parameters()
+		{
+			return $this->params;
 		}
-		
 		
 		/**
 		 * Constants
@@ -210,13 +206,13 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function constants() {
+		public function constants()
+		{
 			@define('DILAZ_PANEL_URL', plugin_dir_url(__FILE__));
 			@define('DILAZ_PANEL_DIR', trailingslashit(plugin_dir_path(__FILE__)));
 			@define('DILAZ_PANEL_IMAGES', DILAZ_PANEL_URL .'assets/images/');
-			@define('DILAZ_PANEL_PREFIX', (isset($this->_params['prefix']) && $this->_params['prefix'] != '') ? $this->_params['prefix'] .'_' : 'dilaz_panel_');
+			@define('DILAZ_PANEL_PREFIX', (isset($this->params['prefix']) && $this->params['prefix'] != '') ? $this->params['prefix'] .'_' : 'dilaz_panel_');
 		}
-		
 		
 		/**
 		 * Includes
@@ -225,11 +221,11 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function includes() {
+		public function includes()
+		{
 			require_once DILAZ_PANEL_DIR .'includes/fields.php';
 			require_once DILAZ_PANEL_DIR .'includes/defaults.php';
 		}
-		
 		
 		/**
 		 * Initialize Admin Panel
@@ -238,7 +234,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function adminInit() {
+		public function adminInit()
+		{
 
 			do_action('dilaz_panel_before_init');
 			
@@ -246,7 +243,7 @@ if (!class_exists('DilazPanel')) {
 			$this->includes();			
 			
 			# otpion name
-			$option_name = $this->_optionName;
+			$option_name = $this->optionName;
 			
 			# saved options
 			$saved_options = get_option($option_name);
@@ -270,7 +267,6 @@ if (!class_exists('DilazPanel')) {
 			do_action('dilaz_panel_after_init');
 		}
 		
-		
 		/**
 		 * Panel attributes reduced
 		 *
@@ -278,9 +274,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function panelAttsReduced() {
+		public function panelAttsReduced()
+		{
 			
-			$panel_atts = $this->_panelAtts;
+			$panel_atts = $this->panelAtts;
 			
 			# remove 'id' and 'type' fields from panel atts
 			unset($panel_atts['id']);
@@ -288,7 +285,6 @@ if (!class_exists('DilazPanel')) {
 			
 			return $panel_atts;
 		}
-		
 		
 		/**
 		 * Add Admin Menu
@@ -300,9 +296,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function registerMenu() {
+		public function registerMenu()
+		{
 			
-			$params = $this->_params;
+			$params = $this->params;
 
 			# bail if parameters are not set
 			if (!isset($params)) return;
@@ -316,7 +313,7 @@ if (!class_exists('DilazPanel')) {
 			) return;
 			
 			# At first, no menu is added
-			$menu_added = FALSE;
+			$menu_added = false;
 			
 			foreach ($params['options_view_cap'] as $cap_key => $cap) {
 				
@@ -324,7 +321,7 @@ if (!class_exists('DilazPanel')) {
 				if (!current_user_can($cap)) continue;
 				
 				# Add menu only if there's none
-				if (FALSE == $menu_added) {
+				if (false == $menu_added) {
 				
 					# Add submenu page if 'parent_slug' is set
 					if (isset($params['parent_slug']) && trim($params['parent_slug']) != '') {
@@ -386,11 +383,10 @@ if (!class_exists('DilazPanel')) {
 					add_action('admin_print_scripts-'. $panel_page, array($this, 'enqueueScripts'));
 					
 					# If menu is added, then declare it to avoid same menu multiple additions
-					$menu_added = ($panel_page) ? TRUE : FALSE;
+					$menu_added = ($panel_page) ? true : false;
 				}
 			}
 		}
-		
 		
 		/**
 		 * Load Admin Styles
@@ -399,7 +395,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function enqueueStyles() {
+		public function enqueueStyles()
+		{
 			
 			wp_enqueue_style('wp-color-picker');
 			
@@ -408,11 +405,10 @@ if (!class_exists('DilazPanel')) {
 			$select2_css_ver     = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/select2.min.css' ));
 			$dilaz_panel_css_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/css/admin.css' ));
 			
-			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', FALSE, $meterial_css_ver);
-			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', FALSE, $select2_css_ver);
-			wp_enqueue_style('dilaz-panel', DILAZ_PANEL_URL .'assets/css/admin.css', FALSE, $dilaz_panel_css_ver);
+			wp_enqueue_style('material-webfont', DILAZ_PANEL_URL .'assets/css/materialdesignicons.min.css', false, $meterial_css_ver);
+			wp_enqueue_style('select2', DILAZ_PANEL_URL .'assets/css/select2.min.css', false, $select2_css_ver);
+			wp_enqueue_style('dilaz-panel', DILAZ_PANEL_URL .'assets/css/admin.css', false, $dilaz_panel_css_ver);
 		}
-		
 		
 		/**
 		 * Load Admin Scripts
@@ -421,7 +417,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function enqueueScripts() {
+		public function enqueueScripts()
+		{
 			
 			if (function_exists('wp_enqueue_media')) {
 				wp_enqueue_media();
@@ -436,9 +433,9 @@ if (!class_exists('DilazPanel')) {
 			$dilaz_panel_js_ver = date('ymd-Gis', filemtime( DILAZ_PANEL_DIR .'assets/js/admin.js' ));
 			
 			wp_enqueue_script('wp-color-picker');
-			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', FALSE, $select2_js_ver, TRUE);
+			wp_enqueue_script('select2', DILAZ_PANEL_URL .'assets/js/select2/select2.min.js', false, $select2_js_ver, true);
 			wp_enqueue_script('dilaz-dowhen-script', DILAZ_PANEL_URL .'assets/js/jquery.dowhen.js');
-			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), $dilaz_panel_js_ver, TRUE);
+			wp_enqueue_script('dilaz-panel-js', DILAZ_PANEL_URL .'assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider'), $dilaz_panel_js_ver, true);
 			
 			# Localization
 			wp_localize_script(
@@ -448,7 +445,7 @@ if (!class_exists('DilazPanel')) {
 					'dilaz_panel_url'    => DILAZ_PANEL_URL,
 					'dilaz_panel_images' => DILAZ_PANEL_IMAGES,
 					'dilaz_panel_prefix' => DILAZ_PANEL_PREFIX,
-					'page_slug'          => !empty($this->_params) && isset($this->_params['page_slug']) ? $this->_params['page_slug'] : '',
+					'page_slug'          => !empty($this->params) && isset($this->params['page_slug']) ? $this->params['page_slug'] : '',
 					'upload'             => __('Upload', 'dilaz-panel'),
 					'remove'             => __('Remove', 'dilaz-panel'),
 					'upload_title'       => __('Select Image', 'dilaz-panel'),
@@ -459,7 +456,6 @@ if (!class_exists('DilazPanel')) {
 			);
 		}
 		
-		
 		/**
 		 * WP Editor custom styles
 		 *
@@ -468,10 +464,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function editorStyles() {
+		public function editorStyles()
+		{
 			add_editor_style( DILAZ_PANEL_URL .'assets/css/custom-editor-styles.css' );
 		}
-		
 		
 		/**
 		 * Sanitize parameters
@@ -484,7 +480,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function sanitizeParams($params) {
+		public function sanitizeParams($params)
+		{
 			
 			foreach($params as $key => $val) {
 				switch ($key) {
@@ -521,7 +518,7 @@ if (!class_exists('DilazPanel')) {
 					case 'custom_options':
 					case 'admin_bar_menu':
 					case 'import_export':
-						$params[$key] = ($val == '') ? FALSE : filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+						$params[$key] = ($val == '') ? false : filter_var($val, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 						break;
 						
 					case 'menu_position':
@@ -550,7 +547,6 @@ if (!class_exists('DilazPanel')) {
 			return $params;
 		}
 		
-		
 		/**
 		 * Add Admin Bar Menu
 		 *
@@ -561,9 +557,10 @@ if (!class_exists('DilazPanel')) {
 		 * @global string $wp_admin_bar
 		 * @return void
 		 */
-		public function adminBar() {
+		public function adminBar()
+		{
 			
-			$params = $this->_params;
+			$params = $this->params;
 			
 			# bail if parameters are not set
 			if ( !isset($params) ) return;
@@ -572,10 +569,10 @@ if (!class_exists('DilazPanel')) {
 			if ( !isset($params['menu_title']) || !isset($params['page_slug']) ) return;
 			
 			# show if enabled
-			if ( isset($params['admin_bar_menu']) && $params['admin_bar_menu'] == TRUE ) {
+			if ( isset($params['admin_bar_menu']) && $params['admin_bar_menu'] == true ) {
 			
 				# At first, no menu is added
-				$menu_bar_added = FALSE;
+				$menu_bar_added = false;
 				
 				foreach ($params['options_view_cap'] as $cap_key => $cap) {
 					
@@ -583,7 +580,7 @@ if (!class_exists('DilazPanel')) {
 					if (!current_user_can($cap)) continue;
 					
 					# Add menu only if there's none
-					if (FALSE == $menu_bar_added) {
+					if (false == $menu_bar_added) {
 						
 						global $wp_admin_bar;
 						
@@ -639,13 +636,12 @@ if (!class_exists('DilazPanel')) {
 							}
 					
 							# If menu is added, then declare it to avoid same menu multiple additions
-							$menu_bar_added = TRUE;
+							$menu_bar_added = true;
 						}
 					}
 				}
 			}
 		}
-		
 		
 		/**
 		 * Admin panel page
@@ -654,11 +650,12 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return mixed
 		 */
-		public function page() {
+		public function page()
+		{
 			
-			$params = $this->_params;
+			$params = $this->params;
 			
-			if ($params['use_type_error'] == FALSE) {
+			if ($params['use_type_error'] == false) {
 				
 				?>
 				
@@ -671,7 +668,7 @@ if (!class_exists('DilazPanel')) {
 							</div>
 						</div>
 						<div id="dilaz-panel-content" class="clearfix">
-							<form id="dilaz-panel-form" enctype="multipart/form-data" method="post" data-option-name="<?php echo $this->_optionName; ?>" data-option-page="<?php echo $_GET['page']; ?>">
+							<form id="dilaz-panel-form" enctype="multipart/form-data" method="post" data-option-name="<?php echo $this->optionName; ?>" data-option-page="<?php echo $_GET['page']; ?>">
 								<div class="dilaz-panel-top clearfix">
 									<div style="float:left">
 										<ul class="subsubsub">
@@ -709,7 +706,7 @@ if (!class_exists('DilazPanel')) {
 										<span class="finished"></span>
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
-										<input type="hidden" name="option_name" value="<?php echo $this->_optionName; ?>" />
+										<input type="hidden" name="option_name" value="<?php echo $this->optionName; ?>" />
 										<input type="hidden" name="security" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
 										<span class="spinner"></span>
 										<span class="progress"><?php _e('Saving options... Please wait...', 'dilaz-panel'); ?></span>
@@ -726,7 +723,6 @@ if (!class_exists('DilazPanel')) {
 			}
 		}
 		
-		
 		/**
 		 * Panel menu array
 		 *
@@ -734,9 +730,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function menuArray() {
+		public function menuArray()
+		{
 			
-			$options = $this->_options;
+			$options = $this->options;
 			
 			$parent     = 0;
 			$menu_array = array();
@@ -769,7 +766,6 @@ if (!class_exists('DilazPanel')) {
 			
 		}
 		
-		
 		/**
 		 * Panel menu
 		 *
@@ -777,7 +773,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function menuHTML() {
+		public function menuHTML()
+		{
 			
 			$menu_items = $this->menuArray();
 			
@@ -818,7 +815,6 @@ if (!class_exists('DilazPanel')) {
 			return $menu;
 		}
 		
-		
 		/**
 		 * Panel options' fields
 		 *
@@ -827,11 +823,12 @@ if (!class_exists('DilazPanel')) {
 		 * @global array $allowed_tags
 		 * @return array
 		 */
-		public function fields() {
+		public function fields()
+		{
 			
-			$option_name   = $this->_optionName;
+			$option_name   = $this->optionName;
 			$option_data   = get_option($option_name);
-			$option_fields = $this->_options;
+			$option_fields = $this->options;
 			
 			$counter = 0;
 			
@@ -1022,7 +1019,6 @@ if (!class_exists('DilazPanel')) {
 			}
 		}
 		
-		
 		/**
 		 * Add default options
 		 *
@@ -1031,14 +1027,14 @@ if (!class_exists('DilazPanel')) {
 		 * @param  string $option_name
 		 * @return void
 		 */
-		public function setDefaults($option_name) {
+		public function setDefaults($option_name)
+		{
 			
 			$values = $this->dafaultValues();
 			
 			if (isset($values))
 				update_option($option_name, $values);
 		}
-		
 		
 		/**
 		 * Set option
@@ -1053,10 +1049,11 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void|bool
 		 */
-		public function setOption($option_name, $option_id, $option_value = FALSE, $option_type = FALSE) {
+		public function setOption($option_name, $option_id, $option_value = false, $option_type = false)
+		{
 			
-			if (!isset($option_name)) return FALSE;
-			if (!isset($option_id)) return FALSE;
+			if (!isset($option_name)) return false;
+			if (!isset($option_id)) return false;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -1065,7 +1062,7 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return FALSE;
+			if (!isset($options) || !is_array($options) || !$options) return false;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
@@ -1074,14 +1071,13 @@ if (!class_exists('DilazPanel')) {
 			$sanitized_options = [];
 			
 			# Get sanitiszed options
-			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', TRUE);
+			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', true);
 			
 			# Get sanitiszed options
 			$merged_options = array_merge($options, $sanitized_options);
 			
 			update_option($option_name, $merged_options);
 		}
-		
 		
 		/**
 		 * Remove option
@@ -1094,10 +1090,11 @@ if (!class_exists('DilazPanel')) {
 		 * @access public 
 		 * @return void|bool
 		 */
-		public function deleteOption($option_name, $option_id) {
+		public function deleteOption($option_name, $option_id)
+		{
 			
-			if (!isset($option_name)) return FALSE;
-			if (!isset($option_id)) return FALSE;
+			if (!isset($option_name)) return false;
+			if (!isset($option_id)) return false;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -1106,14 +1103,13 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return FALSE;
+			if (!isset($options) || !is_array($options) || !$options) return false;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
 			
 			update_option($option_name, $options);
 		}
-		
 		
 		/**
 		 * Get panel options from file
@@ -1123,11 +1119,12 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
-		 * @return array|bool FALSE if option is not set or option file does not exist
+		 * @return array|bool `false` if option is not set or option file does not exist
 		 */
-		public function getOptionsFromFile($option_name) {
+		public function getOptionsFromFile($option_name)
+		{
 			
-			if (!isset($option_name)) return FALSE;
+			if (!isset($option_name)) return false;
 			
 			$saved_options = get_option($option_name);
 			
@@ -1136,12 +1133,12 @@ if (!class_exists('DilazPanel')) {
 				$parameters = $saved_options['panel-atts']['params'];
 				
 				# include default options file
-				if (is_file($saved_options['panel-atts']['files'][0]) && $this->_params['default_options']) {
+				if (is_file($saved_options['panel-atts']['files'][0]) && $this->params['default_options']) {
 					include $saved_options['panel-atts']['files'][0];
 				}
 				
 				# include custom options file
-				if (is_file($saved_options['panel-atts']['files'][1]) && $this->_params['custom_options']) {
+				if (is_file($saved_options['panel-atts']['files'][1]) && $this->params['custom_options']) {
 					include $saved_options['panel-atts']['files'][1];
 				}
 				
@@ -1156,10 +1153,9 @@ if (!class_exists('DilazPanel')) {
 				return wp_parse_args($panel_atts, $options);
 				
 			} else {
-				return FALSE;
+				return false;
 			}
 		}
-		
 		
 		/**
 		 * Get single saved option
@@ -1169,21 +1165,21 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $option_name option name as used in wp_options table
 		 * @param string $option_id   option key or unique identifier
 		 *
-		 * @return mixed|string|array|bool FALSE if option is not set
+		 * @return mixed|string|array|bool `false` if option is not set
 		 */
-		public static function getOption($option_name, $option_id = FALSE) {
+		public static function getOption($option_name, $option_id = false)
+		{
 			
-			if (!isset($option_name)) return FALSE;
+			if (!isset($option_name)) return false;
 			
 			$options = get_option($option_name);
 			
 			if (isset($options) && isset($options[$option_id]) && !empty($option_id)) {
 				return $options[$option_id];
 			} else {
-				return FALSE;
+				return false;
 			}
 		}
-		
 		
 		/**
 		 * Get all saved options
@@ -1192,17 +1188,17 @@ if (!class_exists('DilazPanel')) {
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
-		 * @return array|bool FALSE if option is not set
+		 * @return array|bool `false` if option is not set
 		 */
-		public static function getOptions($option_name) {
+		public static function getOptions($option_name)
+		{
 			
-			if (!isset($option_name)) return FALSE;
+			if (!isset($option_name)) return false;
 			
 			$options = get_option($option_name);
 			
-			return (isset($options)) ? $options : FALSE;
+			return (isset($options)) ? $options : false;
 		}
-		
 		
 		/**
 		 * Get default values
@@ -1211,14 +1207,15 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return array all default values
 		 */
-		public function dafaultValues($option_name = '') {
+		public function dafaultValues($option_name = '')
+		{
 			
 			$output = [];
 			if ($option_name != '') {
 				$options    = $this->getOptionsFromFile($option_name);
 				$panel_atts = $this->getOptions($option_name)['panel-atts'];
 			} else {
-				$options = $this->_options;
+				$options = $this->options;
 			}
 			
 			foreach ( (array) $options as $option ) {
@@ -1248,7 +1245,7 @@ if (!class_exists('DilazPanel')) {
 					$option_std = [];
 					
 					foreach ($option['options'] as $key => $value) {
-						$option_std[$key] = is_array($standard) && in_array($key, $standard) ? TRUE : FALSE;
+						$option_std[$key] = is_array($standard) && in_array($key, $standard) ? true : false;
 					}
 				}
 				
@@ -1300,8 +1297,6 @@ if (!class_exists('DilazPanel')) {
 			
 			return $output;
 		}
-			
-		
 		
 		/**
 		 * Reset options
@@ -1313,7 +1308,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function resetOptions() {
+		public function resetOptions()
+		{
 			
 			$response = array();
 			
@@ -1344,7 +1340,6 @@ if (!class_exists('DilazPanel')) {
 			exit;
 		}
 		
-		
 		/**
 		 * Save all options
 		 *
@@ -1357,9 +1352,10 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return json
 		 */
-		public function saveOptions() {
+		public function saveOptions()
+		{
 			
-			$params = $this->_params;
+			$params = $this->params;
 			
 			$response = array();
 			
@@ -1381,7 +1377,7 @@ if (!class_exists('DilazPanel')) {
 				 * so we need to check the current panel instance and ignore all the 
 				 * other instances whose form is not being saved.
 				 */
-				if ($this->_optionName != $option_name) return false;
+				if ($this->optionName != $option_name) return false;
 				
 				# remove options that should not be saved
 				if (isset($form_data['security'])) unset($form_data['security']);
@@ -1392,7 +1388,7 @@ if (!class_exists('DilazPanel')) {
 				$google_fonts      = array();
 				
 				# get all options from files and those added via filter and then remove duplicates
-				$all_options = DilazPanelFunctions::unique_multidimensional_array(array_merge($this->_options, $defined_options), 'id');
+				$all_options = DilazPanelFunctions::uniqueMultidimensionalArray(array_merge($this->options, $defined_options), 'id');
 				
 				foreach ($all_options as $option) {
 					
@@ -1403,15 +1399,15 @@ if (!class_exists('DilazPanel')) {
 					
 					$id = sanitize_key($option['id']);
 					
-					# Set checkbox to FALSE if not set
+					# Set checkbox to false if not set
 					if ('checkbox' == $option['type'] && !isset($form_data[$id])) {
-						$form_data[$id] = FALSE;
+						$form_data[$id] = false;
 					}
 					
-					# Set all checbox fields to FALSE if not set
+					# Set all checbox fields to false if not set
 					if ('multicheck' == $option['type'] && !isset($form_data[$id])) {
 						foreach ($option['options'] as $key => $value) {
-							$form_data[$id][$key] = FALSE;
+							$form_data[$id][$key] = false;
 						}
 					}
 					
@@ -1427,7 +1423,7 @@ if (!class_exists('DilazPanel')) {
 					# Set any saved Google fonts to be loaded
 					if ('font' == $option['type']) {
 						if (isset($sanitized_options[$id]['family']) && $sanitized_options[$id]['family'] != '') {
-							if (!array_key_exists($sanitized_options[$id]['family'], DilazPanelDefaults::_font_family_defaults())) {
+							if (!array_key_exists($sanitized_options[$id]['family'], DilazPanelDefaults::fontFamilyDefaults())) {
 								$google_fonts['saved_google_fonts'][] = $sanitized_options[$id];
 							}
 						}
@@ -1440,8 +1436,8 @@ if (!class_exists('DilazPanel')) {
 				$merged_options = array_merge(wp_parse_args($panel_atts, $saved_options), $sanitized_options);
 				
 				# Remove any default options saved when 
-				# 'default_options' parameter is set to FALSE
-				if (FALSE == $this->_params['default_options']) {
+				# 'default_options' parameter is set to false
+				if (false == $this->params['default_options']) {
 					foreach($merged_options as $key => $val) {
 						
 						# ensure we keep panel-atts
@@ -1459,7 +1455,7 @@ if (!class_exists('DilazPanel')) {
 				}
 				
 				# At first, options are not yet saved
-				$options_saved = FALSE;
+				$options_saved = false;
 				
 				# Check capability parameter
 				if (isset($params['options_save_cap']) && is_array($params['options_save_cap'])) {
@@ -1471,10 +1467,10 @@ if (!class_exists('DilazPanel')) {
 						if (current_user_can($cap)) {
 							
 							# Proceed only if options haven't been saved
-							if (FALSE == $options_saved) {
+							if (false == $options_saved) {
 									update_option($option_name, $merged_options);
 									
-									$options_saved = TRUE;
+									$options_saved = true;
 								
 									$response['success'] = 1;
 									$response['message'] = esc_html__('Options saved successfully.', 'dilaz-panel');
@@ -1501,7 +1497,6 @@ if (!class_exists('DilazPanel')) {
 			exit;
 		}
 		
-		
 		/**
 		 * Save single option
 		 *
@@ -1513,12 +1508,13 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $option_type  option type
 		 *
 		 * @access public
-		 * @return void|bool FALSE if option is not saved
+		 * @return void|bool `false` if option is not saved
 		 */
-		public function saveOption($option_name, $option_id, $option_value = FALSE, $option_type = FALSE) {
+		public function saveOption($option_name, $option_id, $option_value = false, $option_type = false)
+		{
 			
-			if (!isset($option_name)) return FALSE;
-			if (!isset($option_id)) return FALSE;
+			if (!isset($option_name)) return false;
+			if (!isset($option_id)) return false;
 			
 			# sanitize option id
 			$option_id = sanitize_key($option_id);
@@ -1527,7 +1523,7 @@ if (!class_exists('DilazPanel')) {
 			$options = $this->getOptions($option_name);
 			
 			# bail if $options are not set
-			if (!isset($options) || !is_array($options) || !$options) return FALSE;
+			if (!isset($options) || !is_array($options) || !$options) return false;
 			
 			# delete the option if its already set
 			if (isset($options[$option_id])) unset($options[$option_id]);
@@ -1536,14 +1532,13 @@ if (!class_exists('DilazPanel')) {
 			$sanitized_options = [];
 			
 			# Get sanitiszed options
-			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', TRUE);
+			$sanitized_options[$option_id] = $this->sanitizeOption($option_type, $option_value, '', true);
 			
 			# Get sanitiszed options
 			$merged_options = array_merge($options, $sanitized_options);
 			
 			update_option($option_name, $merged_options);
 		}
-		
 		
 		/**
 		 * Sanitize options
@@ -1553,12 +1548,13 @@ if (!class_exists('DilazPanel')) {
 		 * @param string $type       field type
 		 * @param string $input      set/selected/inserted option
 		 * @param string $option     option array
-		 * @param bool   $set_option whether the option is being set. Default is FALSE
+		 * @param bool   $set_option whether the option is being set. Default is `false`
 		 *
 		 * @access public
 		 * @return string|mixed|bool sanitized values
 		 */
-		public function sanitizeOption($type, $input, $option = '', $set_option = FALSE) {
+		public function sanitizeOption($type, $input, $option = '', $set_option = false)
+		{
 			
 			switch ($type) {
 			
@@ -1645,16 +1641,16 @@ if (!class_exists('DilazPanel')) {
 					break;
 					
 				case 'checkbox':
-					return ($input == '') ? FALSE : (bool)$input;
+					return ($input == '') ? false : (bool)$input;
 					break;
 					
 				case 'multicheck':
 					$output = array();
 					foreach ((array)$input as $k => $v) {
-						if ( ( isset($option['options'][$k]) && $v == TRUE ) || $set_option ) {
-							$output[$k] = TRUE;
+						if ( ( isset($option['options'][$k]) && $v == true ) || $set_option ) {
+							$output[$k] = true;
 						} else {
-							$output[$k] = FALSE;
+							$output[$k] = false;
 						}
 					}
 					return !empty($output) ? $output : '';
@@ -1782,7 +1778,6 @@ if (!class_exists('DilazPanel')) {
 			}
 		}
 		
-		
 		/**
 		 * Export options
 		 *
@@ -1790,7 +1785,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function exportOptions() {
+		public function exportOptions()
+		{
 			
 			$response = array();
 			
@@ -1818,7 +1814,6 @@ if (!class_exists('DilazPanel')) {
 			exit;
 		}
 		
-		
 		/**
 		 * Import options
 		 *
@@ -1826,7 +1821,8 @@ if (!class_exists('DilazPanel')) {
 		 * @access public
 		 * @return void
 		 */
-		public function importOptions() {
+		public function importOptions()
+		{
 			
 			$response = array();
 			
@@ -1845,7 +1841,7 @@ if (!class_exists('DilazPanel')) {
 					if ($file != NULL) {
 						
 						$data = $this->initializeFileSystem($file);
-						$data = json_decode($data, TRUE);
+						$data = json_decode($data, true);
 						
 						if (isset($data['dilaz_panel_backup_time'])) {
 							
@@ -1870,18 +1866,18 @@ if (!class_exists('DilazPanel')) {
 			exit;
 		}
 		
-		
 		/**
 		 * Load Google fonts in frontend
 		 * 
 		 * @since 2.7.12
 		 * @return mixed Google fonts head tag code
 		 */
-		public function loadGoogleFonts($savedGoogleFonts = array()) {
+		public function loadGoogleFonts($savedGoogleFonts = array())
+		{
 			
 			$savedGoogleFonts = $savedGoogleFonts != '' ? $savedGoogleFonts : $this->savedGFonts;
 			
-			if (empty($savedGoogleFonts)) return FALSE;
+			if (empty($savedGoogleFonts)) return false;
 			
 			$families   = array();
 			$subsets    = array();
@@ -1931,7 +1927,7 @@ if (!class_exists('DilazPanel')) {
 				<link rel="dns-prefetch" href="https://fonts.gstatic.com"> 
 				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"> 
 				<link rel="preload" href="<?php echo $font_url; ?>" as="fetch" crossorigin="anonymous">
-				<script type="text/javascript"> !function(e,n,t){"use strict";var o="<?php echo $font_url; ?>",r="__3perf_googleFonts_<?php echo (!empty($this->_optionName) ? $this->_optionName : 'dilaz'); ?>";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage); 
+				<script type="text/javascript"> !function(e,n,t){"use strict";var o="<?php echo $font_url; ?>",r="__3perf_googleFonts_<?php echo (!empty($this->optionName) ? $this->optionName : 'dilaz'); ?>";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage); 
 				</script>
 				<!-- End of code snippet for Google Fonts -->
 				
@@ -1948,20 +1944,21 @@ if (!class_exists('DilazPanel')) {
 		 * 
 		 * @param  str                $file - file to be read
 		 * @global WP_Filesystem_Base $wp_filesystem Subclass
-		 * @return string|bool        file content, FALSE on failure
+		 * @return string|bool        file content, `false` on failure
 		 */
-		public function initializeFileSystem($file) {
+		public function initializeFileSystem($file)
+		{
 			
-			$url = wp_nonce_url('admin.php?page='. $this->_params['page_slug']);
+			$url = wp_nonce_url('admin.php?page='. $this->params['page_slug']);
 			
 			# bail if can't get get credentials
-			if (FALSE === ($creds = request_filesystem_credentials($url))) {
+			if (false === ($creds = request_filesystem_credentials($url))) {
 				return;
 			}
 			
 			# use acquired credentials
 			if (!WP_Filesystem($creds)) {
-				request_filesystem_credentials($url, '', TRUE, FALSE, NULL);
+				request_filesystem_credentials($url, '', true, false, NULL);
 				return;
 			}
 			
