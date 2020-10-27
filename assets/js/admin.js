@@ -398,7 +398,7 @@ var DilazPanelScript = new function() {
 						} else {
 						
 							$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +' '+ ($id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
-							$fileOutput += '<input type="hidden" name="'+ $fileId +'[url][]" id="file_url_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $src +'">';
+							$fileOutput += '<input type="hidden" name="'+ $fileId +'[url][]" id="file_url_'+ $fileId +'" class="dilaz-panel-file-url upload" value="'+ $src +'">';
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[id][]" id="file_id_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
 							
 							$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
@@ -1032,7 +1032,7 @@ var DilazPanelScript = new function() {
 		fontURLarr.push(fontFamily.replace(/ /g, '+'));
 		
 		/* import Google Fonts */
-		$t.getJSON(dilaz_panel_lang.dilaz_panel_url +'includes/google-fonts.json', function(jasonData) {
+		$t.getJSON(dilaz_panel_lang.dilaz_panel_url +'includes/google-fonts-min.json', function(jasonData) {
 			// console.log(Object.keys(jasonData).length);
 			// console.log(jasonData);
 			// console.log(jasonData[fontFamily]);
