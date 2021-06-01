@@ -9,7 +9,7 @@
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
  * Domain Path:       /languages
- * Version:           2.7.15
+ * Version:           2.8.41
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,7 +19,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.7.15
+|| @version     2.8.41
 || @since       Dilaz Panel 1.0
 || @author      Rodgath, https://github.com/Rodgath
 || @copyright   Copyright (C) 2017, Rodgath
@@ -75,7 +75,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Saved Google Fonts
 		 *
-		 * @since  2.7.12
+		 * @since  2.8.2
 		 * @var    array
 		 * @access protected
 		 */
@@ -172,7 +172,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Initialize
 		 *
-		 * @since  2.7.12
+		 * @since  2.8.2
 		 * @access public
 		 * @return array
 		 */
@@ -459,7 +459,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * WP Editor custom styles
 		 *
-		 * @since  2.7.11
+		 * @since  2.8.1
 		 * 
 		 * @access public
 		 * @return void
@@ -473,9 +473,9 @@ if (!class_exists('DilazPanel')) {
 		 * Sanitize parameters
 		 *
 		 * @since  2.5
-		 * @since  2.7.8  - deprecated 'options_cap'
-		 * @since  2.7.8  - sanitize 'options_view_cap' and 'options_save_cap'
-		 * @since  2.7.14 - sanitize 'item_url'
+		 * @since  2.7.8 - deprecated 'options_cap'
+		 * @since  2.7.8 - sanitize 'options_view_cap' and 'options_save_cap'
+		 * @since  2.8.4 - sanitize 'item_url'
 		 * 
 		 * @access public
 		 * @return void
@@ -551,7 +551,7 @@ if (!class_exists('DilazPanel')) {
 		 * Add Admin Bar Menu
 		 *
 		 * @since  1.0
-		 * @since  2.7.11 added 'options_view_cap' capability check
+		 * @since  2.8.1 - added 'options_view_cap' capability check
 		 * 
 		 * @access public
 		 * @global string $wp_admin_bar
@@ -1344,8 +1344,8 @@ if (!class_exists('DilazPanel')) {
 		 * Save all options
 		 *
 		 * @since 1.0
-		 * @since 2.7.8 added user capability check before saving options
-		 * @since 2.7.12 separately saving of all used Google fonts
+		 * @since 2.7.8 - added user capability check before saving options
+		 * @since 2.8.2 - separately saving of all used Google fonts
 		 *
 		 * @param string $option_name option name as used in wp_options table
 		 *
@@ -1869,7 +1869,7 @@ if (!class_exists('DilazPanel')) {
 		/**
 		 * Load Google fonts in frontend
 		 * 
-		 * @since 2.7.12
+		 * @since 2.8.2
 		 * @return mixed Google fonts head tag code
 		 */
 		public function loadGoogleFonts($savedGoogleFonts = array())

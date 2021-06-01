@@ -175,7 +175,7 @@ class DilazPanelDefaults
 	/**
 	 * Stacks for font family defaults 
 	 *
-	 * @since 2.7.12
+	 * @since 2.8.2
 	 *
 	 * @return array
 	 */

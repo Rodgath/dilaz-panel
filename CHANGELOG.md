@@ -2,6 +2,10 @@
 
 ## Version 2
 
+###### v2.8.41
+```
+= UPDATED - changed update checker path
+```
 ###### v2.8.4
 ```
 = IMPROVED - upload field saving error

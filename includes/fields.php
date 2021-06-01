@@ -22,7 +22,7 @@ if (!class_exists('DilazPanelFields')) {
 	 * DilazPanelFields class
 	 *
 	 * @since 1.0
-	 * @since 2.7.12 - changed to use 'echo' instead of 'return'
+	 * @since 2.8.2 - changed to use 'echo' instead of 'return'
 	 * 
 	 */
 	class DilazPanelFields
@@ -193,7 +193,7 @@ if (!class_exists('DilazPanelFields')) {
 		/**
 		 * Code
 		 *
-		 * @since  2.7.12
+		 * @since  2.8.2
 		 * @access public
 		 *
 		 * @param  array $field Field arguments
