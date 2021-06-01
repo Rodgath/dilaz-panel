@@ -2,13 +2,13 @@
 
 ## Version 2
 
-###### v2.7.14
+###### v2.8.4
 ```
 = IMPROVED - upload field saving error
 = IMPROVED - background field error
 = ADDED - 'item_url' integration in panel parameters
 ```
-###### v2.7.13
+###### v2.8.3
 ```
 = FIXED - js AJAX error on saveoptions caused by WP Editor frame with empty content
 = FIXED - font subset sanitization error
@@ -17,7 +17,7 @@
 = UPDATED - section 'class' bug fix for info section
 = IMPROVED - radioimage field - we can now use 'alt' and 'src' attributes separately
 ```
-###### v2.7.12
+###### v2.8.2
 ```
 = FIXED - Repeatable field error
 = FIXED - WP custom editor sanitization when saving
@@ -33,13 +33,13 @@
 = ADDED - separately saving of all used Google fonts in saveOptions() method
 = ADDED - Stacks for font family defaults using _font_family_defaults_stacks() method in DilazPanelDefaults class
 ```
-###### v2.7.11
+###### v2.8.1
 ```
 = ADDED - editorStyles() method for custom WP editor styles
 = ADDED - permissions to 'view' capability for admin bar menu dropdown
 = FIXED - IE Method default parameter bug. Its a feature in ES6 not supported by IE, so I converted code to ES5.
 ```
-###### v2.7.10
+###### v2.8.0
 ```
 = ADDED - Update checker
 ```
