@@ -1975,7 +1975,7 @@ require 'includes/update-checker/plugin-update-checker.php';
 
 /* Build the update checker */
 $dilazPanelUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://github.com/Rodgath/Dilaz-Panel-Plugin/',
+	'https://github.com/Rodgath/Dilaz-Panel/',
 	__FILE__,
 	'dilaz-panel'
 );
