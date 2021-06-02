@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name:       Dilaz Panel
- * Plugin URI:        https://github.com/Rodgath/Dilaz-Panel-Plugin
+ * Plugin URI:        https://github.com/Rodgath/Dilaz-Panel
  * Description:       Simple options panel for WordPress themes and plugins. 
  * Requires at least: 4.5
  * Requires PHP:      5.6
@@ -23,7 +23,7 @@
 || @since       Dilaz Panel 1.0
 || @author      Rodgath, https://github.com/Rodgath
 || @copyright   Copyright (C) 2017, Rodgath
-|| @link        https://github.com/Rodgath/Dilaz-Panel-Plugin
+|| @link        https://github.com/Rodgath/Dilaz-Panel
 || @License     GPL-2.0+
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
 || 

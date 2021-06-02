@@ -3,10 +3,10 @@ Simple WordPress options panel for themes and plugins.
 
 Feel free to use this admin panel in your __premium__ and __commercial__ projects.
 
-![Demo Screenshot](https://github.com/Rodgath/DilazResources/blob/master/Dilaz-Panel-Plugin/main-dilaz-panel.png "Demo Screenshot")
+![Demo Screenshot](https://github.com/Rodgath/DilazResources/blob/master/Dilaz-Panel/main-dilaz-panel.png "Demo Screenshot")
 
 ## How to use
-1. Download and install [Dilaz Panel](https://github.com/Rodgath/Dilaz-Panel-Plugin/archive/master.zip) plugin.
+1. Download and install [Dilaz Panel](https://github.com/Rodgath/Dilaz-Panel/archive/master.zip) plugin.
 2. Download [Dilaz Panel Options](https://github.com/Rodgath/Dilaz-Panel-Options) and add it into your WordPress project (Theme or Plugin). 
 
 ## Example of how to use Dilaz Panel in a theme
@@ -72,15 +72,15 @@ wp-content/plugins/dilaz-panel/  # → Dilaz panel plugin
 
 To get a local working copy of the development repository, do:
 
-    git clone https://github.com/Rodgath/Dilaz-Panel-Plugin.git
+    git clone https://github.com/Rodgath/Dilaz-Panel.git
 
 Alternatively, you can download the latest development version as a tarball
 as follows:
 
-    wget --content-disposition https://github.com/Rodgath/Dilaz-Panel-Plugin/tarball/master
+    wget --content-disposition https://github.com/Rodgath/Dilaz-Panel/tarball/master
 
 OR 
 
-    curl -LJO https://github.com/Rodgath/Dilaz-Panel-Plugin/tarball/master
+    curl -LJO https://github.com/Rodgath/Dilaz-Panel/tarball/master
     
  
