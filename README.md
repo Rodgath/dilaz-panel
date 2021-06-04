@@ -10,7 +10,7 @@ Feel free to use this admin panel in your __premium__ and __commercial__ project
 2. Download [Dilaz Panel Options](https://github.com/Rodgath/Dilaz-Panel-Options) and add it into your WordPress project (Theme or Plugin). 
 
 ## Example of how to use Dilaz Panel in a theme
-Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme) to see a useful example on how to integrate this *dilaz panel plugin* into your WordPress theme development project.
+Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme) to see a useful example on how to integrate this *dilaz panel* into your WordPress theme development project.
 
 ## Features
 * __Fault Tolerant__ - Continues to working effectively even when a component is faulty.
@@ -54,18 +54,18 @@ Download and install [n00b Starter Theme](https://github.com/Rodgath/n00b-Theme)
 
 ## File Structure
 ```
-wp-content/plugins/dilaz-panel/  # → Dilaz panel plugin
-├── assets/                       # → Plugin ssets
-│   ├── css/                      # → Stylesheets
-│   ├── fonts/                    # → Fonts
-│   ├── images/                   # → Images
-│   └── js/                       # → JavaScripts
-├── includes/                     # → Includes
-│   ├── defaults.php              # → Defaults (never edit)
-│   ├── export.php                # → Export and Import file for panel options (never edit)
-│   ├── fields.php                # → Panel option fields (never edit)
-│   └── functions.php             # → Panel functions (never edit)
-└── dilaz-panel.php               # → Index file (never edit)
+wp-content/plugins/dilaz-panel/  # → Dilaz panel root directory
+├── assets/                      # → Plugin ssets
+│   ├── css/                     # → Stylesheets
+│   ├── fonts/                   # → Fonts
+│   ├── images/                  # → Images
+│   └── js/                      # → JavaScripts
+├── includes/                    # → Includes
+│   ├── defaults.php             # → Defaults (never edit)
+│   ├── export.php               # → Export and Import file for panel options (never edit)
+│   ├── fields.php               # → Panel option fields (never edit)
+│   └── functions.php            # → Panel functions (never edit)
+└── dilaz-panel.php              # → Index file (never edit)
 ```
 
 ## Download 
