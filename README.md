@@ -72,15 +72,15 @@ wp-content/plugins/dilaz-panel/  # → Dilaz panel root directory
 
 To get a local working copy of the development repository, do:
 
-    git clone https://github.com/Rodgath/Dilaz-Panel.git
+    git clone https://github.com/Rodgath/dilaz-panel.git
 
 Alternatively, you can download the latest development version as a tarball
 as follows:
 
-    wget --content-disposition https://github.com/Rodgath/Dilaz-Panel/tarball/master
+    wget --content-disposition https://github.com/Rodgath/dilaz-panel/tarball/master
 
 OR 
 
-    curl -LJO https://github.com/Rodgath/Dilaz-Panel/tarball/master
+    curl -LJO https://github.com/Rodgath/dilaz-panel/tarball/master
     
  
