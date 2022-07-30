@@ -1762,8 +1762,8 @@ if (!class_exists('DilazPanel')) {
 							$output['files'][$k] = sanitize_text_field($v);
 						}
 					}
-					if (isset($option['params'])) {
-						foreach ($option['params'] as $k => $v) {
+					if (isset($option['params']) && is_array($option['params'])) {
+						foreach ((array)$option['params'] as $k => $v) {
 							$k = sanitize_text_field($k);
 							$output['params'][$k] = sanitize_text_field($v);
 						}
