@@ -430,21 +430,23 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$selected_data = (isset($option_data[$id]) && is_array($option_data[$id])) ? $option_data[$id] : array();
 			
-			foreach ($selected_data as $key => $item_id) {
-				
-				if ($query_type == 'post') {
-					$name = get_post_field('post_title', $item_id);
-				} else if ($query_type == 'user') {
-					$user_data = get_userdata($item_id);
-					$name = ($user_data && !is_wp_error($user_data)) ? $user_data->nickname : '';
-				} else if ($query_type == 'term') {
-					$term_data = get_term($item_id);
-					$name = ($term_data && !is_wp_error($term_data)) ? $term_data->name : '';
-				} else {
-					$name = 'Add query type';
+			if (is_array($selected_data)) {
+				foreach ($selected_data as $key => $item_id) {
+					
+					if ($query_type == 'post') {
+						$name = get_post_field('post_title', $item_id);
+					} else if ($query_type == 'user') {
+						$user_data = get_userdata($item_id);
+						$name = ($user_data && !is_wp_error($user_data)) ? $user_data->nickname : '';
+					} else if ($query_type == 'term') {
+						$term_data = get_term($item_id);
+						$name = ($term_data && !is_wp_error($term_data)) ? $term_data->name : '';
+					} else {
+						$name = 'Add query type';
+					}
+					
+					$output .= '<option selected="selected" value="'. esc_attr($item_id) .'">'. esc_html($name) .'</option>';
 				}
-				
-				$output .= '<option selected="selected" value="'. esc_attr($item_id) .'">'. esc_html($name) .'</option>';
 			}
 			
 			$output .= '</select>';
