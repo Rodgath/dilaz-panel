@@ -1624,8 +1624,10 @@ if (!class_exists('DilazPanel')) {
 				case 'queryselect':
 				case 'range':
 					$output = [];
-					foreach ((array)$input as $k => $v) {
-						$output[$k] = absint($v);
+					if (is_array($input)) {
+						foreach ((array)$input as $k => $v) {
+							$output[$k] = absint($v);
+						}
 					}
 					return !empty($output) ? $output : '';
 					break;
