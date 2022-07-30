@@ -357,7 +357,7 @@ if (!class_exists('DilazPanel')) {
 						# @since Dilaz Panel 2.7.4
 						$menu_items = $this->menuArray();
 						$count_items = 0;
-						if (!empty($menu_items)) {
+						if (!empty($menu_items) && is_array($menu_items)) {
 							foreach ($menu_items as $key => $val) {
 								
 								$count_items++;
@@ -598,7 +598,7 @@ if (!class_exists('DilazPanel')) {
 						# @since Dilaz Panel 2.7.2
 						$menu_items = $this->menuArray();
 						
-						if ( !empty($menu_items) ) {
+						if ( !empty($menu_items)  && is_array($menu_items) ) {
 							foreach ( $menu_items as $key => $val ) {
 								
 								$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
@@ -780,7 +780,7 @@ if (!class_exists('DilazPanel')) {
 			
 			$menu = '';
 			
-			if (!empty($menu_items) && sizeof($menu_items) > 0) {
+			if (!empty($menu_items) && is_array($menu_items)) {
 				
 				$menu .= '<ul>';
 					
