@@ -433,7 +433,7 @@ if (!class_exists('DilazPanelFields')) {
 			if (is_array($selected_data)) {
 				foreach ($selected_data as $key => $item_id) {
 					
-					if ($query_type == 'post') {
+					if ($query_type == 'post' || $query_type == 'page') {
 						$name = get_post_field('post_title', $item_id);
 					} else if ($query_type == 'user') {
 						$user_data = get_userdata($item_id);
