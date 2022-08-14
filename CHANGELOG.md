@@ -2,6 +2,15 @@
 
 ## Version 2
 
+###### v2.8.42
+```
+- UPDATED - sellect2 JS library
+- ADDED - select2 package.json file to fix XSS potential security issue 
+- FIXED - "querySelect" field bugs
+- FIXED - "queryselect" & "range" fields' sanitization 
+- FIXED - Other minor PHP bugs
+- UPDATED - Readme
+```
 ###### v2.8.41
 ```
 = UPDATED - changed update checker path
