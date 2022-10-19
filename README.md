@@ -13,7 +13,7 @@ Feel free to use this admin options panel in your __premium__ and __commercial__
 Download and install [Dilaz Demo Theme](https://github.com/Rodgath/Dilaz-Demo-Theme) to see a useful example on how to integrate this *dilaz panel* into your WordPress theme development project.
 
 ## Example of how to use Dilaz Panel in a *__plugin__*
-Download and install [Dilaz Demo Plugin](https://github.com/Rodgath/Dilaz-Demo-Plugin) to see a useful example on how to integrate this *dilaz panel* into your WordPress theme development project.
+Download and install [Dilaz Demo Plugin](https://github.com/Rodgath/Dilaz-Demo-Plugin) to see a useful example on how to integrate this *dilaz panel* into your WordPress plugin development project.
 
 ## Features
 * __Fault Tolerant__ - Continues to working effectively even when a component is faulty.
