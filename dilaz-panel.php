@@ -80,6 +80,15 @@ if (!class_exists('DilazPanel')) {
 		 * @access protected
 		 */
 		protected $savedGFonts;
+		
+		/**
+		 * Option arguments
+		 *
+		 * @since  2.8.43
+		 * @var    array
+		 * @access protected
+		 */
+		protected $args;
 
 		/**
 		 * The single instance of the class
@@ -146,10 +155,10 @@ if (!class_exists('DilazPanel')) {
 			do_action('dilaz_panel_before_load');
 			
 			$this->args        = is_array($option_args) ? $option_args : array();
-			$this->params     = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
-			$this->options    = !empty($this->args) ? $this->args[1] : array();
-			$this->optionName = isset($this->params['option_name']) ? $this->params['option_name'] : '';
-			$this->panelAtts  = !empty($this->options) ? $this->options[0] : array();
+			$this->params      = !empty($this->args) ? $this->sanitizeParams($this->args[0]) : array();
+			$this->options     = !empty($this->args) ? $this->args[1] : array();
+			$this->optionName  = isset($this->params['option_name']) ? $this->params['option_name'] : '';
+			$this->panelAtts   = !empty($this->options) ? $this->options[0] : array();
 			$saved_options     = $this->getOptions($this->optionName);
 			$this->savedGFonts = isset($saved_options['saved_google_fonts']) ? $saved_options['saved_google_fonts'] : array();
 			
