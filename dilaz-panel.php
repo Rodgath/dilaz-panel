@@ -531,7 +531,7 @@ if (!class_exists('DilazPanel')) {
 						break;
 						
 					case 'menu_position':
-						if (trim($val) != '' && $val != NULL) {
+						if (trim($val ?? '') != '' && $val != NULL) {
 							$params[$key] = is_int($val) ? absint($val) : NULL;
 						} else {
 							$params[$key] = NULL;
