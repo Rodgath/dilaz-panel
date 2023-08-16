@@ -1,0 +1,24 @@
+{
+  "name": "dilaz-panel",
+  "version": "1.0.0",
+  "description": "The best and the easiest WordPress options panel for themes and plugins.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rodgath/dilaz-panel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rodgath/dilaz-panel/issues"
+  },
+  "homepage": "https://github.com/Rodgath/dilaz-panel#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-replace": "^1.1.4"
+  }
+}
