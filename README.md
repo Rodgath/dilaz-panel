@@ -25,7 +25,7 @@ Download and install [Dilaz Demo Plugin](https://github.com/Rodgath/Dilaz-Demo-P
 * __AddOns availability__ - Ability to create AddOns using Dilaz Panel *(hooks and filters)*.
 * __Both Plugins & Themes__ - Can be used in/with any WordPress theme or plugin.
 
-## Metabox Fields
+## Option Fields
 * Heading
 * Sub-heading
 * Info
