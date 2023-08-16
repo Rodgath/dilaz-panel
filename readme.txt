@@ -3,7 +3,7 @@ Contributors: Rodgath
 Tags: options, settings, options panel, admin panel, admin options, theme settings, theme options, plugin settings, plugin options, customization, configuration, 
 Requires at least: 5.0
 Tested up to: 6.3
-Stable tag: 1.0
+Stable tag: 2.8.43
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -88,7 +88,7 @@ Checkout [Demo Plugin](https://github.com/Rodgath/Dilaz-Demo-Plugin) to see an e
 
 == Screenshots ==
 
-1. Google One-Tap prompt.
+1. 
 
 == Changelog ==
 

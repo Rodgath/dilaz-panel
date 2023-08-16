@@ -1,15 +1,15 @@
 <?php
 /*
  * Plugin Name:       Dilaz Panel
- * Plugin URI:        https://github.com/Rodgath/Dilaz-Panel
- * Description:       Simple options panel for WordPress themes and plugins. 
- * Requires at least: 4.5
+ * Plugin URI:        https://github.com/Rodgath/dilaz-panel
+ * Description:       Simple options panel for WordPress themes and plugins.
+ * Requires at least: 5.0
  * Requires PHP:      5.6
  * Author:            Rodgath
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
  * Domain Path:       /languages
- * Version:           2.8.42
+ * Version:           2.8.43
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,14 +19,14 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.8.42
-|| @since       Dilaz Panel 1.0
+|| @version     2.8.43
+|| @since       Dilaz Panel 1.0.0
 || @author      Rodgath, https://github.com/Rodgath
-|| @copyright   Copyright (C) 2017, Rodgath
-|| @link        https://github.com/Rodgath/Dilaz-Panel
+|| @copyright   Copyright (C) 2017 - 2023, Rodgath
+|| @link        https://github.com/Rodgath/dilaz-panel
 || @License     GPL-2.0+
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
-|| 
+||
 */
 
 defined('ABSPATH') || exit;
