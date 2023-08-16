@@ -2,14 +2,19 @@
 
 ## Version 2
 
+###### v2.8.43
+```
+FIX: Creation of dynamic property DilazPanel::$args is deprecated
+FIX: Deprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated
+```
 ###### v2.8.42
 ```
-- UPDATED - sellect2 JS library
-- ADDED - select2 package.json file to fix XSS potential security issue 
-- FIXED - "querySelect" field bugs
-- FIXED - "queryselect" & "range" fields' sanitization 
-- FIXED - Other minor PHP bugs
-- UPDATED - Readme
+= UPDATED - sellect2 JS library
+= ADDED - select2 package.json file to fix XSS potential security issue 
+= FIXED - "querySelect" field bugs
+= FIXED - "queryselect" & "range" fields' sanitization 
+= FIXED - Other minor PHP bugs
+= UPDATED - Readme
 ```
 ###### v2.8.41
 ```
