@@ -264,9 +264,9 @@ if (!class_exists('DilazPanelFields')) {
 			$output = '';
 			
 			$select2_class = isset($args['select2']) ? $args['select2'] : '';
-			$select2_width = isset($args['select2width']) ? 'data-width="'. sanitize_text_field($args['select2width']) .'"' : 'data-width="100px"';
+			$select2_width = isset($args['select2width']) ? sanitize_text_field($args['select2width']) : '100px';
 			
-			$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" name="'. esc_attr($id) .'" '. $select2_width .'>';
+			$output .= '<select id="'. esc_attr($id) .'" class="dilaz-panel-input dilaz-panel-select '. $select2_class .'" name="'. esc_attr($id) .'" data-width="'. esc_attr($select2_width) .'">';
 				foreach ($options as $key => $option) {
 					$selected = (($value != '') && ($value == $key)) ? 'selected="selected"' : '';
 					$output .= '<option '. $selected .' value="'. esc_attr($key) .'">'. esc_html($option) .'</option>';
