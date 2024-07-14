@@ -302,7 +302,8 @@ if (!class_exists('DilazPanelFields')) {
 			$inline = isset($args['inline']) && $args['inline'] == TRUE ? 'inline' : '';
 			
 			$output = '';
-			$output .= '<ul id="'. esc_attr($id) .'" class="dilaz-panel-repeatable '. esc_attr($selected) .'" data-ns="'. esc_attr($not_sortable) .'" data-s="'. esc_attr($sortable) .'" data-nr="'. esc_attr($not_removable) .'" data-r="'. esc_attr($removable) .'">';
+			$output .= '<ul id="'. esc_attr($id) .'" class="dilaz-panel-repeatable '. esc_attr($class) .'" data-ns="'. esc_attr($not_sortable) .'" data-s="'. esc_attr($sortable) .'" data-nr="'. esc_attr($not_removable) .'" data-r="'. esc_attr($removable) .'">';
+				$i = 0;	
 				$i = 0;	
 				if ($value != '') {
 					foreach($value as $key => $val) {
