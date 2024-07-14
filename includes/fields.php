@@ -735,7 +735,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output = '';
 			
 			$default_color = isset($std) ? $std : '';
-			$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'. $value .'" data-default-color="'. esc_attr($default_color) .'" />';
+			$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'.  esc_attr(sanitize_hex_color($value)) .'" data-default-color="'. esc_attr(sanitize_hex_color($default_color)) .'" />';
 			
 			echo $output;
 		}
@@ -769,7 +769,7 @@ if (!class_exists('DilazPanelFields')) {
 					$output .= '<div class="dilaz-panel-multi-color">';
 					$output .= '<strong>'. $color_name .'</strong><br />';
 					$default_active = isset($std['active']) ? $std['active'] : '';
-					$output .= '<input class="dilaz-panel-color '. (isset($class) ? $class : '') .'" type="text" name="'.  esc_attr($id) .'['. esc_attr($key) .']" id="'.  esc_attr($id) .'" value="'. $saved_color .'" data-default-color="'. $default_color .'" />';
+					$output .= '<input class="dilaz-panel-color '. (isset($class) ? $class : '') .'" type="text" name="'.  esc_attr($id) .'['. esc_attr($key) .']" id="'.  esc_attr($id) .'" value="'. $saved_color .'" data-default-color="'.esc_attr(sanitize_hex_color($default_color)) .'" />';
 					$output .= '</div>';
 				}
 			}
