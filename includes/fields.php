@@ -735,7 +735,7 @@ if (!class_exists('DilazPanelFields')) {
 			$output = '';
 			
 			$default_color = isset($std) ? $std : '';
-			$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'.  esc_attr(sanitize_hex_color($value)) .'" data-default-color="'. esc_attr(sanitize_hex_color($default_color)) .'" />';
+			$output .= '<input name="'. esc_attr($id) .'" id="'. esc_attr($id) .'" class="dilaz-panel-color"  type="text" value="'.  esc_attr($value) .'" data-default-color="'. esc_attr($default_color) .'" />';
 			
 			echo $output;
 		}
@@ -769,7 +769,7 @@ if (!class_exists('DilazPanelFields')) {
 					$output .= '<div class="dilaz-panel-multi-color">';
 					$output .= '<strong>'. $color_name .'</strong><br />';
 					$default_active = isset($std['active']) ? $std['active'] : '';
-					$output .= '<input class="dilaz-panel-color '. (isset($class) ? esc_attr($class) : '') .'" type="text" name="'.  esc_attr($id) .'['. esc_attr($key) .']" id="'.  esc_attr($id) .'" value="'. $saved_color .'" data-default-color="'.esc_attr(sanitize_hex_color($default_color)) .'" />';
+					$output .= '<input class="dilaz-panel-color '. (isset($class) ? esc_attr($class) : '') .'" type="text" name="'.  esc_attr($id) .'['. esc_attr($key) .']" id="'.  esc_attr($id) .'" value="'. $saved_color .'" data-default-color="'.esc_attr($default_color) .'" />';
 					$output .= '</div>';
 				}
 			}
@@ -942,7 +942,7 @@ if (!class_exists('DilazPanelFields')) {
 					} else {
 						$font_color = '#333';
 					}
-					$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color color" type="text" value="'. wp_kses_post($font_color) .'" data-default-color="'. sanitize_hex_color($font_color) .'" />';
+					$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color color" type="text" value="'. wp_kses_post($font_color) .'" data-default-color="'. esc_attr($font_color) .'" />';
 				$output .= '</div>';
 			}
 			
@@ -1274,7 +1274,7 @@ if (!class_exists('DilazPanelFields')) {
 				$output .= '<div class="dilaz-panel-background color">';
 				$output .= '<strong>'. __('Color', 'dilaz-panel') .'</strong><br />';
 				$default_color = isset($std['color']) ? $std['color'] : '';
-				$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color" type="text" value="'. sanitize_hex_color($saved_bg_color) .'" data-default-color="'. sanitize_hex_color($default_color) .'" />';
+				$output .= '<input id="'. esc_attr($id) .'-color" name='. esc_attr($id) .'[color]" class="dilaz-panel-color" type="text" value="'. esc_attr($saved_bg_color) .'" data-default-color="'. esc_attr($default_color) .'" />';
 				$output .= '</div>';
 			}
 			
