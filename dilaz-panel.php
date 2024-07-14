@@ -694,7 +694,7 @@ if (!class_exists('DilazPanel')) {
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
 										<span class="spinner"></span>
-										<span class="progress"><?php _e('Saving options... Please wait...', 'dilaz-panel'); ?></span>
+										<span class="progress"><?php _e('Saving...', 'dilaz-panel'); ?></span>
 										<span class="finished"></span>
 										<input type="submit" class="update button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 									</div>
@@ -711,14 +711,14 @@ if (!class_exists('DilazPanel')) {
 									<div class="dilaz-ajax-save" style="float:left">
 										<input type="submit" class="reset button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" />
 										<span class="spinner"></span>
-										<span class="progress"><?php _e('Resetting options... Please wait...', 'dilaz-panel'); ?></span>
+										<span class="progress"><?php _e('Resetting...', 'dilaz-panel'); ?></span>
 										<span class="finished"></span>
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
 										<input type="hidden" name="option_name" value="<?php echo $this->optionName; ?>" />
 										<input type="hidden" name="security" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
 										<span class="spinner"></span>
-										<span class="progress"><?php _e('Saving options... Please wait...', 'dilaz-panel'); ?></span>
+										<span class="progress"><?php _e('Saving...', 'dilaz-panel'); ?></span>
 										<span class="finished"></span>
 										<input type="submit" class="update button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 									</div>
