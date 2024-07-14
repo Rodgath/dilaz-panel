@@ -598,8 +598,8 @@ if (!class_exists('DilazPanel')) {
 						# add Dilaz Panel menu node in admin bar
 						$wp_admin_bar->add_node(array(
 							'id'    => $menu_id,
-							'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. $params['menu_title'] .'</span>',
-							'href'  => admin_url('admin.php?page='. $params['page_slug']),
+							'title' => '<span class="ab-icon dashicons-admin-generic" style="padding-top:6px;"></span><span class="ab-label">'. esc_html($params['menu_title']) .'</span>',
+							'href'  => admin_url('admin.php?page='. esc_attr($params['page_slug'])),
 							'meta'  => array('class' => 'dilaz-panel-admin-bar-menu')
 						));
 						
@@ -613,7 +613,7 @@ if (!class_exists('DilazPanel')) {
 								$parent_target = ( isset($val['target']) && $val['target'] != '' ) ? $val['target'] : '';
 								
 								if ( isset($val['icon']) && ($val['icon'] != '') ) {
-									$menu_icon = '<span class="mdi '. $val['icon'] .'" style="font-family:Material Design Icons;margin-right:5px"></span>';
+									$menu_icon = '<span class="mdi '. esc_attr($val['icon']) .'" style="font-family:Material Design Icons;margin-right:5px"></span>';
 								} else {
 									$menu_icon = '<span class="mdi mdi-settings" style="font-family:Material Design Icons;margin-right:5px"></span>';
 								}
@@ -624,7 +624,7 @@ if (!class_exists('DilazPanel')) {
 									'parent' => $menu_id,
 									'title'  => $menu_icon . esc_html($val['name']),
 									'id'     => $drop_down_parent_id,
-									'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $parent_target),
+									'href'   => admin_url('admin.php?page='. esc_attr($params['page_slug'] .'#'. $parent_target)),
 									'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l1')
 								));
 								
@@ -636,7 +636,7 @@ if (!class_exists('DilazPanel')) {
 											'parent' => $drop_down_parent_id,
 											'title'  => esc_html($child['name']),
 											'id'     => $menu_id .'_'. $child_target,
-											'href'   => admin_url('admin.php?page='. $params['page_slug'] .'#'. $child_target),
+											'href'   => admin_url('admin.php?page='. esc_attr($params['page_slug'] .'#'. $child_target)),
 											'meta'   => array('class' => 'dilaz-panel-admin-bar-menu-l2')
 										));
 									}
@@ -672,12 +672,12 @@ if (!class_exists('DilazPanel')) {
 					<div id="dilaz-panel">
 						<div id="dilaz-panel-header" class="clearfix">
 							<div class="dilaz-panel-item-details">
-								<span class="name"><?php echo $params['item_name']; ?></span>
-								<span class="version">Version: <?php echo $params['item_version']; ?></span>
+								<span class="name"><?php echo wp_kses_post($params['item_name']); ?></span>
+								<span class="version">Version: <?php echo esc_html($params['item_version']); ?></span>
 							</div>
 						</div>
 						<div id="dilaz-panel-content" class="clearfix">
-							<form id="dilaz-panel-form" enctype="multipart/form-data" method="post" data-option-name="<?php echo $this->optionName; ?>" data-option-page="<?php echo $_GET['page']; ?>">
+							<form id="dilaz-panel-form" enctype="multipart/form-data" method="post" data-option-name="<?php echo esc_attr($this->optionName); ?>" data-option-page="<?php echo esc_attr($_GET['page']); ?>">
 								<div class="dilaz-panel-top clearfix">
 									<div style="float:left">
 										<ul class="subsubsub">
@@ -700,11 +700,11 @@ if (!class_exists('DilazPanel')) {
 									</div>
 								</div>
 								<div class="dilaz-panel-menu">
-									<?php echo $this->menuHTML(); ?>
+									<?php echo wp_kses_post($this->menuHTML()); ?>
 								</div>
 								<div class="dilaz-panel-fields">
 									<div class="dilaz-panel-fields-preloader" style="display:block !important"><span class="mdi mdi-loading mdi-spin"></span></div>
-									<?php echo $this->fields(); ?>
+									<?php echo wp_kses_post($this->fields()); ?>
 								</div>
 								<div class="clear"></div>
 								<div class="dilaz-panel-bottom clearfix">
@@ -715,7 +715,7 @@ if (!class_exists('DilazPanel')) {
 										<span class="finished"></span>
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
-										<input type="hidden" name="option_name" value="<?php echo $this->optionName; ?>" />
+										<input type="hidden" name="option_name" value="<?php echo wp_kses_post($this->optionName); ?>" />
 										<input type="hidden" name="security" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
 										<span class="spinner"></span>
 										<span class="progress"><?php _e('Saving...', 'dilaz-panel'); ?></span>
@@ -798,19 +798,19 @@ if (!class_exists('DilazPanel')) {
 						$class = (isset($val['children']) && $val['children'] != '') ? 'has_children' : '';
 						$parent_target = (isset($val['target']) && $val['target'] != '') ? $val['target'] : '';
 						
-						$menu .= '<li id="'. $parent_target .'" class="top_level '. $class .'">';
+						$menu .= '<li id="'. esc_attr($parent_target) .'" class="top_level '. esc_attr($class) .'">';
 						
 							if (isset($val['icon']) && ($val['icon'] != '')) {
-								$menu .= '<span class="mdi '. $val['icon'] .'"></span>';
+								$menu .= '<span class="mdi '. esc_attr($val['icon']) .'"></span>';
 							}
 							
-							$menu .= '<a class="trigger" href="#'. $parent_target .'">'. esc_html($val['name']) .'</a>';
+							$menu .= '<a class="trigger" href="#'. esc_attr($parent_target) .'">'. esc_html($val['name']) .'</a>';
 							
 							if (isset($val['children']) && sizeof($val['children']) > 0) {
 								$menu .= '<ul class="submenu">';
 									foreach ($val['children'] as $child) {
 										$child_target = $child['target'];
-										$menu .= '<li id="'. $child_target .'" class="child"><a class="trigger" href="#'. $child_target .'">'. esc_html($child['name']) .'</a></li>';
+										$menu .= '<li id="'. esc_attr($child_target) .'" class="child"><a class="trigger" href="#'. esc_attr($child_target) .'">'. esc_html($child['name']) .'</a></li>';
 									}
 								$menu .= '</ul>';
 							}
@@ -954,25 +954,25 @@ if (!class_exists('DilazPanel')) {
 					$section_id = 'dilaz-panel-section-'. sanitize_key($field['id']);
 					
 					# set the section 'class' attribute
-					$section_class = 'dilaz-panel-section dilaz-panel-section-'. $field['type'] .' '. sanitize_html_class($field['class']);
+					$section_class = 'dilaz-panel-section dilaz-panel-section-'. esc_attr($field['type']) .' '. sanitize_html_class($field['class']);
 					
 					# Panel content
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 						
-						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. $cond_fields .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. wp_kses_post($cond_fields) .'>' . "\n";
 						
 						if ($field['name']) { 
 							echo '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
 						}
 						
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc'] != '') {
-							echo '<div class="description">'.wp_kses_post($field['desc']).'</div>';
+							echo '<div class="description">'. wp_kses_post($field['desc']) .'</div>';
 						}
 						
 						echo '<div class="option clearfix">' ."\n";
 						
 					} else if ($field['type'] == 'info') {
-						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. $cond_fields .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. wp_kses_post($cond_fields) .'>' . "\n";
 					}
 					
 					# Field types
@@ -1015,7 +1015,7 @@ if (!class_exists('DilazPanel')) {
 					
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc2'] != '') {
-							echo '<div class="description desc2">'.wp_kses_post($field['desc2']).'</div>';
+							echo '<div class="description desc2">'. wp_kses_post($field['desc2']) .'</div>';
 						}
 						echo '</div><!-- .option -->'; # .option
 						echo '</div><!-- .section_class -->'; # .$section_class
