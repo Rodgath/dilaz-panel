@@ -1048,6 +1048,7 @@ if (!class_exists('DilazPanelFields')) {
 			
 			$output .= '<div class="dilaz-panel-file-upload">';
 				
+        $the_file_url = '';
 				if (!empty($value)) {
 					if (is_array($value) && isset($value[0]['url'])) {
 						$the_file_url = $value[0]['url'];
