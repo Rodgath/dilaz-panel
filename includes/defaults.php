@@ -14,6 +14,8 @@
 || 
 */
 
+namespace DilazPanel\DilazPanelDefaults;
+
 defined('ABSPATH') || exit;
 
 class DilazPanelDefaults

@@ -9,7 +9,7 @@
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
  * Domain Path:       /languages
- * Version:           2.8.43
+ * Version:           3.0.0
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,7 +19,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     2.8.43
+|| @version     3.0.0
 || @since       Dilaz Panel 1.0.0
 || @author      Rodgath, https://github.com/Rodgath
 || @copyright   Copyright (C) 2017 - 2023, Rodgath
@@ -28,6 +28,8 @@
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
 ||
 */
+
+namespace DilazPanel;
 
 defined('ABSPATH') || exit;
 
@@ -978,35 +980,35 @@ if (!class_exists('DilazPanel')) {
 					# Field types
 					switch ($field['type']):
 					
-						case 'heading'     : DilazPanelFields::fieldHeading($field); break;
-						case 'subheading'  : DilazPanelFields::fieldSubheading($field); break;
-						case 'info'        : DilazPanelFields::fieldInfo($field); break;
-						case 'text'        : DilazPanelFields::fieldText($field); break;
-						case 'multitext'   : DilazPanelFields::fieldMultitext($field); break;
-						case 'password'    : DilazPanelFields::fieldPassword($field); break;
-						case 'email'       : DilazPanelFields::fieldEmail($field); break;
-						case 'textarea'    : DilazPanelFields::fieldTextarea($field); break;
-						case 'code'        : DilazPanelFields::fieldCode($field); break;
-						case 'select'      : DilazPanelFields::fieldSelect($field); break;
-						case 'repeatable'  : DilazPanelFields::fieldRepeatable($field); break;
-						case 'multiselect' : DilazPanelFields::fieldMultiselect($field); break;
-						case 'queryselect' : DilazPanelFields::fieldQueryselect($field); break;
-						case 'radio'       : DilazPanelFields::fieldRadio($field); break;
-						case 'radioimage'  : DilazPanelFields::fieldRadioimage($field); break;
-						case 'buttonset'   : DilazPanelFields::fieldButtonset($field); break;
-						case 'switch'      : DilazPanelFields::fieldSwitch($field); break;
-						case 'checkbox'    : DilazPanelFields::fieldCheckbox($field); break;
-						case 'multicheck'  : DilazPanelFields::fieldMulticheck($field); break;
-						case 'slider'      : DilazPanelFields::fieldSlider($field); break;
-						case 'range'       : DilazPanelFields::fieldRange($field); break;
-						case 'color'       : DilazPanelFields::fieldColor($field); break;
-						case 'multicolor'  : DilazPanelFields::fieldMulticolor($field); break;
-						case 'font'        : DilazPanelFields::fieldFont($field); break;
-						case 'upload'      : DilazPanelFields::fieldUpload($field); break;
-						case 'background'  : DilazPanelFields::fieldBackground($field); break;
-						case 'editor'      : DilazPanelFields::fieldEditor($field); break;
-						case 'export'      : DilazPanelFields::fieldExport($field); break;
-						case 'import'      : DilazPanelFields::fieldImport($field); break;
+						case 'heading'     : DilazPanelFields\DilazPanelFields::fieldHeading($field); break;
+						case 'subheading'  : DilazPanelFields\DilazPanelFields::fieldSubheading($field); break;
+						case 'info'        : DilazPanelFields\DilazPanelFields::fieldInfo($field); break;
+						case 'text'        : DilazPanelFields\DilazPanelFields::fieldText($field); break;
+						case 'multitext'   : DilazPanelFields\DilazPanelFields::fieldMultitext($field); break;
+						case 'password'    : DilazPanelFields\DilazPanelFields::fieldPassword($field); break;
+						case 'email'       : DilazPanelFields\DilazPanelFields::fieldEmail($field); break;
+						case 'textarea'    : DilazPanelFields\DilazPanelFields::fieldTextarea($field); break;
+						case 'code'        : DilazPanelFields\DilazPanelFields::fieldCode($field); break;
+						case 'select'      : DilazPanelFields\DilazPanelFields::fieldSelect($field); break;
+						case 'repeatable'  : DilazPanelFields\DilazPanelFields::fieldRepeatable($field); break;
+						case 'multiselect' : DilazPanelFields\DilazPanelFields::fieldMultiselect($field); break;
+						case 'queryselect' : DilazPanelFields\DilazPanelFields::fieldQueryselect($field); break;
+						case 'radio'       : DilazPanelFields\DilazPanelFields::fieldRadio($field); break;
+						case 'radioimage'  : DilazPanelFields\DilazPanelFields::fieldRadioimage($field); break;
+						case 'buttonset'   : DilazPanelFields\DilazPanelFields::fieldButtonset($field); break;
+						case 'switch'      : DilazPanelFields\DilazPanelFields::fieldSwitch($field); break;
+						case 'checkbox'    : DilazPanelFields\DilazPanelFields::fieldCheckbox($field); break;
+						case 'multicheck'  : DilazPanelFields\DilazPanelFields::fieldMulticheck($field); break;
+						case 'slider'      : DilazPanelFields\DilazPanelFields::fieldSlider($field); break;
+						case 'range'       : DilazPanelFields\DilazPanelFields::fieldRange($field); break;
+						case 'color'       : DilazPanelFields\DilazPanelFields::fieldColor($field); break;
+						case 'multicolor'  : DilazPanelFields\DilazPanelFields::fieldMulticolor($field); break;
+						case 'font'        : DilazPanelFields\DilazPanelFields::fieldFont($field); break;
+						case 'upload'      : DilazPanelFields\DilazPanelFields::fieldUpload($field); break;
+						case 'background'  : DilazPanelFields\DilazPanelFields::fieldBackground($field); break;
+						case 'editor'      : DilazPanelFields\DilazPanelFields::fieldEditor($field); break;
+						case 'export'      : DilazPanelFields\DilazPanelFields::fieldExport($field); break;
+						case 'import'      : DilazPanelFields\DilazPanelFields::fieldImport($field); break;
 						
 						# add custom field types via this hook - 'dilaz_panel_FIELD_TYPE_action'
 						case $field['type'] : do_action('dilaz_panel_field_'. $field['type'] .'_hook', $field); break;
@@ -1397,7 +1399,7 @@ if (!class_exists('DilazPanel')) {
 				$google_fonts      = array();
 				
 				# get all options from files and those added via filter and then remove duplicates
-				$all_options = DilazPanelFunctions::uniqueMultidimensionalArray(array_merge($this->options, $defined_options), 'id');
+				$all_options = DilazPanelFunctions\DilazPanelFunctions::uniqueMultidimensionalArray(array_merge($this->options, $defined_options), 'id');
 				
 				foreach ($all_options as $option) {
 					
@@ -1432,7 +1434,7 @@ if (!class_exists('DilazPanel')) {
 					# Set any saved Google fonts to be loaded
 					if ('font' == $option['type']) {
 						if (isset($sanitized_options[$id]['family']) && $sanitized_options[$id]['family'] != '') {
-							if (!array_key_exists($sanitized_options[$id]['family'], DilazPanelDefaults::fontFamilyDefaults())) {
+							if (!array_key_exists($sanitized_options[$id]['family'], DilazPanelDefaults\DilazPanelDefaults::fontFamilyDefaults())) {
 								$google_fonts['saved_google_fonts'][] = $sanitized_options[$id];
 							}
 						}
@@ -1982,14 +1984,16 @@ if (!class_exists('DilazPanel')) {
 }
 
 /* Add update checker */
-require 'includes/update-checker/plugin-update-checker.php';
+require_once plugin_dir_path(__FILE__) . 'includes/update-checker/plugin-update-checker.php';
 
-/* Build the update checker */
-$dilazPanelUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://github.com/Rodgath/Dilaz-Panel/',
-	__FILE__,
-	'dilaz-panel'
-);
+if (class_exists('Puc_v4_Factory')) {
+  /* Build the update checker */
+  $dilazPanelUpdateChecker = \Puc_v4_Factory::buildUpdateChecker(
+    'https://github.com/Rodgath/Dilaz-Panel/',
+    __FILE__,
+    'dilaz-panel'
+  );
 
-/* Update from the "master" branch */
-$dilazPanelUpdateChecker->setBranch('master');
+  /* Update from the "master" branch */
+  $dilazPanelUpdateChecker->setBranch('master');
+}

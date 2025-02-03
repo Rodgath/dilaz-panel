@@ -14,6 +14,8 @@
 || 
 */
 
+namespace DilazPanel\DilazPanelFunctions;
+
 defined('ABSPATH') || exit;
 
 if (!class_exists('DilazPanelFunctions')) {

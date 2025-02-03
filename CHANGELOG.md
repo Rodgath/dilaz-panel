@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Version 3
+
+###### v3.0.0 - Feb 3, 2024
+```
+= ADDED - PHP Namespace to fix conflict issues when multiple themes/plugins are using Dilaz Panel in the same WP installation
+```
+
 ## Version 2
 
 ###### v2.8.43 - Aug 15, 2023
