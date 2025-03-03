@@ -1,7 +1,7 @@
 /**
  * jQuery Select2 Sortable
  * - enable select2 to be sortable via normal select element
- * 
+ *
  * author      : Vafour
  * inspired by : jQuery Chosen Sortable (https://github.com/mrhenry/jquery-chosen-sortable)
  * License     : GPL

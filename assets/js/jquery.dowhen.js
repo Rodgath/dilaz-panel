@@ -76,10 +76,10 @@
 
 		if (when.indexOf('||')) {
 			var arrWhen = when.split('||');
-			
+
 			for (var i = 0, len = arrWhen.length; i < len; i += 1) {
 				jsonObject = convertToJSON(arrWhen[i]);
-				
+
 				if (jsonObject !== false) {
 					parsed.push(jsonObject);
 				}

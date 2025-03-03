@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 || --------------------------------------------------------------------------------------------
 || Admin Panel Export Manager
@@ -11,7 +11,7 @@
 || @copyright	Copyright (C) 2017, Rodgath LTD
 || @link		https://github.com/Rodgath/Dilaz-Panel
 || @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-|| 
+||
 */
 
 /**
@@ -22,37 +22,37 @@
  * @return void
  */
 if ( isset($_GET['dilaz-panel-export']) ) {
-	
+
 	$absolute_path = __FILE__;
 	$path_to_file  = explode('wp-content', $absolute_path);
 	$path_to_wp    = $path_to_file[0];
 
 	require_once $path_to_wp .'wp-load.php';
 	include_once ABSPATH .'wp-admin/includes/plugin.php';
-	
+
 	$option_name = $_GET['dilaz-panel-export'];
 	$options     = get_option($option_name);
-	
+
 	if ( !empty($options) ) {
-		
+
 		$options['dilaz_panel_backup_time'] = date('Y-m-d h:i:s');
-		
+
 		$export_content = json_encode((array)$options);
 		$filename       = $option_name .'_backup_'. date('Y.m.d_H.i.s') .'.json';
-		
+
 		$handle = fopen($filename, 'w');
 		fwrite($handle, $export_content);
 		fclose($handle);
-		
+
 		header('Cache-Control: public');
 		header('Content-Description: File Transfer');
 		header('Content-Disposition: attachment; filename='. $filename .'');
-		header('Content-Type: application/octet-stream'); 
+		header('Content-Type: application/octet-stream');
 		header('Content-Length: '. filesize($filename) .';');
-		
-		readfile($filename);		
+
+		readfile($filename);
 		unlink($filename);
-		
+
 		exit;
 	}
 }

@@ -10,7 +10,7 @@
 || @copyright  Copyright (C) 2018, Rodgath LTD
 || @link       https://github.com/Rodgath/Dilaz-Panel
 || @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-|| 
+||
 */
 
 /**
@@ -19,10 +19,10 @@
  * @since Dilaz Panel 2.7.2
  */
 if (location.hash) {
-	
+
 	/* disable scroll right away */
 	window.scrollTo(0, 0);
-	
+
 	/* wait for browser compitibility just in case */
 	setTimeout(function() {
 		window.scrollTo(0, 0);
@@ -33,23 +33,23 @@ if (location.hash) {
  * Dilaz Panel script
  */
 var DilazPanelScript = new function() {
-	
+
 	"use strict";
-	
+
 	/**
 	 * Global Variables
 	 */
 	var	$t   = this,
 		$    = jQuery.noConflict(),
 		$doc = $(document);
-	
+
 	/**
 	 * DoWhen plugin start
 	 */
 	$t.doWhen = function() {
 		$doc.doWhen();
 	}
-	
+
 	/**
 	 * Remove panel border bottom on the last item
 	 */
@@ -60,9 +60,9 @@ var DilazPanelScript = new function() {
 			});
 		}
 	}
-	
+
 	/**
-	 * Manage panel section border position (top|bottom) when 
+	 * Manage panel section border position (top|bottom) when
 	 * an adjacent info box is added
 	 * @since Dilaz Panel 2.7.5
 	 */
@@ -85,13 +85,13 @@ var DilazPanelScript = new function() {
 			})
 		}
 	}
-		
+
 	/**
 	 * Open hashed menu tab when page is loaded
 	 * @since Dilaz Panel 2.7.2
 	 */
 	$t.tabMenuOpenHashed = function (trigger) {
-		
+
 		/* Set 'trigger' default parameter */
 		if (!trigger) trigger = '.trigger';
 
@@ -145,33 +145,33 @@ var DilazPanelScript = new function() {
 			}, 100);
 		}
 	}
-	
+
 	/**
 	 * Panel open tabbed menu content
 	 */
 	$t.tabMenu = function() {
 		$('.dilaz-panel-menu').on('click', '.trigger', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			var	$this        = $(this),
 				$parent      = $this.parent(),
 				$tabsNav     = $this.closest('.dilaz-panel-menu'),
 				$tabTarget   = $this.attr('href'),
 				$tabsContent = $tabsNav.siblings('.dilaz-panel-fields'),
 				$tabClicked  = $this.attr('href');
-				
+
 			/* show fields preloader effect */
 			$('.dilaz-panel-fields').find('.dilaz-panel-fields-preloader').fadeIn();
-			
+
 			/* toggle submenu */
 			if ($parent.hasClass('has_children')) {
-				
+
 				var	$subMenu        = $parent.find('.submenu'),
 					$subMenuFirst   = $subMenu.children('li:first'),
 					$subMenuTrigger = $subMenuFirst.find('.trigger'),
 					$tabTarget      = $subMenuTrigger.attr('href');
-					
+
 				$subMenu.slideToggle();
 				$subMenuFirst.addClass('active');
 				$subMenuFirst.siblings().removeClass('active');
@@ -203,16 +203,16 @@ var DilazPanelScript = new function() {
 			window.scrollTo(0, 0);
 		});
 	}
-	
+
 	/**
 	 * Panel open admin bar menu content
 	 * @since Dilaz Panel 2.7.2
 	 */
 	$t.adminBarTabMenu = function() {
 		$('.dilaz-panel-admin-bar-menu').find('a').on('click', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			var	$this          = $(this),
 				$thisUrl       = $this.attr('href'),
 				$thisHashIndex = $thisUrl.indexOf('#'),
@@ -223,69 +223,69 @@ var DilazPanelScript = new function() {
 				$thisUrlPage   = $thisUrlParams.get('page'),
 				$winUrlParams  = new URLSearchParams(window.location.search),
 				$winUrlPage    = $winUrlParams.get('page');
-				
+
 			/* if not on the same page, lets bail and move to the clicked page */
 			if ($thisUrlPage !== $winUrlPage) {
 				window.location = $thisUrl;
 				return false;
 			}
-			
+
 			/* add the admin bar menu hash to page URL */
 			window.location.hash = $thisHash;
-			
+
 			/* disable page jump/scroll */
 			window.scrollTo(0, 0);
-			
+
 			/* after menu link is clicked open respective tab */
 			$t.tabMenuOpenHashed($trigger);
 		});
 	}
-	
+
 	/**
 	 * Panel open admin bar menu content
 	 * @since Dilaz Panel 2.7.4
 	 */
 	$t.adminSideBarMenu = function() {
-		
+
 		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').on('click', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			var	$this          = $(this),
 				$thisUrl       = $this.attr('href'),
 				$thisHashIndex = $thisUrl.indexOf('#'),
 				$trigger       = $('.dilaz-panel-menu').find('.trigger'),
 				$thisHash      = $thisHashIndex > -1 ? $thisUrl.substring($thisHashIndex, $thisUrl.length) : $trigger.first().attr('href');
-			
+
 			/* add the admin bar menu hash to page URL */
 			window.location.hash = $thisHash;
-			
+
 			/* disable page jump/scroll */
 			window.scrollTo(0, 0);
-			
+
 			/* after menu link is clicked open respective tab */
 			$t.tabMenuOpenHashed($trigger);
 		});
 	}
-	
+
 	/**
 	 * Update active link on sidebar menu
 	 * @since Dilaz Panel 2.7.4
 	 */
 	$t.sideBarMenuUpdate = function($currentHash) {
-		
+
 		/* Set '$currentHash' default parameter */
 		if (!$currentHash) $currentHash = '';
-		
+
 		/* update current sidebar active link */
 		$('.toplevel_page_'+ dilaz_panel_lang.page_slug +' .wp-submenu-wrap li a').each(function() {
-			
+
 			var	$sbLink_a    = $(this),
 				$sbLink_li   = $sbLink_a.parent(),
 				$sbUrl       = $sbLink_a.attr('href'),
 				$sbHashIndex = $sbUrl.indexOf('#'),
 				$sbHash      = $sbHashIndex > -1 ? $sbUrl.substring($sbHashIndex, $sbUrl.length) : '';
-				
+
 			/* hightlight current link */
 			if ($currentHash == $sbHash) {
 				$sbLink_a.addClass('current');
@@ -301,21 +301,21 @@ var DilazPanelScript = new function() {
 			}
 		});
 	}
-	
+
 	/**
 	 * File upload
 	 */
 	$t.fileUpload = function() {
 		$('.dilaz-panel-file-upload-button').each(function() {
-			
+
 			var imageFrame;
-			
+
 			$(this).on('click', function(event) {
-				
+
 				event.preventDefault();
-				
+
 				var options, attachment;
-				
+
 				var	$self              = $(event.target),
 					$fileUpload        = $self.closest('.dilaz-panel-file-upload'),
 					$fileWrapper       = $fileUpload.find('.dilaz-panel-file-wrapper'),
@@ -332,40 +332,40 @@ var DilazPanelScript = new function() {
 					$frameTitle        = $self.data('frame-title') || '',
 					$frameButtonText   = $self.data('frame-button-text') || '',
 					$mediaPreview      = $fileWrapperParent.find('.dilaz-panel-media-file');
-				
+
 				/* open the frame if it exists */
 				if ( imageFrame ) {
 					imageFrame.open();
 					return;
 				}
-				
+
 				/* frame settings */
 				imageFrame = wp.media({
 					title    : $frameTitle,
 					multiple : $fileMultiple,
-					library  : {	
+					library  : {
 						type : $fileType
 					},
 					button : {
 						text : $frameButtonText
 					}
 				});
-				
+
 				/* frame select handler */
 				imageFrame.on( 'select', function() {
-					
+
 					var selection = imageFrame.state().get('selection');
-					
+
 					if (!selection)
 						return;
-					
+
 					/* loop through the selected files */
 					selection.each( function(attachment) {
-						
+
 						var $type = attachment.attributes.type;
-						
+
 						if ($type == 'image') {
-							
+
 							/* if uploaded image is smaller than default thumbnail(250 by 250)
 							then get the full image url */
 							if (attachment.attributes.sizes.thumbnail !== undefined) {
@@ -374,129 +374,129 @@ var DilazPanelScript = new function() {
 								var $imageSrc = $fileThumb ? attachment.attributes.sizes.thumbnail.url : attachment.attributes.url;
 							}
 						}
-						
+
 						/* attachment data */
 						var	$src     = attachment.attributes.url,
 							$id      = attachment.id,
 							$title   = attachment.attributes.title,
 							$caption = attachment.attributes.caption;
-						
+
 						/* Add file source URL when file is selected */
 						if (false == $fileMultiple) {
 							$fileUpload.find('.dilaz-panel-file-url').val($src);
 							$mediaPreview.remove();
 						}
-						
+
 						var $fileOutput = '';
-						
+
 						if ($fieldType == 'background') {
-							
+
 							$fileWrapperParent.siblings('.background-preview').find('.content').css({'background-image':'url('+ $imageSrc +')'});
 							$self.addClass('hidden');
 							$self.siblings('.remove').removeClass('hidden');
-							
+
 						} else {
-						
+
 							$fileOutput += '<div class="dilaz-panel-media-file '+ $fileType +' '+ ($id != '' ? '' : 'empty') +'" id="file-'+ $fileId +'">';
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[url][]" id="file_url_'+ $fileId +'" class="dilaz-panel-file-url upload" value="'+ $src +'">';
 							$fileOutput += '<input type="hidden" name="'+ $fileId +'[id][]" id="file_id_'+ $fileId +'" class="dilaz-panel-file-id upload" value="'+ $id +'">';
-							
+
 							$fileOutput += '<div class="filename '+ $fileType +'">'+ $title +'</div>';
 							$fileOutput += '<span class="sort ui-sortable-handle"></span>';
 							$fileOutput += '<a href="#" class="remove" title="Remove"><span class="mdi mdi-window-close"></span></a>';
-							
+
 							switch ( $type ) {
 								case 'image':
 									$fileOutput += '<img src="'+ $imageSrc +'" class="dilaz-panel-file-preview file-image" alt="">';
 									break;
-									
+
 								case 'audio':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/audio.png" class="dilaz-panel-file-preview file-audio" alt="">';
 									break;
-									
+
 								case 'video':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/video.png" class="dilaz-panel-file-preview file-video" alt="">';
 									break;
-									
+
 								case 'document':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/document.png" class="dilaz-panel-file-preview file-document" alt="">';
 									break;
-									
+
 								case 'spreadsheet':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/spreadsheet.png" class="dilaz-panel-file-preview file-spreadsheet" alt="">';
 									break;
-									
+
 								case 'interactive':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/interactive.png" class="dilaz-panel-file-preview file-interactive" alt="">';
 									break;
-									
+
 								case 'text':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/text.png" class="dilaz-panel-file-preview file-text" alt="">';
 									break;
-									
+
 								case 'archive':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/archive.png" class="dilaz-panel-file-preview file-archive" alt="">';
 									break;
-									
+
 								case 'code':
 									$fileOutput += '<img src="'+ dilaz_panel_lang.dilaz_panel_images +'media/code.png" class="dilaz-panel-file-preview file-code" alt="">';
 									break;
-									
+
 							}
 						}
-						
+
 						$fileOutput += '</div>';
-						
+
 						$fileWrapper.append($fileOutput);
-						
+
 					});
 				});
-				
+
 				/* open frame */
 				imageFrame.open();
 			});
 		});
 	}
-	
+
 	/**
 	 * Remove file
 	 */
 	$t.removeFile = function() {
 		$doc.on('click', '.remove', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			var $this = $(this);
-			
+
 			$this.siblings('input:not(.dilaz-panel-file-upload-button)').attr('value', '');
 			$this.closest('.dilaz-panel-media-file').slideUp(500);
-			
+
 			/* Delete file source URL when file is removed */
 			$this.closest('.dilaz-panel-file-upload').find('.dilaz-panel-file-url').val('');
-			
+
 			/* This is for the background field */
 			if ($this.hasClass('remove-image')) {
 				$this.addClass('hidden');
 				$this.siblings('.dilaz-panel-file-upload-button').removeClass('hidden');
 			}
-			
+
 			setTimeout(function() {
 				$this.closest('.dilaz-panel-media-file').remove();
 			}, 1000);
-			
+
 			return false;
 		});
 	}
-	
+
 	/**
 	 * File sorting, drag-and-drop
 	 */
 	$t.fileSorting = function() {
 		$('.dilaz-panel-file-wrapper').each(function() {
-			
+
 			var $this     = $(this),
 				$multiple = $this.data('file-multiple');
-				
+
 			if ($multiple) {
 				$this.sortable({
 					opacity     : 0.6,
@@ -510,19 +510,19 @@ var DilazPanelScript = new function() {
 			}
 		});
 	}
-	
+
 	/**
 	 * UI slider setting
 	 */
 	$t.uiSlider = function() {
 		$('.dilaz-panel-slider').each(function() {
-			
+
 			var	$this = $(this),
 				$min  = parseInt($this.data('min')),
 				$max  = parseInt($this.data('max')),
 				$step = parseInt($this.data('step')),
 				$val  = parseInt($this.data('val'));
-				
+
 			$this.slider({
 				animate : true,
 				range   : 'min',
@@ -541,13 +541,13 @@ var DilazPanelScript = new function() {
 			});
 		});
 	}
-	
+
 	/**
 	 * UI range setting
 	 */
 	$t.uiRange = function() {
 		$('.dilaz-panel-range').each(function() {
-			
+
 			var	$this      = $(this),
 				$minVal    = parseInt($this.data('min-val')),
 				$maxVal    = parseInt($this.data('max-val')),
@@ -559,7 +559,7 @@ var DilazPanelScript = new function() {
 				$optMinVal = $optMin.val(),
 				$optMax    = $this.find('#option-max'),
 				$optMaxVal = $optMax.val();
-				
+
 			$range.slider({
 				range  : true,
 				min    : $min,
@@ -575,15 +575,15 @@ var DilazPanelScript = new function() {
 			});
 		});
 	}
-	
+
 	/**
 	 * Select2
 	 */
 	$t.select2Field = function() {
 		$('.select2single, .select2multiple').each(function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.select2({
 				placeholder : '',
 				width       : $this.data('width'),
@@ -591,15 +591,15 @@ var DilazPanelScript = new function() {
 			});
 		});
 	}
-	
+
 	/**
 	 * Ajax DB query select for posts, terms and users
 	 */
 	$t.querySelectAjax = function() {
 		$('.dilaz-panel-query-select').each(function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.select2({
 				language : 'en',
 				placeholder : $this.data('placeholder'),
@@ -625,12 +625,12 @@ var DilazPanelScript = new function() {
 						};
 					},
 					processResults : function(data) {
-						
+
 						var items   = [],
 							newItem = null;
 
 						for (var thisId in data) {
-							
+
 							newItem = {
 								'id'   : data[thisId]['id'],
 								'text' : data[thisId]['name']
@@ -640,38 +640,38 @@ var DilazPanelScript = new function() {
 						}
 
 						return { results : items };
-					} 
+					}
 				}
 			});
 		});
 	}
-	
+
 	/**
 	 * Radio image selection
 	 */
 	$t.radioImageField = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-radio-image-img', function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.parent().siblings().find('.dilaz-panel-radio-image-img').removeClass('selected');
 			$this.addClass('selected');
 		});
 	}
-	
+
 	/**
 	 * Switch and Buttonset
 	 */
 	$t.switchButtonsetField = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-switch, .dilaz-panel-button-set', function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.parent().addClass('selected');
 			$this.parent().siblings().removeClass('selected');
 		});
 	}
-	
+
 	/**
 	 * Checkbox
 	 */
@@ -680,37 +680,37 @@ var DilazPanelScript = new function() {
 			$(this).toggleClass('focus');
 		});
 	}
-	
+
 	/**
 	 * Radio
 	 */
 	$t.radioField = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-radio', function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.addClass('focus');
 			$this.parent().siblings().find('.dilaz-panel-radio').removeClass('focus');
 		});
 	}
-	
+
 	/**
 	 * Color picker
 	 */
 	$t.colorPicker = function() {
 		$('.dilaz-panel-color').wpColorPicker();
 	}
-	
+
 	/**
 	 * Ajax - reset options
 	 */
 	$t.resetOptions = function() {
 		$('#dilaz-panel-form').on('click', '.reset', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			if (confirm(dilaz_panel_lang.confirm_reset)) {
-			
+
 				var	$resetButton = $(this),
 					$panelForm   = $resetButton.closest('#dilaz-panel-form'),
 					$security    = $('input[name="security"]', $panelForm).val(),
@@ -719,7 +719,7 @@ var DilazPanelScript = new function() {
 					$spinner     = $resetButton.siblings('.spinner'),
 					$progress    = $resetButton.siblings('.progress'),
 					$finished    = $resetButton.siblings('.finished');
-					
+
 				$.ajax({
 					type     : 'POST',
 					url      : ajaxurl,
@@ -727,21 +727,21 @@ var DilazPanelScript = new function() {
 					cache	 : false,
 					data     : {
 						action            : 'dilaz_panel_reset_options',
-						security          : $security, 
-						dilaz_option_name : $optionName, 
-						dilaz_option_page : $optionPage, 
+						security          : $security,
+						dilaz_option_name : $optionName,
+						dilaz_option_page : $optionPage,
 					},
 					beforeSend : function() {
 						$spinner.show().addClass('is-active');
 						$progress.show();
 					},
 					success : function(response) {
-						
+
 						if (response.success) {
 							$spinner.delay(1800).hide(290);
 							$progress.delay(1800).hide(290);
 						}
-						
+
 						if (response.success == 1) {
 							$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
 							setTimeout(function() {
@@ -755,20 +755,20 @@ var DilazPanelScript = new function() {
 						$finished.delay(5000).fadeOut(260);
 					}
 				});
-				
+
 				return false;
 			}
 		});
 	}
-	
+
 	/**
 	 * Ajax - save options
 	 */
 	$t.saveOptions = function() {
 		$('#dilaz-panel-form').on('click', '.update', function(e) {
-			
+
 			e.preventDefault();
-			
+
 			/* Autosave tinyMCE wp_editor() because we are using ajax */
 			$.each($('.dilaz-panel-section'), function($key, $data) {
 				var	$id          = $data.id,
@@ -776,12 +776,12 @@ var DilazPanelScript = new function() {
 					$fieldId     = $id.replace('dilaz-panel-section-', ''),
 					$isEditor    = $($idHashed).find('.wp-editor-wrap'),
 					$editorField = $($idHashed).find('#'+$fieldId);
-					
+
 				if ($isEditor.length) {
 					var	$wpEditorFrame  = $('#'+$fieldId+'_ifr'),
 						$editorTinyMce = $('#tinymce', $wpEditorFrame.contents()),
 						$editorContents = null !== $editorTinyMce[0] && undefined !== $editorTinyMce[0] ? $editorTinyMce[0].innerHTML : '';
-						
+
 					$editorField.html($editorContents);
 				}
 			});
@@ -793,18 +793,18 @@ var DilazPanelScript = new function() {
 				$finished     = $submitButton.siblings('.finished'),
 				$formData     = {
 					'action'    : 'dilaz_panel_save_options',
-					'form_data' : $panelForm.serialize(), 
+					'form_data' : $panelForm.serialize(),
 				};
-			
+
 				// var $dataArray = $panelForm.serializeArray(),
 					// $formData = {};
-				
+
 				// $dataArray.push({ name: 'action', value: 'dilaz_panel_save_options' });
 
 				// $.each($dataArray, function(i, item) {
 					// $formData[item.name] = item.value
 				// });
-				
+
 			$.ajax({
 				type       : 'POST',
 				url        : ajaxurl,
@@ -816,12 +816,12 @@ var DilazPanelScript = new function() {
 					$progress.show();
 				},
 				success : function(response) {
-					
+
 					if (response) {
 						$spinner.delay(1800).hide(290);
 						$progress.delay(1800).hide(290);
 					}
-					
+
 					if (response.success == 1) {
 						$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
 					} else {
@@ -832,24 +832,24 @@ var DilazPanelScript = new function() {
 					$finished.delay(5000).fadeOut(260);
 				}
 			});
-			
+
 			return false;
 		});
 	}
-	
+
 	/**
 	 * Ajax - export options
 	 */
 	$t.exportOptions = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-export', function() {
-			
+
 			var	$exportButton = $(this),
 				$spinner      = $exportButton.siblings('.spinner'),
 				$progress     = $exportButton.siblings('.progress'),
 				$finished     = $exportButton.siblings('.finished'),
 				$nonce        = $exportButton.parent().data('export-nonce'),
 				$optionName   = $exportButton.closest('#dilaz-panel-form').data('option-name');
-				
+
 			$.ajax({
 				type     : 'POST',
 				url      : ajaxurl,
@@ -865,12 +865,12 @@ var DilazPanelScript = new function() {
 					$progress.show();
 				},
 				success : function(response) {
-					
+
 					if (response.success) {
 						$spinner.delay(1800).hide(290);
 						$progress.delay(1800).hide(290);
 					}
-					
+
 					if (response.success == 1) {
 						window.location = response.exp;
 						$finished.css({'color':'green'}).delay(2000).fadeIn(260);
@@ -880,27 +880,27 @@ var DilazPanelScript = new function() {
 					$finished.delay(5000).fadeOut(260);
 				}
 			});
-		});	
+		});
 	}
-	
+
 	/**
 	 * Select import file
 	 */
 	$t.selectImportFile = function() {
 		$('.dilaz-panel-fields').on('change', '.dilaz-import-file', function() {
-			
+
 			var $this = $(this);
-			
+
 			$this.parent().find('span').text($($this)[0].files[0]['name']);
 		});
 	}
-	
+
 	/**
 	 * Ajax - import options
 	 */
 	$t.importOptions = function() {
 		$('.dilaz-panel-fields').on('click', '.dilaz-panel-import', function() {
-			
+
 			var	$importButton = $(this),
 				$spinner      = $importButton.siblings('.spinner'),
 				$progress     = $importButton.siblings('.progress'),
@@ -913,19 +913,19 @@ var DilazPanelScript = new function() {
 				$filesData    = $importWrap.find('.dilaz-import-file'),
 				$fileName     = $filesData.attr('name'),
 				$formData     = new FormData();
-			
+
 			if ($filesData.val() == '') {
 				$importButton.parent().siblings('.upload-response').removeClass('hidden').html('<div class="notification error"><p>Please select a file</p></div>');
 				return;
 			}
-			
+
 			$formData.append($fileName, $($filesData)[0].files[0]);
 			$formData.append('action', 'dilaz_panel_import_options');
 			$formData.append('dilaz_import_nonce', $nonce);
 			$formData.append('dilaz_option_page', $optionPage);
 			$formData.append('dilaz_option_name', $optionName);
 			$formData.append('dilaz_import_file', $fileName);
-			
+
 			$.ajax({
 				type        : 'POST',
 				url         : ajaxurl,
@@ -939,12 +939,12 @@ var DilazPanelScript = new function() {
 					$progress.show();
 				},
 				success : function(response) {
-					
+
 					if (response.success) {
 						$spinner.delay(1800).fadeOut(290);
 						$progress.delay(1800).fadeOut(290);
 					}
-					
+
 					if (response.success == 1) {
 						$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
 						setTimeout(function() {
@@ -953,15 +953,15 @@ var DilazPanelScript = new function() {
 					} else {
 						$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260).delay(5000).fadeOut(260);
 					}
-					
+
 				},
 				complete : function() {
-					
+
 				}
 			});
 		});
 	}
-	
+
 	/**
 	 * Set Cookie
 	 * @since Dilaz Panel 2.6.8
@@ -972,7 +972,7 @@ var DilazPanelScript = new function() {
 		var c_value = escape(value)+((exdays==null) ? "" : ("; expires="+exdate.toUTCString()));
 		document.cookie = c_name + "=" + c_value;
 	}
-	
+
 	/**
 	 * Get Cookie
 	 * @since Dilaz Panel 2.6.8
@@ -988,19 +988,19 @@ var DilazPanelScript = new function() {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get JSON
 	 * @since Dilaz Panel 2.6.8
 	 */
 	$t.getJSON = function(file, callback) {
-		
+
 		$.getJSON(file).done(function(jasonData) {
 			callback(jasonData);
 		}).error(function() {
-			
+
 			var $alertJsonError = $t.getCookie('DilazAlertJsonError') || '';
-			
+
 			/* prevent multiple alert popups */
 			if ($alertJsonError != 'yes') {
 				$t.setCookie('DilazAlertJsonError', 'yes', (1/(24*60*60)) * 10); // cookie expires after 10 seconds
@@ -1008,29 +1008,29 @@ var DilazPanelScript = new function() {
 			}
 		});
 	}
-	
+
 	/**
 	 * Get Google fonts from JSON file
 	 * @since Dilaz Panel 2.6.8
 	 * @since Dilaz Panel 2.8.2 - added Google fonts preload helper script: googlefonts.3perf.com
 	 */
 	$t.updateGoogleFonts = function(sectionId, fontFamily, fontWeight, fontStyle, fontSubset) {
-	
+
 		var	$linkId    = sectionId+'-'+fontFamily.replace(/ /g, '-').toLowerCase(),
 			$links     = document.getElementsByTagName('link'),
 			fontURLarr = [],
 			fontURL    = '';
-		
+
 		/* if Google Font resource link exists, delete it so that it can be updated */
 		for (var i = 0; i < $links.length; i++) {
 			if ($links[i].id == $linkId) {
 				$links[i].remove();
 			}
 		}
-		
+
 		fontURLarr.push('https://fonts.googleapis.com/css?family=');
 		fontURLarr.push(fontFamily.replace(/ /g, '+'));
-		
+
 		/* import Google Fonts */
 		$t.getJSON(dilaz_panel_lang.dilaz_panel_url +'includes/google-fonts-min.json', function(jasonData) {
 			// console.log(Object.keys(jasonData).length);
@@ -1038,16 +1038,16 @@ var DilazPanelScript = new function() {
 			// console.log(jasonData[fontFamily]);
 			// console.log(jasonData[fontFamily].variants);
 			// console.log(jasonData[fontFamily].subsets);
-			
+
 			/* Check if its a Google font selected */
 			if (jasonData[fontFamily] !== undefined) {
-				
+
 				var	fontVariants    = jasonData[fontFamily].variants,
 					checkFontStyle  = JSON.stringify(fontVariants).indexOf(fontStyle) > -1,
 					checkFontWeight = JSON.stringify(fontVariants).indexOf(fontWeight) > -1,
 					fontSubsets     = jasonData[fontFamily].subsets,
 					checkFontSubset = JSON.stringify(fontSubsets).indexOf(fontSubset) > -1;
-					
+
 				if (checkFontStyle || checkFontWeight) {
 					var theStyle  = (checkFontStyle) ? fontStyle : '',
 						theWeight = (checkFontWeight) ? fontWeight : '';
@@ -1056,37 +1056,37 @@ var DilazPanelScript = new function() {
 						fontURLarr.push(theStyle+theWeight);
 					}
 				}
-				
+
 				if (checkFontSubset && fontSubset !== '') {
 					fontURLarr.push('&subset=');
 					fontURLarr.push(fontSubset);
 				}
-				
+
 				fontURL += fontURLarr.join('');
-				
+
 				if ($("link[href*='" + fontFamily + "']").length === 0) {
-					
+
 					var $headerLinkOutput = '';
-					
+
 					$headerLinkOutput += '<!-- Code snippet to speed up Google Fonts rendering: googlefonts.3perf.com -->';
 					$headerLinkOutput += '<link rel="dns-prefetch" href="https://fonts.gstatic.com">';
 					$headerLinkOutput += '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">';
 					$headerLinkOutput += '<link rel="preload" id="'+$linkId+'" href="'+fontURL+'" as="fetch" crossorigin="anonymous">';
 					$headerLinkOutput += '<script type="text/javascript"> !function(e,n,t){"use strict";var o="'+fontURL+'",r="__3perf_googleFonts_'+$linkId+'";function c(e){(n.head||n.body).appendChild(e)}function a(){var e=n.createElement("link");e.href=o,e.rel="stylesheet",c(e)}function f(e){if(!n.getElementById(r)){var t=n.createElement("style");t.id=r,c(t)}n.getElementById(r).innerHTML=e}e.FontFace&&e.FontFace.prototype.hasOwnProperty("display")?(t[r]&&f(t[r]),fetch(o).then(function(e){return e.text()}).then(function(e){return e.replace(/@font-face {/g,"@font-face{font-display:swap;")}).then(function(e){return t[r]=e}).then(f).catch(a)):a()}(window,document,localStorage); </script>';
-					
+
 					$('head>link:last').after($headerLinkOutput);
-					
+
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Font preview
 	 */
 	$t.fontPreview = function() {
 		$('.dilaz-panel-section-font').each(function() {
-			
+
 			var	$this        = $(this),
 				$fFamily     = $this.find('.family'),
 				$fSubset     = $this.find('.subset'),
@@ -1102,10 +1102,10 @@ var DilazPanelScript = new function() {
 				$fColor      = $resultColor.css('background-color'),
 				$bgColor     = $t.bgColorBasedOnTextColor($fColor, '#fbfbfb', '#222'),
 				$fSectionId  = $this.closest('.dilaz-panel-section').attr('id');
-				
+
 			/* show preview */
 			$fPreview.show();
-			
+
 			/* render already set values */
 			$fContent.css({
 				'font-family'      : $fFamily.val(),
@@ -1117,13 +1117,13 @@ var DilazPanelScript = new function() {
 				'color'            : $fColor,
 				'background-color' : $bgColor,
 			});
-			
+
 			/**
 			 * show Google Font in preview if its saved
 			 * @since Dilaz Panel 2.6.8
 			 */
 			$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
-			
+
 			$fFamily.on('change', function() {
 				var $familyVal = $fFamily.val();
 				var $defaultFonts = 'arial verdana trebuchet georgia times tahoma palatino helvetica';
@@ -1132,52 +1132,52 @@ var DilazPanelScript = new function() {
 					$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 				}
 			});
-			
+
 			$fSubset.on('change', function() {
 				$fContent.css({'font-subset':$fSubset.val()});
 				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
-			
+
 			$fWeight.on('change', function() {
 				$fContent.css({'font-weight':$fWeight.val()});
 				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
-			
+
 			$fStyle.on('change', function() {
 				$fContent.css({'font-style':$fStyle.val()});
 				$t.updateGoogleFonts($fSectionId, $fFamily.val(), $fWeight.val(), $fStyle.val(), $fSubset.val());
 			});
-			
+
 			$fCase.on('change', function() {
 				$fContent.css({'text-transform':$fCase.val()});
 			});
-			
+
 			$fSize.on('keyup', function() {
 				$fContent.css({'font-size':$fSize.val() +'px'});
 			});
-			
+
 			$fHeight.on('keyup', function() {
 				$fContent.css({'line-height':$fHeight.val() +'px'});
 			});
-			
+
 			$panelColor.wpColorPicker({
 				change: function(event, ui) {
 					var textColor = ui.color.toString();
 					$fContent.css({
-						'color': textColor, 
+						'color': textColor,
 						'background-color': $t.bgColorBasedOnTextColor(textColor, '#fbfbfb', '#222')
 					});
 				}
 			});
 		});
 	}
-	
+
 	/**
 	 * Background preview
 	 */
 	$t.backgroundPreview = function() {
 		$('.dilaz-panel-section-background').each(function(){
-			
+
 			var	$this         = $(this),
 				$bgRepeat     = $this.find('.repeat'),
 				$bgSize       = $this.find('.size'),
@@ -1193,10 +1193,10 @@ var DilazPanelScript = new function() {
 				$bgImgPreview = $this.find('.dilaz-panel-file-preview'),
 				$bgPreview    = $this.find('.background-preview'),
 				$bgContent    = $bgPreview.find('.content');
-				
+
 			/* show preview */
 			$bgPreview.show();
-			
+
 			/* render already set values */
 			$bgContent.css({
 				'background-image'      : 'url('+$bgImgPreview.attr('src')+')',
@@ -1210,39 +1210,39 @@ var DilazPanelScript = new function() {
 				'background-attachment' : $bgAttachment.val(),
 				'background-color'      : $resultColor.css('background-color'),
 			});
-			
+
 			$bgRepeat.on('change', function(){
 				$bgContent.css({'background-repeat':$bgRepeat.val()});
 			});
-			
+
 			$bgSize.on('change', function(){
 				$bgContent.css({'background-size':$bgSize.val()});
 			});
-			
+
 			$bgPosition.on('change', function(){
 				$bgContent.css({'background-position':$bgPosition.val()});
 			});
-			
+
 			$bgPositionX.on('change', function(){
 				$bgContent.css({'background-position-x':$bgPositionX.val()});
 			});
-			
+
 			$bgPositionY.on('change', function(){
 				$bgContent.css({'background-position-y':$bgPositionY.val()});
 			});
-			
+
 			$bgOrigin.on('change', function(){
 				$bgContent.css({'background-origin':$bgOrigin.val()});
 			});
-			
+
 			$bgClip.on('change', function(){
 				$bgContent.css({'background-clip':$bgClip.val()});
 			});
-			
+
 			$bgAttachment.on('change', function(){
 				$bgContent.css({'background-attachment':$bgAttachment.val()});
 			});
-			
+
 			$panelColor.wpColorPicker({
 				change:function( event, ui ) {
 					$bgContent.css({'background-color':ui.color.toString()});
@@ -1250,7 +1250,7 @@ var DilazPanelScript = new function() {
 			});
 		});
 	}
-	
+
 	/**
 	 * Repeatable field - sortable
 	 */
@@ -1274,7 +1274,7 @@ var DilazPanelScript = new function() {
 			}
 		});
 	}
-	
+
 	/**
 	 * add new repeatable items in the repeatable field
 	 */
@@ -1291,27 +1291,27 @@ var DilazPanelScript = new function() {
 				rListItem = rList.find('>li'),
 				rClone    = rList.find('>li:last').clone(),
 				rItems    = rListItem.length;
-				
+
 			rClone.each(function() {
 				var $this = $(this);
-				
+
 				/* hide so that we can slidedown */
 				$this.hide();
-				
+
 				/* clear all fields */
 				$this.find('input').val('').attr('name', function(index, name) {
 					return name.replace(/\[([^\]])\]/g, function(fullMatch, n) {
 						return '['+(Number(n) + 1)+']';
 					});
 				});
-				
+
 				/* if items not-sortable is equal to number of shown items */
 				if (nS <= rItems) {
 					if (!$this.find('.sort-repeatable').length && sortable == true) {
 						$this.prepend(sorter);
 					}
 				}
-				
+
 				/* if items not-repeatable is equal to number of shown items */
 				if (nR == rItems || nR < 1) {
 					if (!$this.find('.repeatable-remove').length && removable == true) {
@@ -1323,17 +1323,17 @@ var DilazPanelScript = new function() {
 			rClone.slideDown(100);
 		});
 	}
-	
+
 	/**
 	 * remove repeatable field
 	 */
 	$t.removeRepeatableField = function() {
 		$doc.on('click', '.repeatable-remove', function(e) {
 			e.preventDefault();
-			
+
 			var	$this = $(this),
 				$parent = $this.parent();
-			
+
 			/* one item should always remain */
 			if ($parent.siblings().length > 0) {
 				$parent.slideUp(100);
@@ -1341,54 +1341,54 @@ var DilazPanelScript = new function() {
 					$parent.remove();
 				}, 1000);
 			}
-			
+
 			return false;
 		});
 	}
-	
+
 	/**
 	 * check if color is HEX, RGB, RGBA, HSL, HSLA
-	 * 
+	 *
 	 * @since Dilaz Panel 2.6.6
 	 * @link  https://stackoverflow.com/a/32685393
 	 */
 	$t.checkColor = function(color) {
-		
+
 		/* check HEX */
 		var isHex = /^#(?:[A-Fa-f0-9]{3}){1,2}$/i.test(color);
 		if (isHex) { return 'hex'; }
-		
+
 		/* check RGB */
 		var isRgb = /^rgb[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*(?:,(?![)])|(?=[)]))){3}[)]$/i.test(color);
 		if (isRgb) { return 'rgb'; }
-		
+
 		/* check RGBA */
 		var isRgba = /^^rgba[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*,){3}\s*0*(?:\.\d+|1(?:\.0*)?)\s*[)]$/i.test(color);
 		if (isRgba) { return 'rgba'; }
-		
+
 		/* check HSL */
 		var isHsl = /^hsl[(]\s*0*(?:[12]?\d{1,2}|3(?:[0-5]\d|60))\s*(?:\s*,\s*0*(?:\d\d?(?:\.\d+)?\s*%|\.\d+\s*%|100(?:\.0*)?\s*%)){2}\s*[)]$/i.test(color);
 		if (isHsl) { return 'hsl'; }
-		
+
 		/* check HSLA */
 		var isHsla = /^hsla[(]\s*0*(?:[12]?\d{1,2}|3(?:[0-5]\d|60))\s*(?:\s*,\s*0*(?:\d\d?(?:\.\d+)?\s*%|\.\d+\s*%|100(?:\.0*)?\s*%)){2}\s*,\s*0*(?:\.\d+|1(?:\.0*)?)\s*[)]$/i.test(color);
 		if (isHsla) { return 'hsla'; }
-		
+
 	}
-	
+
 	/**
 	 * RGB to HEX
-	 * 
+	 *
 	 * @since Dilaz Panel 2.6.6
 	 */
 	$t.rgbToHex = function(red, green, blue) {
 		var rgb = blue | (green << 8) | (red << 16);
 		return '#' + (0x1000000 + rgb).toString(16).slice(1);
 	}
-	
+
 	/**
 	 * HEX to RGB
-	 * 
+	 *
 	 * @since  Dilaz Panel 2.6.6
 	 * @return Object|String
 	 */
@@ -1406,37 +1406,37 @@ var DilazPanelScript = new function() {
 			b: parseInt(result[3], 16)
 		} : null;
 	}
-	
+
 	/**
 	 * HEX to RGBA
-	 * 
+	 *
 	 * @return Object|String
 	 */
 	$t.hexToRgba = function(hex, opacity) {
-		
+
 		/* Set 'opacity' default parameter */
 		if (!opacity) opacity = 1;
-		
-		if ($t.checkColor(hex) != 'hex') return null; 
-		
+
+		if ($t.checkColor(hex) != 'hex') return null;
+
 		/* convert the hex to RGB */
 		var hexToRgb = $t.hexToRgb(hex);
-		
+
 		if (typeof opacity != 'undefined') {
 			return $.extend(hexToRgb, {'o':opacity});
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Background color based on text color
 	 */
 	$t.bgColorBasedOnTextColor = function(textColor, lightColor, darkColor) {
-		
+
 		var	checkColor = $t.checkColor(textColor),
 			rgb = null;
-			
+
 		if (checkColor == 'hex') {
 			var hexToRgb = $t.hexToRgb(textColor);
 			if (typeof(hexToRgb) === 'object' && hexToRgb != null) {
@@ -1448,22 +1448,22 @@ var DilazPanelScript = new function() {
 		} else if (checkColor == 'rgb') {
 			var rgb = textColor;
 		}
-		
+
 		if (rgb == null) return null;
-		
+
 		// var matches = rgb.match(/rgb\((\d+),\s?(\d+),\s?(\d+)\)/);
 		var matches = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-		
+
 		if (!matches) return null;
-		
+
 		if (matches != null && matches.length && matches.length > 3) {
 			var c = 'rgb(' + matches[1] + ',' + matches[2] + ',' + matches[3] + ')';
 			var o = Math.round(((parseInt(matches[1], 10) * 299) + (parseInt(matches[2], 10) * 587) + (parseInt(matches[3], 10) * 114)) / 1000);
-			
+
 			return (o > 125) ? darkColor : lightColor;
 		}
 	}
-	
+
 	/**
 	 * Init
 	 *
@@ -1497,7 +1497,7 @@ var DilazPanelScript = new function() {
 		$t.backgroundPreview();
 		$t.repeatableField();
 		$t.addRepeatableField();
-		$t.removeRepeatableField();		
+		$t.removeRepeatableField();
 
 	};
 }

@@ -17,9 +17,9 @@ FIX: Deprecated: trim(): Passing null to parameter #1 ($string) of type string i
 ###### v2.8.42 - Aug 14, 2022
 ```
 = UPDATED - sellect2 JS library
-= ADDED - select2 package.json file to fix XSS potential security issue 
+= ADDED - select2 package.json file to fix XSS potential security issue
 = FIXED - "querySelect" field bugs
-= FIXED - "queryselect" & "range" fields' sanitization 
+= FIXED - "queryselect" & "range" fields' sanitization
 = FIXED - Other minor PHP bugs
 = UPDATED - Readme
 ```
@@ -112,7 +112,7 @@ FIX: Deprecated: trim(): Passing null to parameter #1 ($string) of type string i
 ```
 ###### v2.7.2 - Jan 28, 2019
 ```
-= CHANGED - Renamed DilazPanelScript method from $t.tabMenuOpenFirst to $t.tabMenuOpenHashed 
+= CHANGED - Renamed DilazPanelScript method from $t.tabMenuOpenFirst to $t.tabMenuOpenHashed
 = ADDED - Added $t.adminBarTabMenu method in DilazPanelScript in admin.js
 = ADDED - Panel tabs added to admin bar menu drop down in adminBar() method in DilazPanel class
 ```

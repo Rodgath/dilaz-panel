@@ -1,6 +1,6 @@
 === Dilaz Panel ===
 Contributors: Rodgath
-Tags: options, settings, options panel, admin panel, admin options, theme settings, theme options, plugin settings, plugin options, customization, configuration, 
+Tags: options, settings, options panel, admin panel, admin options, theme settings, theme options, plugin settings, plugin options, customization, configuration,
 Requires at least: 5.0
 Tested up to: 6.3
 Stable tag: 2.8.43
@@ -44,7 +44,7 @@ Dilaz Panel offers an extensive array of option fields to cater to your diverse 
 * Info
 * Text
 * Textarea
-* Dropdown Select 
+* Dropdown Select
 * Multiselect/Multiple Select
 * Post Select
 * Term/Taxonomy/Category Select
@@ -88,7 +88,7 @@ Checkout [Demo Plugin](https://github.com/Rodgath/Dilaz-Demo-Plugin) to see an e
 
 == Screenshots ==
 
-1. 
+1.
 
 == Changelog ==
 
@@ -98,9 +98,9 @@ FIX: Deprecated: trim(): Passing null to parameter #1 ($string) of type string i
 
 #### v2.8.42
 UPDATED - sellect2 JS library
-ADDED - select2 package.json file to fix XSS potential security issue 
+ADDED - select2 package.json file to fix XSS potential security issue
 FIXED - "querySelect" field bugs
-FIXED - "queryselect" & "range" fields' sanitization 
+FIXED - "queryselect" & "range" fields' sanitization
 FIXED - Other minor PHP bugs
 UPDATED - Readme
 
@@ -179,7 +179,7 @@ ADDED - Material Design webfont icons for tab icons
 ADDED - Tab content preloader effect
 
 #### v2.7.2
-CHANGED - Renamed DilazPanelScript method from $t.tabMenuOpenFirst to $t.tabMenuOpenHashed 
+CHANGED - Renamed DilazPanelScript method from $t.tabMenuOpenFirst to $t.tabMenuOpenHashed
 ADDED - Added $t.adminBarTabMenu method in DilazPanelScript in admin.js
 ADDED - Panel tabs added to admin bar menu drop down in adminBar() method in DilazPanel class
 

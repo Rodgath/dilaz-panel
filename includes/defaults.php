@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
 || --------------------------------------------------------------------------------------------
 || Admin Panel Defaults
@@ -11,7 +11,7 @@
 || @copyright  Copyright (C) 2017, Rodgath LTD
 || @link       https://github.com/Rodgath/Dilaz-Panel
 || @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-|| 
+||
 */
 
 namespace DilazPanel\DilazPanelDefaults;
@@ -20,12 +20,12 @@ defined('ABSPATH') || exit;
 
 class DilazPanelDefaults
 {
-	
+
 	public function __construct()
 	{
-		
+
 	}
-	
+
 	/**
 	 * Background defaults
 	 *
@@ -35,9 +35,9 @@ class DilazPanelDefaults
 	 */
 	public static function bg()
 	{
-		
+
 		$bg_defaults = array(
-			'image'  => '', 
+			'image'  => '',
 			'repeat' => array(
 				''          => '',
 				'no-repeat' => __('No Repeat', 'dilaz-panel'),
@@ -45,13 +45,13 @@ class DilazPanelDefaults
 				'repeat-x'  => __('Repeat Horizontally', 'dilaz-panel'),
 				'repeat-y'  => __('Repeat Vertically', 'dilaz-panel'),
 				'inherit'   => __('Inherit', 'dilaz-panel'),
-			), 
+			),
 			'size' => array(
 				''        => '',
 				'cover'   => __('Cover', 'dilaz-panel'),
 				'contain' => __('Contain', 'dilaz-panel'),
 				'inherit' => __('Inherit', 'dilaz-panel'),
-			), 
+			),
 			'position' => array(
 				''              => '',
 				'top left'      => __('Top Left', 'dilaz-panel'),
@@ -69,25 +69,25 @@ class DilazPanelDefaults
 				'fixed'   => __('Fixed', 'dilaz-panel'),
 				'scroll'  => __('Scroll', 'dilaz-panel'),
 				'inherit' => __('Inherit', 'dilaz-panel'),
-			), 
+			),
 			'origin' => array(
 				''            => '',
 				'content-box' => __('Content Box', 'dilaz-panel'),
 				'border-box'  => __('Border Box', 'dilaz-panel'),
 				'padding-box' => __('Padding Box', 'dilaz-panel'),
-			), 
-			'color'  => '', 
+			),
+			'color'  => '',
 		);
-		
+
 		$bg_defaults = apply_filters('dilaz_panel_bg_defaults', $bg_defaults);
-		
+
 		foreach ($bg_defaults as $k => $v) {
 			$bg_defaults[$k] = is_array($v) ? array_map('sanitize_text_field', $v) : sanitize_text_field($bg_defaults[$k]);
 		}
-		
+
 		return $bg_defaults;
 	}
-	
+
 	/**
 	 * Multicolor defaults
 	 *
@@ -102,7 +102,7 @@ class DilazPanelDefaults
 		$multicolor_defaults = array_map('sanitize_hex_color', $multicolor_defaults);
 		return $multicolor_defaults;
 	}
-	
+
 	/**
 	 * Get Google Fonts
 	 *
@@ -112,7 +112,7 @@ class DilazPanelDefaults
 	 */
 	public static function getGoogleFonts()
 	{
-		
+
 		$g_fonts_array = array();
 		$get_g_fonts = file_get_contents(dirname(__FILE__).'/google-fonts-min.json');
 		if ($get_g_fonts !== false && !empty($get_g_fonts)) {
@@ -126,10 +126,10 @@ class DilazPanelDefaults
 				}
 			}
 		}
-		
+
 		return apply_filters('dilaz_panel_get_google_fonts', $g_fonts_array);
 	}
-	
+
 	/**
 	 * Google Fonts
 	 *
@@ -139,17 +139,17 @@ class DilazPanelDefaults
 	 */
 	public static function googleFonts()
 	{
-		
+
 		$g_fonts = DilazPanelDefaults::getGoogleFonts();
 		$g_font_names = [];
-		
+
 		foreach ((array)$g_fonts as $font_name => &$atts) {
 			$g_font_names[$font_name] = $font_name;
 		}
-		
+
 		return apply_filters('dilaz_panel_google_fonts', $g_font_names);
 	}
-	
+
 	/**
 	 * Font defaults
 	 *
@@ -160,22 +160,22 @@ class DilazPanelDefaults
 	public static function font()
 	{
 		$font_defaults = array(
-			'family' => 'verdana', 
-			'subset' => '', 
-			'weight' => 'normal', 
-			'size'   => '14', 
-			'height' => '16', 
-			'style'  => '', 
-			'case'   => '', 
+			'family' => 'verdana',
+			'subset' => '',
+			'weight' => 'normal',
+			'size'   => '14',
+			'height' => '16',
+			'style'  => '',
+			'case'   => '',
 			'color'  => '#555'
 		);
 		$font_defaults = apply_filters('dilaz_panel_font_defaults', $font_defaults);
 		$font_defaults = array_map('sanitize_text_field', $font_defaults);
 		return $font_defaults;
 	}
-	
+
 	/**
-	 * Stacks for font family defaults 
+	 * Stacks for font family defaults
 	 *
 	 * @since 2.8.2
 	 *
@@ -208,7 +208,7 @@ class DilazPanelDefaults
 		}
 		return $font_family_stacks;
 	}
-	
+
 	/**
 	 * Font family defaults
 	 *
@@ -233,7 +233,7 @@ class DilazPanelDefaults
 		$font_family = array_map('sanitize_text_field', $font_family);
 		return $font_family;
 	}
-	
+
 	/**
 	 * Font family all
 	 *
@@ -248,7 +248,7 @@ class DilazPanelDefaults
 		$font_family = array_map('sanitize_text_field', $font_family);
 		return $font_family;
 	}
-	
+
 	/**
 	 * Font subset defaults
 	 *
@@ -287,7 +287,7 @@ class DilazPanelDefaults
 		$font_subset = array_map('sanitize_text_field', $font_subset);
 		return $font_subset;
 	}
-	
+
 	/**
 	 * Font size defaults
 	 *
@@ -302,7 +302,7 @@ class DilazPanelDefaults
 		$font_sizes = array_map('absint', $font_sizes);
 		return $font_sizes;
 	}
-	
+
 	/**
 	 * Font height defaults
 	 *
@@ -317,7 +317,7 @@ class DilazPanelDefaults
 		$font_heights = array_map('absint', $font_heights);
 		return $font_heights;
 	}
-	
+
 	/**
 	 * Font weight defaults
 	 *
@@ -349,7 +349,7 @@ class DilazPanelDefaults
 		$font_weights = array_map('sanitize_text_field', $font_weights);
 		return $font_weights;
 	}
-	
+
 	/**
 	 * Font style defaults
 	 *
@@ -371,7 +371,7 @@ class DilazPanelDefaults
 		$font_styles = array_map('sanitize_text_field', $font_styles);
 		return $font_styles;
 	}
-	
+
 	/**
 	 * Font case defaults
 	 *
@@ -382,15 +382,15 @@ class DilazPanelDefaults
 	public static function fontCases()
 	{
 		$font_cases = array(
-			''           => '', 
-			'none'       => 'None', 
-			'uppercase'  => 'Uppercase', 
-			'lowercase'  => 'Lowercase', 
+			''           => '',
+			'none'       => 'None',
+			'uppercase'  => 'Uppercase',
+			'lowercase'  => 'Lowercase',
 			'capitalize' => 'Capitalize'
 		);
 		$font_cases = apply_filters('dilaz_panel_font_cases', $font_cases);
 		$font_cases = array_map('sanitize_text_field', $font_cases);
 		return $font_cases;
 	}
-	
+
 }
