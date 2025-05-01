@@ -3,8 +3,8 @@
  * Plugin Name:       Dilaz Panel
  * Plugin URI:        https://github.com/Rodgath/dilaz-panel
  * Description:       Simple options panel for WordPress themes and plugins.
- * Requires at least: 5.0
- * Requires PHP:      5.6
+ * Requires at least: 6.0
+ * Requires PHP:      7.0
  * Author:            Rodgath
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
