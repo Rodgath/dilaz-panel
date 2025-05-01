@@ -1,10 +1,10 @@
 const { src, dest, series, parallel, watch, task } = require('gulp');
 const replace = require('gulp-replace');
 
-const newPluginVersion = '2.8.43'; // Latest version number
-const latestWpTest = '6.3'; // Latest WP version number tested
+const newPluginVersion = '3.0.1'; // Latest version number
+const latestWpTest = '6.8'; // Latest WP version number tested
 const minWpVersion = '5.0'; // Min WP version number supported
-const minPhpVersion = '5.6'; // Min PHP version number required
+const minPhpVersion = '7.0'; // Min PHP version number required
 const authorName = 'Rodgath';
 const authorUrl = `https://github.com/${authorName}`
 const pluginUrl = `https://github.com/${authorName}/dilaz-panel`
