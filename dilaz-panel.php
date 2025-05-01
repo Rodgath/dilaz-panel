@@ -700,7 +700,7 @@ if (!class_exists('DilazPanel')) {
 									</div>
 								</div>
 								<div class="dilaz-panel-menu">
-									<?php echo wp_kses_post($this->menuHTML()); ?>
+									<?php echo wp_kses_post($this->menuHTML() ?: ''); ?>
 								</div>
 								<div class="dilaz-panel-fields">
 									<div class="dilaz-panel-fields-preloader" style="display:block !important"><span class="mdi mdi-loading mdi-spin"></span></div>
