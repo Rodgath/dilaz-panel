@@ -704,7 +704,7 @@ if (!class_exists('DilazPanel')) {
 								</div>
 								<div class="dilaz-panel-fields">
 									<div class="dilaz-panel-fields-preloader" style="display:block !important"><span class="mdi mdi-loading mdi-spin"></span></div>
-									<?php echo wp_kses_post($this->fields()); ?>
+									<?php echo wp_kses_post($this->fields() ?: ''); ?>
 								</div>
 								<div class="clear"></div>
 								<div class="dilaz-panel-bottom clearfix">
