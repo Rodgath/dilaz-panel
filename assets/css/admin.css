@@ -1385,26 +1385,30 @@ input.dilaz-panel-switch {
 /*--------------------------------------------------------------*/
 /* Ajax fields
 /*--------------------------------------------------------------*/
-#dilaz-panel-form .dilaz-ajax-save .spinner {
-	float: left;
-	display: inline-block;
-	margin-top: 4px;
-	display: none
+#dilaz-panel-form .dilaz-ajax-save .saving-state-icon {
+  height      : 22px;
+  width       : 22px;
+  float       : left;
+  margin-top  : 4px;
+  margin-left : 10px;
+  margin-right: 15px;
+  display     : none;
 }
-#dilaz-panel-form .dilaz-ajax-save .progress {
-	float: left;
-	display: inline-block;
-	margin-top: 5px;
-	margin-right: 15px;
-	display: none
+
+#dilaz-panel-form .dilaz-ajax-save .saving-state-icon .icon-tabler-inner-shadow-bottom-left {
+  width    : 24px;
+  height   : 24px;
+  animation: panelSaveRotate 1s linear infinite;
 }
-#dilaz-panel-form .dilaz-ajax-save .finished {
-	float: left;
-	display: inline-block;
-	margin-top: 5px;
-	margin-left: 10px;
-	margin-right: 15px;
-	display: none
+
+@keyframes panelSaveRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /*--------------------------------------------------------------*/

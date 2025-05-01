@@ -711,48 +711,50 @@ var DilazPanelScript = new function() {
 
 			if (confirm(dilaz_panel_lang.confirm_reset)) {
 
-				var	$resetButton = $(this),
-					$panelForm   = $resetButton.closest('#dilaz-panel-form'),
-					$security    = $('input[name="security"]', $panelForm).val(),
-					$optionName  = $panelForm.data('option-name'),
-					$optionPage  = $panelForm.data('option-page'),
-					$spinner     = $resetButton.siblings('.spinner'),
-					$progress    = $resetButton.siblings('.progress'),
-					$finished    = $resetButton.siblings('.finished');
+				var	resetButton = $(this),
+					panelForm   = resetButton.closest('#dilaz-panel-form'),
+					security    = $('input[name="security"]', panelForm).val(),
+					optionName  = panelForm.data('option-name'),
+					optionPage  = panelForm.data('option-page'),
+          savingStateIcon = resetButton.siblings('.saving-state-icon');
+
+        var loadIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-bottom-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 12a6 6 0 0 0 6 6" /></svg>`;
+        var finishedIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>`;
+        var failedIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l6 0" /></svg>`;
 
 				$.ajax({
 					type     : 'POST',
 					url      : ajaxurl,
 					dataType : 'json',
-					cache	 : false,
+					cache	   : false,
 					data     : {
 						action            : 'dilaz_panel_reset_options',
-						security          : $security,
-						dilaz_option_name : $optionName,
-						dilaz_option_page : $optionPage,
+						security          : security,
+						dilaz_option_name : optionName,
+						dilaz_option_page : optionPage,
 					},
 					beforeSend : function() {
-						$spinner.show().addClass('is-active');
-						$progress.show();
+            savingStateIcon.empty().append(loadIcon).css({
+              'color': 'gray'
+            }).fadeIn();
 					},
 					success : function(response) {
-
-						if (response.success) {
-							$spinner.delay(1800).hide(290);
-							$progress.delay(1800).hide(290);
-						}
-
-						if (response.success == 1) {
-							$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
-							setTimeout(function() {
-								window.location = response.redirect;
-							}, 3000);
-						} else {
-							$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
-						}
+            setTimeout(() => {
+              if (response.success == 1) {
+                savingStateIcon.empty().append(finishedIcon).css({
+                  'color': 'green'
+                }).delay(2000).fadeIn(290);
+              } else {
+                savingStateIcon.empty().append(failedIcon).css({
+                  'color': 'red'
+                }).delay(2000).fadeIn(290);
+              }
+            }, 1000);
 					},
 					complete : function() {
-						$finished.delay(5000).fadeOut(260);
+            setTimeout(() => {
+              savingStateIcon.delay(5000).fadeOut(260);
+            }, 1000);
 					}
 				});
 
@@ -764,77 +766,79 @@ var DilazPanelScript = new function() {
 	/**
 	 * Ajax - save options
 	 */
-	$t.saveOptions = function() {
-		$('#dilaz-panel-form').on('click', '.update', function(e) {
+  $t.saveOptions = function () {
+	  $('#dilaz-panel-form').on('click', '.update', function (e) {
 
-			e.preventDefault();
+	    e.preventDefault();
 
-			/* Autosave tinyMCE wp_editor() because we are using ajax */
-			$.each($('.dilaz-panel-section'), function($key, $data) {
-				var	$id          = $data.id,
-					$idHashed    = $('#'+$id),
-					$fieldId     = $id.replace('dilaz-panel-section-', ''),
-					$isEditor    = $($idHashed).find('.wp-editor-wrap'),
-					$editorField = $($idHashed).find('#'+$fieldId);
+	    // Clear any existing animations and reset the state
+	    $('.dilaz-ajax-save .saving-state-icon')
+	      .stop(true, true) // Stop all animations and clear the queue
+	      .hide(); // Hide the element immediately
 
-				if ($isEditor.length) {
-					var	$wpEditorFrame  = $('#'+$fieldId+'_ifr'),
-						$editorTinyMce = $('#tinymce', $wpEditorFrame.contents()),
-						$editorContents = null !== $editorTinyMce[0] && undefined !== $editorTinyMce[0] ? $editorTinyMce[0].innerHTML : '';
+	    // Autosave tinyMCE wp_editor() because we are using ajax
+	    $.each($('.dilaz-panel-section'), function ($key, $data) {
+	      var id = $data.id,
+	        idHashed = $('#' + id),
+	        fieldId = id.replace('dilaz-panel-section-', ''),
+	        isEditor = $(idHashed).find('.wp-editor-wrap'),
+	        editorField = $(idHashed).find('#' + fieldId);
 
-					$editorField.html($editorContents);
-				}
-			});
-			var	$saveButton = $(this),
-				$panelForm   = $saveButton.closest('#dilaz-panel-form'),
-				$submitButton = $('input[name="update"]', $panelForm),
-				$spinner      = $submitButton.siblings('.spinner'),
-				$progress     = $submitButton.siblings('.progress'),
-				$finished     = $submitButton.siblings('.finished'),
-				$formData     = {
-					'action'    : 'dilaz_panel_save_options',
-					'form_data' : $panelForm.serialize(),
-				};
+	      if (isEditor.length) {
+	        var wpEditorFrame = $('#' + fieldId + '_ifr'),
+	          editorTinyMce = $('#tinymce', wpEditorFrame.contents()),
+	          editorContents = editorTinyMce[0] ? editorTinyMce[0].innerHTML : '';
 
-				// var $dataArray = $panelForm.serializeArray(),
-					// $formData = {};
+	        editorField.html(editorContents);
+	      }
+	    });
 
-				// $dataArray.push({ name: 'action', value: 'dilaz_panel_save_options' });
+	    var saveButton = $(this),
+	      panelForm = saveButton.closest('#dilaz-panel-form'),
+	      submitButton = $('input[name="update"]', panelForm),
+	      savingStateIcon = submitButton.siblings('.saving-state-icon'),
+	      formData = {
+	        'action': 'dilaz_panel_save_options',
+	        'form_data': panelForm.serialize(),
+	      };
 
-				// $.each($dataArray, function(i, item) {
-					// $formData[item.name] = item.value
-				// });
+      var loadIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-inner-shadow-bottom-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M6 12a6 6 0 0 0 6 6" /></svg>`;
+      var finishedIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-check"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l2 2l4 -4" /></svg>`;
+      var failedIcon = `<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-circle-minus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M9 12l6 0" /></svg>`;
 
-			$.ajax({
-				type       : 'POST',
-				url        : ajaxurl,
-				dataType   : 'json',
-				cache	   : false,
-				data       : $formData,
-				beforeSend : function() {
-					$spinner.show().addClass('is-active');
-					$progress.show();
-				},
-				success : function(response) {
+	    $.ajax({
+	      type: 'POST',
+	      url: ajaxurl,
+	      dataType: 'json',
+	      cache: false,
+	      data: formData,
+	      beforeSend: function () {
+	        savingStateIcon.empty().append(loadIcon).css({
+            'color': 'gray'
+          }).fadeIn();
+	      },
+	      success: function (response) {
+          setTimeout(() => {
+            if (response.success == 1) {
+              savingStateIcon.empty().append(finishedIcon).css({
+                'color': 'green'
+              }).delay(2000).fadeIn(290);
+            } else {
+              savingStateIcon.empty().append(failedIcon).css({
+                'color': 'red'
+              }).delay(2000).fadeIn(290);
+            }
+          }, 1000);
+	      },
+	      complete: function () {
+          setTimeout(() => {
+            savingStateIcon.delay(5000).fadeOut(260);
+          }, 1000);
+	      }
+	    });
 
-					if (response) {
-						$spinner.delay(1800).hide(290);
-						$progress.delay(1800).hide(290);
-					}
-
-					if (response.success == 1) {
-						$finished.empty().append(response.message).css({'color':'green'}).delay(2000).fadeIn(260);
-					} else {
-						$finished.empty().append(response.message).css({'color':'red'}).delay(2000).fadeIn(260);
-					}
-				},
-				complete : function() {
-					$finished.delay(5000).fadeOut(260);
-				}
-			});
-
-			return false;
-		});
+	    return false;
+	  });
 	}
 
 	/**

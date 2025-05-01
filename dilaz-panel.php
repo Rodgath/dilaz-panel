@@ -695,9 +695,7 @@ if (!class_exists('DilazPanel')) {
 										</ul>
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
-										<span class="spinner"></span>
-										<span class="progress"><?php _e('Saving...', 'dilaz-panel'); ?></span>
-										<span class="finished"></span>
+										<span class="saving-state-icon"></span>
 										<input type="submit" class="update button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 									</div>
 								</div>
@@ -712,16 +710,12 @@ if (!class_exists('DilazPanel')) {
 								<div class="dilaz-panel-bottom clearfix">
 									<div class="dilaz-ajax-save" style="float:left">
 										<input type="submit" class="reset button" name="reset" value="<?php esc_attr_e( 'Reset Options', 'dilaz-panel'); ?>" />
-										<span class="spinner"></span>
-										<span class="progress"><?php _e('Resetting...', 'dilaz-panel'); ?></span>
-										<span class="finished"></span>
+										<span class="saving-state-icon"></span>
 									</div>
 									<div class="dilaz-ajax-save" style="float:right">
-										<input type="hidden" name="option_name" value="<?php echo wp_kses_post($this->optionName); ?>" />
+										<input type="hidden" name="option_name" value="<?php echo wp_kses_post($this->optionName ?: ''); ?>" />
 										<input type="hidden" name="security" value="<?php echo wp_create_nonce(basename(__FILE__)); ?>" />
-										<span class="spinner"></span>
-										<span class="progress"><?php _e('Saving...', 'dilaz-panel'); ?></span>
-										<span class="finished"></span>
+										<span class="saving-state-icon"></span>
 										<input type="submit" class="update button button-primary" name="update" value="<?php _e('Save Options', 'dilaz-panel'); ?>" />
 									</div>
 								</div>
@@ -1484,7 +1478,7 @@ if (!class_exists('DilazPanel')) {
 									$options_saved = true;
 
 									$response['success'] = 1;
-									$response['message'] = esc_html__('Options saved successfully.', 'dilaz-panel');
+									$response['message'] = '';
 							}
 
 						} else {
