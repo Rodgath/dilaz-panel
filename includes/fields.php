@@ -406,6 +406,7 @@ if (!class_exists('DilazPanelFields')) {
 
 			$output = '';
 
+      $std           = isset($std) ? $std : [];
 			$query_type    = isset($args['query_type']) ? sanitize_text_field($args['query_type']) : '';
 			$query_args    = isset($args['query_args']) ? (array)$args['query_args'] : array();
 			$placeholder   = isset($args['placeholder']) ? sanitize_text_field($args['placeholder']) : __('Select a post', 'dilaz-panel');
@@ -434,6 +435,14 @@ if (!class_exists('DilazPanelFields')) {
 			data-width="'. esc_attr($select2_width) .'">';
 
 			$selected_data = (isset($option_data[$id]) && is_array($option_data[$id])) ? $option_data[$id] : array();
+
+      if (empty($selected_data) && !empty($std)) {
+        if (is_array($std)) {
+          $selected_data = array_map('intval', $std);
+        } else {
+          $selected_data = [intval($std)];
+        }
+      }
 
 			if (is_array($selected_data)) {
 				foreach ($selected_data as $key => $item_id) {
