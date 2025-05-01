@@ -674,7 +674,7 @@ if (!class_exists('DilazPanel')) {
 					<div id="dilaz-panel">
 						<div id="dilaz-panel-header" class="clearfix">
 							<div class="dilaz-panel-item-details">
-								<span class="name"><?php echo wp_kses_post($params['item_name']); ?></span>
+								<span class="name"><?php echo wp_kses_post($params['item_name'] ?: ''); ?></span>
 								<span class="version">Version: <?php echo esc_html($params['item_version']); ?></span>
 							</div>
 						</div>
