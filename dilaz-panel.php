@@ -962,7 +962,7 @@ if (!class_exists('DilazPanel')) {
 						}
 
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc'] != '') {
-							echo '<div class="description">'. wp_kses_post($field['desc']) .'</div>';
+							echo '<div class="description">'. wp_kses_post($field['desc'] ?: '') .'</div>';
 						}
 
 						echo '<div class="option clearfix">' ."\n";
