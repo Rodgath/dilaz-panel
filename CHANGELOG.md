@@ -2,6 +2,13 @@
 
 ## Version 3
 
+###### v3.0.1 - Apr 1, 2025
+```
+= UPDATED - New saving/resetting AJAX style
+= FIXED - 'queryselect' field std(default) value setup
+= FIXED - Minor bugs
+```
+
 ###### v3.0.0 - Feb 3, 2024
 ```
 = ADDED - PHP Namespace to fix conflict issues when multiple themes/plugins are using Dilaz Panel in the same WP installation
@@ -11,8 +18,8 @@
 
 ###### v2.8.43 - Aug 15, 2023
 ```
-FIX: Creation of dynamic property DilazPanel::$args is deprecated
-FIX: Deprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated
+= FIXED: Creation of dynamic property DilazPanel::$args is deprecated
+= FIXED: Deprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated
 ```
 ###### v2.8.42 - Aug 14, 2022
 ```
