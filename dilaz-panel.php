@@ -3,13 +3,13 @@
  * Plugin Name:       Dilaz Panel
  * Plugin URI:        https://github.com/Rodgath/dilaz-panel
  * Description:       Simple options panel for WordPress themes and plugins.
- * Requires at least: 6.0
+ * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            Rodgath
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
  * Domain Path:       /languages
- * Version:           3.0.0
+ * Version:           3.0.1
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,10 +19,10 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     3.0.0
+|| @version     3.0.1
 || @since       Dilaz Panel 1.0.0
 || @author      Rodgath, https://github.com/Rodgath
-|| @copyright   Copyright (C) 2017 - 2023, Rodgath
+|| @copyright   Copyright (C) 2017 - 2025, Rodgath
 || @link        https://github.com/Rodgath/dilaz-panel
 || @License     GPL-2.0+
 || @License URI http://www.gnu.org/licenses/gpl-2.0.txt
