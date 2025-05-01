@@ -1011,7 +1011,7 @@ if (!class_exists('DilazPanel')) {
 
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 						if ($field['type'] != 'checkbox' && $field['type'] != 'info' && $field['desc2'] != '') {
-							echo '<div class="description desc2">'. wp_kses_post($field['desc2']) .'</div>';
+							echo '<div class="description desc2">'. wp_kses_post($field['desc2'] ?: '') .'</div>';
 						}
 						echo '</div><!-- .option -->'; # .option
 						echo '</div><!-- .section_class -->'; # .$section_class
