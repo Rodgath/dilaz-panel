@@ -955,7 +955,7 @@ if (!class_exists('DilazPanel')) {
 					# Panel content
 					if ($field['type'] != 'heading' && $field['type'] != 'subheading' && $field['type'] != 'info') {
 
-						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. wp_kses_post($cond_fields) .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' clearfix"'. wp_kses_post($cond_fields ?: '') .'>' . "\n";
 
 						if ($field['name']) {
 							echo '<h4 class="dilaz-panel-section-heading">'. esc_html($field['name']) .'</h4>'."\n";
