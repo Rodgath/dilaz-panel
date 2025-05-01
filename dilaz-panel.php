@@ -968,7 +968,7 @@ if (!class_exists('DilazPanel')) {
 						echo '<div class="option clearfix">' ."\n";
 
 					} else if ($field['type'] == 'info') {
-						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. wp_kses_post($cond_fields) .'>' . "\n";
+						echo '<div id="'. esc_attr($section_id) .'" class="'. esc_attr($section_class) .' info-wrap clearfix"'. wp_kses_post($cond_fields ?: '') .'>' . "\n";
 					}
 
 					# Field types
