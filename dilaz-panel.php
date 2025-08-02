@@ -9,7 +9,7 @@
  * Author URI:        https://github.com/Rodgath
  * Text Domain:       dilaz-panel
  * Domain Path:       /languages
- * Version:           3.0.1
+ * Version:           3.0.2
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
 ||
@@ -19,7 +19,7 @@
 ||
 || @package     Dilaz Panel
 || @subpackage  Panel
-|| @version     3.0.1
+|| @version     3.0.2
 || @since       Dilaz Panel 1.0.0
 || @author      Rodgath, https://github.com/Rodgath
 || @copyright   Copyright (C) 2017 - 2025, Rodgath
