@@ -278,7 +278,7 @@
 }
 .dilaz-panel-field .dilaz-panel-section .dilaz-panel-section-heading {
 	margin: 0 0 12px;
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: bold;
 	line-height: 100%
 }
@@ -294,8 +294,8 @@
 .dilaz-panel-field .dilaz-panel-section .description {
 	margin-bottom: 15px;
 	color: #888;
-	font-size: 11px;
-	line-height: 1.65em;
+	font-size: 13px;
+	line-height: 1.5;
 	display: block;
 	clear: both;
 }
