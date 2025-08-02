@@ -2,6 +2,11 @@
 
 ## Version 3
 
+###### v3.0.2 - Aug 2, 2025
+```
+= IMPROVED - Increased font sizes for the field 'Name' and field 'Description'
+```
+
 ###### v3.0.1 - Apr 1, 2025
 ```
 = UPDATED - New saving/resetting AJAX style
