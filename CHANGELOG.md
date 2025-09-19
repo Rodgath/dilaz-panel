@@ -2,6 +2,11 @@
 
 ## Version 3
 
+###### v3.0.3 - Sep 19, 2025
+```
+= FIXED - Theme URI when child theme is in use
+```
+
 ###### v3.0.2 - Aug 2, 2025
 ```
 = IMPROVED - Increased font sizes for the field 'Name' and field 'Description'
